@@ -49,6 +49,7 @@ Vengono dalla tabella dei nomi, non dai nomi dei file Tabler: `play.fill`,
 resto del porting, e sbagliarla dà un pulsante con dentro il nulla senza
 dire niente.
 """
+from __future__ import annotations
 
 import time
 

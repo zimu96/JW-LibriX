@@ -45,6 +45,7 @@ vista dove si era.  Con una sola pila e un indice di sezione, l'indietro
 riporta sempre alla schermata da cui si e' partiti, che e' quello che ci si
 aspetta da un pulsante con una freccia.
 """
+from __future__ import annotations
 
 import time
 

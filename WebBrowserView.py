@@ -54,6 +54,7 @@ posto dove il capitolo della Bibbia si mostra davvero e'
 ``SubViews/ArticleView.py``.  Qui sotto il trucco del ponte, pero', e' vivo
 e serve agli altri due.
 """
+from __future__ import annotations
 
 from pathlib import Path
 

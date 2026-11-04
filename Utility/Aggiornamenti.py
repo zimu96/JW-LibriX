@@ -43,6 +43,7 @@ Il risultato si scrive in un file.  Serve a tre cose:
 E' un file solo, e non si cancella a vicenda a nessun'altra impostazione:
 l'unica cosa che c'e' dentro e' "quando ho guardato e cosa ho trovato".
 """
+from __future__ import annotations
 
 import json
 import time

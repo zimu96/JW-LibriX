@@ -29,6 +29,7 @@ Le tre opzioni esistono perche' la lezione di COME-FUNZIONA.txt e' che un
 errore che si vede a schermo arriva tardi e da un altro posto.  Un modulo che
 non entra lo si scopre subito, senza aprire una finestra.
 """
+from __future__ import annotations
 
 import os
 import sys

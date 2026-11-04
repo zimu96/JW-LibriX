@@ -29,6 +29,7 @@ che sembra un pennello, e accanto c'e' il cestino: il cestino non e' un
 colore, e' l'operazione "togli", e per questo passa -1 invece di un numero
 da 1 a 6.
 """
+from __future__ import annotations
 
 from functools import lru_cache
 

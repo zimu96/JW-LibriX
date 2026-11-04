@@ -39,6 +39,7 @@ E non si scarica tutto: si scarica quello che si vede, e poi il resto
 piano piano.  Un utente che guarda le prime trenta righe non ha bisogno
 delle trecento della copertina.
 """
+from __future__ import annotations
 
 import threading
 

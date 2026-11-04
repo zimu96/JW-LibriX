@@ -18,6 +18,7 @@ proprio come faceva ``sqlite3_open``/``sqlite3_close`` in Swift.  Non e' la
 piu' veloce ma e' quella che non lascia file aperti e non si mette in mezzo
 fra i thread.
 """
+from __future__ import annotations
 
 import sqlite3
 from pathlib import Path

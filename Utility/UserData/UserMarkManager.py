@@ -15,6 +15,7 @@ lo stesso colore.
 La guida e' un UUID, come nel progetto originale.  Serve a poter sincronizzare
 due backup senza confondere i segnaposto che per caso hanno lo stesso numero.
 """
+from __future__ import annotations
 
 import uuid
 

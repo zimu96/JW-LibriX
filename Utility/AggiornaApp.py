@@ -9,6 +9,7 @@ Due casi:
   * AppImage: il file e' in sola lettura, quindi l'app non puo' cambiarsi da
     sola; si manda l'utente alla pagina della versione nuova.
 """
+from __future__ import annotations
 
 import io
 import json

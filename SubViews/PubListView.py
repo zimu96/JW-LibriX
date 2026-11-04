@@ -63,6 +63,7 @@ del titolo si puo' cliccare solo se il pacchetto c'e' gia': senza il testo
 scaricato aprire il libro non mostrerebbe niente, quindi si lascia il titolo
 in grigio e si lascia capire che manca il passo prima.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import (QAbstractTableModel, QModelIndex, QPoint, QRect, Qt,
                             QTimer, pyqtSignal as Signal)

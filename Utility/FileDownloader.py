@@ -20,6 +20,7 @@ funzione, e quella funzione e' gia' un segnale collegato alla GUI.  Cosi' un
 modulo che scarica non ha bisogno di sapere se il destinatario e' una finestra
 o uno script, e resta usabile da riga di comando.
 """
+from __future__ import annotations
 
 import gzip
 import threading

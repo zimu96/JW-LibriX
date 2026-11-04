@@ -6,6 +6,7 @@ aggiungere metodi a `int`, `str` o `FileManager`, quindi qui sono funzioni con
 lo stesso nome in minuscolo e col nome che avevano: `month_n(3)` al posto di
 `3.monthN()`.
 """
+from __future__ import annotations
 
 from .Ext_Int import *
 from .Ext_String import *

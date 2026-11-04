@@ -17,6 +17,7 @@ In Swift erano metodi statici ed un metodo d'istanza su ``FileManager``.
 Qui sono funzioni: ``get_documents_directory()``, ``article_exist(path)``,
 ``extracted_jwpub_exist(url)``, ``copyfile_to_user_document_directory(...)``.
 """
+from __future__ import annotations
 
 import shutil
 from pathlib import Path

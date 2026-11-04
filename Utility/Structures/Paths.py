@@ -41,6 +41,7 @@ le Impostazioni non copiano niente subito: scrivono un'operazione in
 sospeso (``copia_da``) e riavviano l'app; la copia la fa
 `esegui_copia_in_sospeso` all'avvio, prima che qualcuno apra un database.
 """
+from __future__ import annotations
 
 import json
 import os

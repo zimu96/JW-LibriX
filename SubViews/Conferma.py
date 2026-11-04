@@ -4,6 +4,7 @@
 #
 
 """La domanda sì/no dell'app: un riquadro viola dentro la finestra."""
+from __future__ import annotations
 
 from PyQt6.QtCore import QEvent, Qt
 from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QVBoxLayout

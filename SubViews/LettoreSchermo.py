@@ -31,6 +31,7 @@ colore che serve per guardare un video, e mettergli sopra il fondo della
 finestra farebbe vedere i bordi del video.  Tutto il resto — i comandi, la
 barra in basso — prende il tema come il resto dell'app.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 # `QShortcut` sta in **QtGui**, non in QtCore.  In QtCore si importava e si

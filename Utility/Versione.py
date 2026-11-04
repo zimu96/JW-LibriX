@@ -3,6 +3,7 @@
 E' il solo posto dove stanno: Impostazioni e installazione del plugin leggono
 da qui.  Per cambiare versione o repository si tocca questo file e basta.
 """
+from __future__ import annotations
 
 import os
 

@@ -11,6 +11,7 @@ Solo la lettura, come nell'originale: la schermata mostra quello che c'e'
 nella tabella ``Note``.  Nell'app originale gli appunti si scrivono dal
 telefono e arrivano nel backup, non si scrivono qui dentro.
 """
+from __future__ import annotations
 
 import sqlite3
 

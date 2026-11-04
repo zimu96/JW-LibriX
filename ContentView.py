@@ -21,6 +21,7 @@ Perche' l'azione e' frequente e perche' e' l'unica cosa che non richiede
 nessun pacchetto scaricato: si puo' fare backup anche con la cartella dei
 dati vuota, e in quel momento non c'e' nient'altro su cui premere.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 from PyQt6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget

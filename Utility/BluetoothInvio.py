@@ -15,6 +15,7 @@ bisogna accettarla: finche' non si accetta, il file non parte.
 
 Tutte le funzioni sono bloccanti: vanno chiamate fuori dal thread della finestra.
 """
+from __future__ import annotations
 
 import json
 import shutil

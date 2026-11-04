@@ -12,6 +12,7 @@ home e gli altri dischi montati, con lo spazio libero) e «Scegli…».
 
 Si puo' cambiare dopo da Impostazioni › Cartella dati.
 """
+from __future__ import annotations
 
 import os
 import shutil

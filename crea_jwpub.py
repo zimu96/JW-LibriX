@@ -85,6 +85,7 @@ In tutto il progetto originale quelle librerie erano chiamate da tre punti:
 tutte e tre con i moduli standard, dentro ``Zip/`` non resta piu' niente da
 portare, e il formato .jwpub si costruisce senza una libreria esterna.
 """
+from __future__ import annotations
 
 import argparse
 import json

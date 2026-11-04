@@ -12,6 +12,7 @@ tipi incorporati, quindi qui sono funzioni: ``month_n(3)`` al posto di
 ``3.monthN()``.  Il nome e' lo stesso, quindi il posto dove si chiamano si
 riconosce.
 """
+from __future__ import annotations
 
 MONTHS = [
     "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",

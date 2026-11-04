@@ -26,6 +26,7 @@ l'unico posto in cui si scrive piu' di una volta per operazione, quindi e'
 l'unico dove un'istruzione sola non basta: per questo ``should_split`` e'
 dentro il ciclo e non fuori.
 """
+from __future__ import annotations
 
 import sqlite3
 

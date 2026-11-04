@@ -5,6 +5,7 @@ capitoli, notizie e contenuti: stessi comandi (zoom, spostamento, adatta, Esc) e
 stessa replica sullo schermo esterno, se c'e'.  Qui resta solo il nome con cui
 le schermate lo chiamano.
 """
+from __future__ import annotations
 
 from SubViews.VisoreDocumento import VisoreDocumento
 

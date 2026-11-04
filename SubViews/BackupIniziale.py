@@ -11,6 +11,7 @@ si ricorda in ``impostazioni.json`` con la chiave ``backup_iniziale_nascosto``
 e vale qualunque pulsante si prema.  Se non si spunta, alla prossima apertura
 ricompare.
 """
+from __future__ import annotations
 
 import json
 

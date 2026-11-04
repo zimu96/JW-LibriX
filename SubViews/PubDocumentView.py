@@ -20,6 +20,7 @@ coincidono mai: il primo vale dentro un pacchetto solo, il secondo e' quello
 della URL su wol.jw.org.  Prendere il numero sbagliato non da un errore, da
 una pagina vuota.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 from PyQt6.QtWidgets import (

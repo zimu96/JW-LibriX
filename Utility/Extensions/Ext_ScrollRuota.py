@@ -36,6 +36,7 @@ consumato e la pagina riprende a scorrere sotto il mouse.  Senza questo la
 striscia diventerebbe un buco: arrivato in fondo non si potrebbe piu' alzare
 la pagina finche' il mouse non esce da li'.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import QEvent, QObject, QPoint
 

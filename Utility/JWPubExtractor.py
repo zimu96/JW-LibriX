@@ -118,6 +118,7 @@ Un errore nella formula del passo 4 non da' "testo un po' diverso".  Da' una
 somma di conteggi che non torna, e la prova di quello e' la riga sopra, che
 non dipende da nessuna delle altre scelte fatte qui.
 """
+from __future__ import annotations
 
 import sqlite3
 from dataclasses import dataclass

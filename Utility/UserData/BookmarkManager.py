@@ -23,6 +23,7 @@ colonna ``ColorIndex`` con un ``ALTER TABLE``: i database creati prima non
 l'hanno, e le righe che ci sono gia' prendono il colore 1.  Si fa **una volta
 sola**, quando si apre il database: non e' una migrazione da lanciare a mano.
 """
+from __future__ import annotations
 
 import sqlite3
 

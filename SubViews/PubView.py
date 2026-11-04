@@ -29,6 +29,7 @@ tira fuori il ``.db`` e il ``.gz`` si butta: tenere due copie dello stesso
 catalogo occuperebbe spazio per niente e, peggio, fa pensare che una delle
 due sia quella giusta.
 """
+from __future__ import annotations
 
 # `Qt` viene da QtCore, non da QtWidgets, e si usa qui solo per gli
 # allineamenti.  Prima non era importato, e `_mostra_catalogo_mancante` —

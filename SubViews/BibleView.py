@@ -48,6 +48,7 @@ MepsDocumentId.  Per questo in questa sezione il ``Publication`` viene
 costruito a mano con ``isBible=True`` e i due numeri dentro, invece di
 cercarlo nel catalogo.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, QUrl, pyqtSignal as Signal
 from PyQt6.QtWidgets import (

@@ -34,6 +34,7 @@ diversi: il giorno che la regola
 cambia, cinque punti restavano indietro e la sezione semplicemente spariva
 (e' successo, e' nella lista delle trappole).
 """
+from __future__ import annotations
 
 import re
 import shutil

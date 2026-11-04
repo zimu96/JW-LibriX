@@ -48,6 +48,7 @@ Un'ora.  Non a ogni apertura e non ogni tre minuti: il server non cambia
 cosi' spesso, e una richiesta che ritorna sempre uguale non aggiunge
 niente.
 """
+from __future__ import annotations
 
 import time
 from datetime import date

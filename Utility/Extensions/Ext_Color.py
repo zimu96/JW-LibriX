@@ -10,6 +10,7 @@
 In Swift ``extension Color`` con dentro un ``NSColor``.  Qui si lavora su
 ``QColor``: stessi tre canali, stesso alpha, stessa regola dei minimi a 1.0.
 """
+from __future__ import annotations
 
 from PyQt6.QtGui import QColor
 

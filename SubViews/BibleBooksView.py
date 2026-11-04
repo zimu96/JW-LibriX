@@ -25,6 +25,7 @@ abbastanza lungo, ``getBibleColor`` legge oltre la fine e il libro sparisce
 senza dire niente: e' una delle trappole elencate in COME-FUNZIONA.txt
 sezione 14, "un elenco di nomi e' una rete con i buchi".
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 from PyQt6.QtWidgets import (QBoxLayout, QGridLayout, QHBoxLayout, QLabel, QPushButton,

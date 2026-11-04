@@ -34,6 +34,7 @@ Le playlist: nel formato sono altre tabelle, che puntano a file media dentro
 il backup, e l'app le tiene con uno schema suo.  Restano com'erano nell'app e
 non finiscono nel file esportato.
 """
+from __future__ import annotations
 
 import datetime
 import hashlib

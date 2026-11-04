@@ -50,6 +50,7 @@ nome della pubblicazione da cercare: uno schermo che dice «non hai scaricato
 questa cosa» e' un invito a premere il tasto di Scaricati, e uno schermo vuoto
 no.  Vedi `HomeView.scrittura_dell_anno`.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import (
     QEasingCurve,

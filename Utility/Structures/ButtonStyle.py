@@ -14,6 +14,7 @@ pulsante viene premuto, quindi non serve nessun codice che intercetti il
 mouse.  Il colore premuto resta esattamente quello che Swift calcolava con
 ``color.lighter(by: 30)``.
 """
+from __future__ import annotations
 
 from PyQt6.QtWidgets import QPushButton
 

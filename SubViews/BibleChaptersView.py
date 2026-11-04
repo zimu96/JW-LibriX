@@ -19,6 +19,7 @@ lunghi hanno il numero su due righe (``Mela``, 10 capitoli, sta stretto in
 una casella piccola).  E' una sciocchezza, ma e' quello che faceva l'app
 originale e si vede subito.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import Qt, pyqtSignal as Signal
 from PyQt6.QtWidgets import QGridLayout, QScrollArea, QVBoxLayout, QWidget

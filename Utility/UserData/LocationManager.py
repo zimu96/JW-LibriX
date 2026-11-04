@@ -29,6 +29,7 @@ ChapterNumber pieni, DocumentId NULL) o il documento di una pubblicazione
 riempite devono restare NULL: non si scrive 0 al posto di "non c'e'", perche'
 0 e' un numero valido e il vincolo lo accetterebbe.
 """
+from __future__ import annotations
 
 import sqlite3
 

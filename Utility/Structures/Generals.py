@@ -18,6 +18,7 @@ in Swift::
 
     Publication(ID=0, keySymbol="nwtsty", ..., title="...")   # issueTitle mancante
 """
+from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Optional

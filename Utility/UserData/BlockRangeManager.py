@@ -19,6 +19,7 @@ aspettarsi che funzioni: fallisce e basta.
 Le tre query di scrittura e le tre di lettura sono le stesse del progetto
 originale, con i valori passati come parametri.
 """
+from __future__ import annotations
 
 import sqlite3
 

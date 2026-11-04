@@ -17,6 +17,7 @@ Uso::
                        lambda progresso: Formato.importa_backup(p, progresso),
                        al_termine)          # al_termine(risultato, errore)
 """
+from __future__ import annotations
 
 import threading
 import time

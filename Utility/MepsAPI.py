@@ -93,6 +93,7 @@ Niente ``requests``.  Si usa ``urllib`` della libreria standard, come nel
 resto del progetto: un programma che si installa con pip e' un programma
 che va installato, e questa app si apre con ``python3 JWLibraryApp.py``.
 """
+from __future__ import annotations
 
 import json
 import urllib.error

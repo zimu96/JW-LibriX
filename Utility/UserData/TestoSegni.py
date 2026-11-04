@@ -25,6 +25,7 @@ catalogo (che e' locale).  Scaricarla e' una scelta dell'utente.
 Quello che si ricostruisce si salva in ``BlockRange.Snippet``/``Title``: la
 volta dopo la risposta e' immediata.
 """
+from __future__ import annotations
 
 import re
 import sqlite3

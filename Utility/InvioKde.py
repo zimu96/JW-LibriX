@@ -4,6 +4,7 @@
 #
 
 """Mandare un file a un telefono con KDE Connect (se e' installato)."""
+from __future__ import annotations
 
 import subprocess
 

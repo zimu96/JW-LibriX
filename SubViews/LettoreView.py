@@ -43,6 +43,7 @@ Nessun timer qui.  Il widget ascolta il motore e si ridipinge: se tenesse
 un proprio conto dei secondi, andrebbe avanti di un secondo rispetto al
 suono e si sentirebbe che il video e l'audio non vanno d'accordo.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import QPoint, QRect, Qt, pyqtSignal as Signal
 from PyQt6.QtMultimediaWidgets import QVideoWidget

@@ -11,6 +11,7 @@ Stessa nota di Ext_Int: in Swift erano ``extension String``, qui sono
 funzioni.  ``sha256`` non usa piu' CommonCrypto (che non esiste su Linux)
 ma ``hashlib``, che e' nella libreria standard e fa la stessa cosa.
 """
+from __future__ import annotations
 
 import hashlib
 import html

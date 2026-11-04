@@ -25,6 +25,7 @@ Un segnale emesso da un thread estraneo e' sempre consegnato in coda al
 thread che ha creato la QObject, quindi il callback finisce *di sicuro* sul
 main thread.  E' la stessa garanzia che dava DispatchQueue.main.async.
 """
+from __future__ import annotations
 
 import sys
 import threading

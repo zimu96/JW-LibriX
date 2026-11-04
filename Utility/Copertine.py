@@ -59,6 +59,7 @@ La misura del progetto precedente: 20 secondi la griglia da quattrocento a
 cache fredda, un decimo di secondo a cache calda.  La differenza la fa
 tutto.
 """
+from __future__ import annotations
 
 import hashlib
 import urllib.error

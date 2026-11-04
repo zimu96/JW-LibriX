@@ -79,6 +79,7 @@ E sono indirizzi che funzionano.  Non si ricostruisce nessun indirizzo a mano,
 che e' il modo tipico di mettere nel programma un collegamento che oggi va e
 domani no.
 """
+from __future__ import annotations
 
 import gzip
 import json

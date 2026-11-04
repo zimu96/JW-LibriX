@@ -32,6 +32,7 @@ Cliccando un appunto si apre sopra tutto, con il resto scurito.  Il velo e'
 un riquadro nero semitrasparente che copre la griglia e si chiude con un
 clic.
 """
+from __future__ import annotations
 
 from html import escape
 

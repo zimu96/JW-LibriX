@@ -67,6 +67,7 @@ Se il caricamento fallisce si dice cosa e' successo, e si lascia il pulsante
 indietro comunque.  Una pagina bianca senza spiegazione sembra un difetto del
 programma, mentre e' una rete che non ha risposto.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import QEvent, QTimer, Qt, QUrl, pyqtSignal as Signal
 from PyQt6.QtGui import QKeySequence

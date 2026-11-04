@@ -71,6 +71,7 @@ SENZA DIPENDENZE
 ----------------
 `json` della libreria standard, come nel resto del progetto.
 """
+from __future__ import annotations
 
 import json
 import sys

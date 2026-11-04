@@ -16,6 +16,7 @@ glifo che esiste in DejaVu Sans, il font che c'e' su ogni installazione di
 Linux.  I nomi nella tabella sono quelli del progetto originale: se un
 giorno i simboli diventano disponibili si cambia la tabella e non il resto.
 """
+from __future__ import annotations
 
 import json
 import re

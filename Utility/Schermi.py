@@ -44,6 +44,7 @@ diventa «1», e una finestra a tutto schermo andrebbe sullo schermo sbagliato
 senza dire niente.  Il nome che dà il sistema o c'e' o non c'e', e si puo'
 controllare.  Vedi `Utility/tema.video_schermo`.
 """
+from __future__ import annotations
 
 from PyQt6.QtGui import QGuiApplication
 

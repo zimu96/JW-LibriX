@@ -19,6 +19,7 @@ Regole:
 
 Si eliminano solo file che l'app ha creato e di cui ha ricordato il percorso.
 """
+from __future__ import annotations
 
 import json
 from pathlib import Path

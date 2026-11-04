@@ -59,6 +59,7 @@ Multimedia — la stessa traccia, la stessa nuvoletta — perche' e' la stessa
 voce in un altro posto, e una voce senza `traccia` e' una pubblicazione
 intera, come tutte quelle gia' salvate.
 """
+from __future__ import annotations
 
 import json
 

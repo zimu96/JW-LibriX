@@ -40,6 +40,7 @@ Sta nel menu in alto, dove serve mentre si legge.  Qui starebbe una
 seconda copia di uno cursore che si puo' muovere da due posti, e le due
 copie non possono stare d'accordo.
 """
+from __future__ import annotations
 
 from datetime import datetime
 import json

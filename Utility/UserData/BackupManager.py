@@ -21,6 +21,7 @@ Il database sta in modalita' WAL: le scritture recenti possono essere nel
 file ``-wal`` e non dentro il database.  Prima di leggerlo per il backup si fa
 ``wal_checkpoint(TRUNCATE)`` (``store_data_in_db``).
 """
+from __future__ import annotations
 
 import sqlite3
 from pathlib import Path

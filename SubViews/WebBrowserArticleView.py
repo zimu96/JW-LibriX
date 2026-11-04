@@ -39,6 +39,7 @@ tre cose diverse:
 Un numero che non e' nessuno di questi non e' un errore: e' una versione
 vecchia della pagina, e si stampa e si va avanti.
 """
+from __future__ import annotations
 
 from pathlib import Path
 

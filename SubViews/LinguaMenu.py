@@ -48,6 +48,7 @@ resto.  Un menu che cambia la lingua da solo dovrebbe sapere quali schermate
 ricreare, e quel gesto e' della finestra, che le ha costruite: vedi
 `SidebarView._lingua_scelta`.
 """
+from __future__ import annotations
 
 from PyQt6.QtCore import pyqtSignal as Signal
 from PyQt6.QtWidgets import QLineEdit, QMenu, QWidget, QWidgetAction

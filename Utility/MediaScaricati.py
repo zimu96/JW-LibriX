@@ -43,6 +43,7 @@ fuori che abbia la forma del nome.  Per l'utente e' la stessa cosa — l'ha
 scaricato lui — e dividerli sarebbe inventare due categorie che su un disco
 non hanno un segno per essere riconosciute.
 """
+from __future__ import annotations
 
 from pathlib import Path
 

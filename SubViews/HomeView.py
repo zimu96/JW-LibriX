@@ -39,6 +39,7 @@ Se non ci sono Preferiti, la sezione resta e dice che non ce ne sono.  Una
 sezione che sparisce sembra un difetto; una sezione vuota con scritto
 "nessun preferito" dice la verita' e lascia capire dove metterli.
 """
+from __future__ import annotations
 
 import time
 

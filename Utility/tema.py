@@ -48,6 +48,7 @@ Qui dentro metto il valore che ho misurato, e il precedente lo tengo
 accanto con la sua provenienza: se un domani si torna sul campionamento
 dell'app precedente, e' una riga.
 """
+from __future__ import annotations
 
 # ---------------------------------------------------------------------------
 # IL VIOLA

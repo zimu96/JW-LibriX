@@ -19,6 +19,7 @@ DUE COSE DIVERSE: INSTALLATO E ATTIVO
 impostazioni.  Il tasto nella barra viola compare solo se **tutte e due**
 (`visibile`).
 """
+from __future__ import annotations
 
 import importlib.util
 import json
