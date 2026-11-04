@@ -1,0 +1,221 @@
+/* Il font.
+   Il progetto originale scriveva -apple-system, che e' di macOS e su Linux
+   non esiste: Chromium non lo trova e usa il suo font predefinito, quindi
+   funziona, ma non e' una scelta.  Qui -apple-system resta per primo, cosi'
+   il file continua ad andare bene anche su macOS, e dopo ci sono i font di
+   sistema di Linux.  Il primo che esiste vince. */
+body {
+    font-family: -apple-system, "Inter", "Cantarell", "Ubuntu",
+                 "Noto Sans", "DejaVu Sans", sans-serif;
+    padding: 4px;
+}
+* {
+    box-sizing: border-box;
+}
+:root {
+  color-scheme: light dark;
+}
+a {
+    color: #2878bb;
+    text-decoration: none;
+    user-select: none;
+}
+a.fn {
+    transform: translateX(-50%) translateX(-.5ex) translateY(-50%);
+}
+a.vx, a.vp, a.vl {
+    font-weight: 600;
+}
+figcaption {
+    color: #626262;
+    font-size: .8298755187em;
+}
+figure {
+    text-align: center;
+}
+h1 {
+    margin-top: 0;
+    margin-bottom: .25em;
+    font-size: 1.749690125em;
+    font-weight: 700;
+    line-height: 1.25;
+}
+h2 {
+    margin-top: 1em;
+    margin-bottom: .25em;
+    font-size: 1.452025em;
+    font-weight: 700;
+    line-height: 1.25;
+}
+header {
+    display: block;
+}
+img {
+    height: auto;
+    width: 100%;
+    max-width: 600px;
+    vertical-align: bottom;
+    border-style: none;
+}
+p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+p.qu {
+    color: #626262;
+    font-size: .8298755187em;
+}
+p.sb {
+    text-indent: 1.5em;
+}
+sup {
+    top: -.5em;
+}
+table {
+    border-collapse: collapse;
+    border-color: inherit;
+    text-indent: 0;
+    margin-bottom: 1.5em;
+    font-size: .8298755187em;
+    border-spacing: 0;
+    empty-cells: show;
+    margin: 0;
+    padding: 0;
+}
+table td {
+    min-width: 75px;
+    padding: 8px;
+    vertical-align: top;
+}
+th {
+    text-align: left;
+    min-width: 75px;
+    padding: 8px;
+    vertical-align: bottom;
+}
+tr.emphasized th {
+    background-color: #757575;
+    color: #fff;
+}
+tr.shaded td {
+    background-color: #f1f1f1;
+    color: #292929;
+}
+.blockTeach, .boxSupplement {
+    background-color: #f1f1f1;
+    color: #292929;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+.blockTeach.rule, .boxSupplement.rule, .chart.rule, .closingContent.rule, .diagram.rule, .mapElement.rule {
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-width: 1px;
+    border-color: #a7a7a7;
+    background-color: transparent;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+.blockTxt, .bodyTxtAlt.rule, .stdCaption, .stdPullQuote, blockquote.rule {
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #a7a7a7;
+    color: #626262;
+    font-size: 1em;
+    clear: both;
+}
+.boxContent {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.boxTtl {
+    padding-top: 16px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.boxTtl.emphasized {
+    background-color: #757575;
+    color: #fff;
+}
+.boxSubTtl.rule, .boxTtl.rule {
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #a7a7a7;
+}
+.boxSubTtl h2, .boxSubTtl h3, .boxSubTtl h4, .boxSubTtl h5, .boxSubTtl h6, .boxTtl h2, .boxTtl h3, .boxTtl h4, .boxTtl h5, .boxTtl h6 {
+    margin: 0;
+}
+.cl {
+    font-size: 2em;
+}
+.dir-ltr ol, .dir-ltr ul, .dir-ltr ol, .dir-ltr ul {
+    padding-left: 1.5em;
+    padding-right: 0;
+}
+.flLeft:not(img), .flRight:not(img), .floatEast:not(img), .floatWest:not(img) {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.gen-footnote-container, .groupEndnote, .groupFootnote, .relatedContent {
+    display: inherit;
+    font-size: 1em;
+    color: #666;
+    border-top: 1px solid #9e9c9b;
+    border-bottom: none;
+    padding: 0;
+}
+.pageNum {
+    text-align: left;
+    float: right;
+}
+.sn {
+    text-indent: 0;
+}
+.sl {
+    padding-left: 3em;
+    text-indent: -3em;
+}
+.sz {
+    padding-left: 2.5em;
+    text-indent: -1em;
+}
+.contextTtl, .featureTtl {
+    margin-top: .25em;
+    margin-bottom: .25em;
+    color: #626262;
+}
+
+.treasures--rev2021 h1, .treasures--rev2021 h2, .treasures--rev2021 h3, .treasures--rev2021 h4, .treasures--rev2021 h5, .treasures--rev2021 h6, .treasures--rev2021>p {
+    color: #656164;
+}
+.ministry--rev2021 h1, .ministry--rev2021 h2, .ministry--rev2021 h3, .ministry--rev2021 h4, .ministry--rev2021 h5, .ministry--rev2021 h6, .ministry--rev2021>p {
+    color: #a56803;
+}
+.christianLiving--rev2021 h1, .christianLiving--rev2021 h2, .christianLiving--rev2021 h3, .christianLiving--rev2021 h4, .christianLiving--rev2021 h5, .christianLiving--rev2021 h6, .christianLiving--rev2021>p {
+    color: #99131e;
+}
+
+.highlightingcolor1 {
+    background-color: #ffeb3b80;
+}
+.highlightingcolor2 {
+    background-color: #9ef95380;
+}
+.highlightingcolor3 {
+    background-color: #29b6f680;
+}
+.highlightingcolor4 {
+    background-color: #ffa1c880;
+}
+.highlightingcolor5 {
+    background-color: #ffb97680;
+}
+.highlightingcolor6 {
+    background-color: #af85ff80;
+}

@@ -1,0 +1,13 @@
+/* Generato: vedi font.py. Tutti i font qui dentro sono liberi
+   (OFL 1.1 o Apache 2.0). I font Wt-* della Watchtower NON ci sono. */
+
+@font-face{font-family:'n400';src:url('font/NotoSans-Regular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'n700';src:url('font/NotoSans-Bold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'n400i';src:url('font/NotoSans-Italic.woff') format('woff');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'n700i';src:url('font/NotoSans-BoldItalic.woff') format('woff');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:'n400';src:url('font/NotoSerif-Regular.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'n700';src:url('font/NotoSerif-Bold.woff') format('woff');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'n400i';src:url('font/NotoSerif-Italic.woff') format('woff');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'n700i';src:url('font/NotoSerif-BoldItalic.woff') format('woff');font-weight:700;font-style:italic;font-display:swap}
+/* Roboto, Apache 2.0 — il font delle schermate UWP */
+/* DejaVu, Bitstream Vera — il ripiego per i glifi mancanti */

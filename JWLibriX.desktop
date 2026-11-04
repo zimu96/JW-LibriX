@@ -1,0 +1,22 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=JW LibriX
+GenericName=Biblioteca delle Scritture
+Comment=Leggere le Scritture e le pubblicazioni
+# L'eseguibile e' jwlibrix, che installa.sh mette in ~/.local/bin.
+# Non si mette qui dentro il percorso vero: con le virgolette annidate
+# l'Exec diventa invalido, e desktop-file-validate lo dice.
+Exec=jwlibrix
+Icon=jwlibrix
+Terminal=false
+Categories=Education;Literature;Viewer;
+Keywords=bible;jw;library;librix;scripture;
+StartupNotify=true
+# La WM_CLASS e' il nome di questo file senza l'estensione, perche' e' quello
+# che Qt mette quando il programma chiama setDesktopFileName("JWLibriX")
+# (JWLibraryApp.py).  Qui dentro era "JW Library", che e' il nome *mostrato* e
+# non quello che il desktop cerca: con i due diversi la barra delle
+# applicazioni non accoppiava la finestra a questa voce e finiva colla icona
+# generica di Python.  Il nome che l'utente legge e' quello sopra, in Name=.
+StartupWMClass=JWLibriX

@@ -1,0 +1,1463 @@
+================================================================================
+  COME FUNZIONA, ADESSO
+  App JW LibriX (per Linux) — porting da Swift/macOS a Python/PyQt6
+================================================================================
+
+Questo foglio dice cosa fa l'app ADESSO, con i numeri misurati e i nomi dei
+file. Non dice cosa dovrebbe fare: quello si vede aprendo l'app.
+
+Quando una cosa non e' finita, qui c'e' scritto che non e' finita. Meglio
+un elenco corto e vero che uno lungo e falso.
+
+--------------------------------------------------------------------------------
+  1. COME SI APRE
+--------------------------------------------------------------------------------
+
+    cd "jw-librix"
+    ./jw.sh                    apre l'app (i controlli veloci girano nella
+                               schermata di avvio, ~0,1 s)
+    ./installa.sh              una volta sola: icona, voce nel menu delle
+                               applicazioni, comando `jwlibrix`
+
+    JWL_VERIFICA=1 ./jw.sh     solo i controlli, poi esce
+    JWL_CONTROLLO_COMPLETO=1   all'avvio anche i controlli pesanti (~7 s)
+    JWL_SENZA_CONTROLLO=1      nessun controllo
+
+I dati stanno DENTRO la cartella del programma, in `dati/`:
+
+    jw-librix/        il programma
+    jw-librix/dati/   i dati dell'utente (Utility/Structures/Paths.py)
+
+`dati/` si può spostare o cancellare: quello che si può riscaricare
+riparte da capo. Per un'altra copia si mette JWL_HOME in avanti:
+
+    JWL_HOME=/tmp/prova python3 JWLibraryApp.py
+
+SPLASH SCREEN ALL'AVVIO
+-----------------------
+E' UN TERMINALE CON SOPRA IL LOGO
+---------------------------------
+Quando l'app parte appare una schermata nera, SENZA il contorno della finestra
+di sistema, con il logo e una barra. Sotto il pannello nero del logo c'e' il
+testo del terminale: e' lo stesso log che andrebbe a schermo, e non si vede
+perche' il logo ci passa sopra.
+
+    1. Appena parte: si mostra e si disegna (un giro di eventi, non un'attesa)
+    2. Il terminale viene deviato dentro la schermata: da qui in poi ogni
+       riga che il programma scrive va al terminale vero E alla schermata
+    3. Se auto-update attivo (Impostazioni > Aggiornamenti):
+         - Controlla il server in un thread
+         - Scarica catalogo pubblicazioni (~58 MB) con barra e percentuale
+         - Scarica elenco media, nello stesso momento
+         - Aspetta TUTTI e due prima di chiudersi (contatore, non bandierina)
+    4. Se compare un errero vero: si ferma SUBITO e mostra la schermata degli
+       errori con tutto il log e «Salva con nome...» (vedi sotto)
+    5. Chiude e fade-in 300ms verso Home (stessa finestra, NON close/open nuova)
+
+NESSUN TEMPO MINIMO
+-------------------
+Non c'e' piu'. La schermata non e' una pausa con dentro un logo: **e' il
+lavoro**. Resta quanto basta per essere disegnata (una volta, senza orologio)
+e poi finisce quando ha finito.
+
+LA X IN ALTO A DESTRA
+---------------------
+Chiude **il programma**, non la schermata. Sta dentro la finestra senza bordi,
+perche' il bordo di sistema non c'e'. Serve a due cose: interrompere un
+aggiornamento partito per caso, e uscire da un programma partito per caso.
+Non chiede conferma e non ferma i download a meta': quello che non arriva si
+rifinisce al giro dopo (FileDownloader lascia il `.part`).
+
+IL LOG, E LA SCHERMATA DEGLI ERRORI
+-----------------------------------
+`Messaggi.devia()` scrive in due posti: il terminale vero e la schermata.
+Quindi chi lancia da riga di comando vede i log come sempre, e chi lancia
+dall'icona li vede nella schermata. Non e' una scelta fra le due cose.
+
+`Messaggi.osserva()` e' un'altra cosa: chi riceve le righe **mentre arrivano**,
+con il livello accanto. Serve perche' la schermata si fermi all'istante, e non
+dopo: se andasse a leggere il log ogni tanto, l'errore sarebbe gia' passato.
+
+SE IL PROGRAMMA E' ROTTO, LA SCHERMATA SI FERMA
+-----------------------------------------------
+Un errore vero durante l'avvio blocca tutto, **immediatamente**:
+
+    +-----------------------------------------------+
+    |  NameError: nome_che_non_esiste               |
+    |    File "...", line 214, in _costruisci         |
+    |  [tutto il resto del log, sopra]               |
+    |                                               |
+    |  C'e' 1 errore che impedisce al programma di  |
+    |  partire. Sopra c'e' tutto quello che e' stato |
+    |  scritto. Salvalo e mandalo a chi sviluppa.     |
+    |                 [ Salva con nome... ] [ Esci ] |
+    +-----------------------------------------------+
+
+Non e' una finestra di dialogo sopra: e' **la stessa finestra** che cambia
+faccia. Sparisce il pannello col logo, il terminale si vede per intero e si
+lega e si copia, e in fondo compaiono la frase e i bottoni.
+
+La finestra principale NON parte: andare avanti a meta' di un crash vuol dire
+che il difetto si vede tre schermate dopo, quando non si sa piu' cosa l'ha
+causato. «Salva con nome...» apre la finestra di salvataggio di sistema e
+salva **tutto** il log, non solo gli errori: in un crash la causa non e'
+quasi mai l'ultima riga. Dopo aver salvato la schermata resta li'.
+
+Si ferma anche se il crash e' avvenuto **prima** che la schermata esistesse,
+perche' gli import e la costruzione della finestra passano da `Messaggi` e il
+loro errori sono gia' dentro quando la schermata si accende.
+
+QUALI ERRORI FERMANO, E QUALI NO
+--------------------------------
+La distinzione e' fra livelli, non fra parole:
+
+    BLOCCANO           CRITICO, FATALE, eccezioni non gestite
+    NON BLOCCANO       AVVISO (che si vede, ma non ferma)
+
+`AVVISO` non blocca perche' su questa macchina Qt ne scrive uno a ogni avvio
+che non ha niente a che fare col programma:
+
+    [Qt AVVISO] This plugin does not support propagateSizeHints()
+
+Bloccare su un avviso vuol dire che il programma non parte piu' su quelle
+macchine, e un programma che non parte e' un difetto peggiore di un avviso
+ignorato. Gli avvisi vengono comunque mostrati — a schermo e nella schermata
+— e c'e' «Ignora e parti», che non esiste quando l'errore blocca davvero.
+
+Un download che non riesce NON blocca: e' una riga che il programma scrive per
+conto suo (`_avviso`), non un errore di Qt. Il programma la dice e va avanti
+con quello che ha.
+
+LIVELLO E' ACCANTO AL MESSAGGIO, NON DEDOTTO DA LUI
+--------------------------------------------------
+`ULTIMI_CON_LIVELLO` tiene ogni riga con il suo livello. Prima il livello si
+indovinava guardando se la riga cominciava con «[Qt AVVISO]», e cosi' un
+messaggio che conteneva la parola AVVISO nel mezzo sembrava un avviso. Un
+messaggio = una voce, anche se occupa tre righe di traceback.
+
+L'icona usata è `Files/JWLibrary.png` (fallback `Files/icons/1024.png`).
+
+--------------------------------------------------------------------------------
+  2. LE SEZIONI DELLA RAIL
+--------------------------------------------------------------------------------
+
+La colonna di icone a sinistra, 48 pixel, tutta viola, in chiaro e in scuro.
+I pulsanti sono quelli di `NELLA_RAIL` in SidebarView.py:
+
+    Home                 testo del giorno, Argomento principale, Preferiti,
+                         Notizie, Novita' e aggiornamenti, Novita',
+                         Kit dell'insegnante, Le ultime novita'
+    Bibbia               66 libri, due colonne, poi capitoli, poi il testo;
+                         lingua della Bibbia, pannello dei riferimenti
+    Biblioteca Digitale  quattro schede (MediaView.TABS):
+                           Pubblicazioni  il catalogo, la ricerca, le copertine
+                           Video          i video, per categoria
+                           Audio          gli audio, per categoria
+                           Scaricati      cosa c'e' sul disco, e come si toglie
+    Adunanze             la settimana in corso: Vita cristiana e ministero
+                         (mwb) e Studio della Torre di Guardia (w); i
+                         contenuti di ogni pagina in ordine; «Aggiungi file»
+    Ricerche             Sottolineature, Segnalibri, Appunti, e le Playlist
+    Impostazioni         otto schede (vedi sotto)
+    Timer                solo se il plugin timer e' installato E acceso
+
+«Scaricati» esiste ancora in `SEZIONI` (la schermata deve esistere perche'
+altri pezzi la chiamano) ma non ha piu' un pulsante suo: si apre dalla
+scheda dentro Biblioteca Digitale.
+
+LE SCHEDE DELLE IMPOSTAZIONI (SubViews/SettingsView.py)
+
+    Generale         lingua
+    Ascolto e video  qualita' streaming, scarica in Wi-Fi, schermo per
+                     video e immagini, duplicazione monitor
+    Backup           importa .jwlibrary, esporta, condividi, elimina
+    Spazio           spazio usato, ultimo aggiornamento
+    Aggiornamenti    «Offline», «Aggiorna il catalogo adesso»
+    Log              vedi e salva il log dell'avvio
+    Aspetto          tema
+    Plugin           Timer adunanze: acceso/spento, versione
+
+La fascia in alto, 32 pixel, viola anche lei:
+
+    <  >          indietro e avanti
+    lingua        il menu' delle lingue
+    lente         la ricerca nella pubblicazione aperta (RicercaLocale),
+                  con «Cerca ovunque»
+    cuffie        apre il menu' dei media (vedi sotto)
+    freccia       aggiorna: ricarica quello che si sta guardando
+    segnalibro    i segnalibri della pubblicazione che si sta leggendo
+    tre puntini   la dimensione del testo
+
+Nella fascia ci sono cinque strumenti e non otto. Tolti tre, perche' erano
+il secondo posto dove fare una cosa che si fa gia' da un altro: la sezione
+Impostazioni e' nella rail, quindi l'ingranaggio era la stessa schermata in
+due posti; il tema si cambia nelle Impostazioni; e la luna non era un tasto
+che accendeva qualcosa, era un'etichetta.
+
+GLI STRUMENTI SONO ADATTIVI ALLA SEZIONE
+----------------------------------------
+IL SEGNALIBRO STA NELLA FASCIA
+------------------------------
+Il tasto dei segnalibri sta nella fascia, **fra l'aggiornamento e i tre
+puntini**, e non nella barra del capitolo.
+
+La fascia e' la parte della finestra che c'e' in tutte le schermate, e il
+segnalibro e' un comando che vale mentre si legge: segna il punto dove si e'
+arrivati e mostra quelli gia' segnati. Nelle sezioni il tasto sparisce,
+perche' l'elenco di tutti i segnalibri e' gia' nella rail (Ricerche).
+
+Nella HOME c'e' **solo Aggiorna**. Gli altri quattro spariscono: nella Home non
+c'e' una pubblicazione, ci sono Preferiti, notizie e video recenti, e ognuno di
+quei pezzi si preme da per se'. Un menu' delle cuffie li' direbbe «scegli una
+pubblicazione» quando l'utente ha gia' premuto la card che voleva, e la lente
+porterebbe via da una schermata che l'utente non voleva lasciare.
+
+Nelle altre sette sezioni ci sono tutti e quattro, perche' li' c'e' una
+pubblicazione o un elenco e gli strumenti hanno su cosa lavorare.
+
+MENTRE SI LEGGE, DUE STRUMENTI IN PIU'
+--------------------------------------
+Quando la schermata che si sta guardando e' un capitolo, nella fascia ci
+sono anche i **segnalibri** e le **cuffie** — e le cuffie solo se l'audio
+c'e' davvero: un tasto che apre un menu' vuoto e' un tasto rotto.
+
+IL MENU' DELLE CUFFIE E' ADATTIVO
+---------------------------------
+Le cuffie non portano da nessuna parte: aprono un menu' con quello che c'e'
+davvero, e ogni voce compare **solo se serve**:
+
+    Streaming video (traccia 1)      c'e' un video e non e' sul disco
+    Streaming audio (traccia 3)      c'e' un audio e non e' sul disco
+    ---
+    Scarica video (traccia 1)        non e' sul disco
+    Scarica audio (traccia 3)        non e' sul disco
+    ---
+    Cambia lingua > Italiano        esiste un altro catalogo su disco in cui
+                                    questa pubblicazione c'e'
+
+Se la traccia e' gia' sul disco la voce «Scarica» sparisce e compare
+«Guarda il video» / «Ascolta l'audio»: scaricare due volte lo stesso file non
+e' quello che l'utente vuole, e promettere una voce che non serve e' una voce
+che il giorno dopo non viene piu' premuta.
+
+LO STESSO PEZZO IN DUE FORMATTI
+-------------------------------
+Lo stesso programma esce in due formati, e il catalogo li tiene entrambi:
+`pub-osg_I_126_VIDEO` e `pub-osg_I_126_AUDIO`. La Torre di Guardia (`sjjm`)
+ha 327 tracce, di cui **164** hanno un audio accanto al video.
+
+Prima si teneva solo il video a pari numero, e l'audio non esisteva: il
+menu' delle cuffie chiedeva «l'audio di questo pezzo» e la risposta era
+sempre «non c'e'». Adesso ci sono entrambi, e il confronto con il disco
+dice anche **quale formato** si cerca: la Torre di Guardia ha l'audio
+scaricato e il video no, e «Guarda il video» non deve trovarsi l'audio.
+
+L'AUDIO CHE E' DENTRO IL PACCHETTO
+----------------------------------
+I libri sono scaricati in formato .jwpub, e dentro c'e' la tabella
+`Multimedia` del loro database: l'audio, il video, la traccia, e se il
+file e' dentro il pacchetto o se sta sul server.
+
+Quindi **la lista delle tracce la dice il libro**, e non il catalogo dei
+media. Il catalogo serve per quello che nel libro non c'e': i periodici,
+i video.
+
+Dall'online si prende **solo il file**, e solo quando il pacchetto non
+ce l'ha: `FilePath` vuoto vuol dire «questa traccia sta sul server». Quello
+che e' dentro il pacchetto e' gia' offline, e si ascolta (o si guarda) da
+li'.
+
+La lingua compare solo se l'altro catalogo e' **gia' scaricato**: un sotto-menu'
+che promette «Italiano» e poi non trova nulla e' peggio di un menu' senza la
+voce, perche' l'utente non distingue «non c'e'» da «rotto».
+
+Non si fa una voce per ogni traccia: `wsb` ha 165 tracce e un menu' con 165
+righe non e' un menu'. Si prende la prima di ogni formato — video e audio — e il
+numero c'e' scritto, perche' «Streaming video» senza dire quale video non
+basta a sapere se e' quello che si vuole.
+
+Se il menu' resta vuoto (Home, Bibbia, Impostazioni, o una pubblicazione di
+solo testo) si va alla sezione Multimedia, che e' la risposta vera per «voglio
+sentire qualcosa» quando non c'e' una pubblicazione di sotto.
+
+LA RIGA DEGLI SCARICAMENTI, IN FONDO E DENTRO LA FINESTRA
+Non e' sulla fascia e non e' piu' una riga di tre pixel. Sta sotto il
+contenuto, sopra il lettore piccolo, e dentro c'e' il nome di che cosa si sta
+prendendo, la barra, il conto e il TEMPO CHE MANCA:
+
+    ↓ Altri argomenti — i capitoli   [####------]   2 su 79 · circa 55 secondi
+
+**Non compare piu' all'avvio.** Il controllo dei catalogi e' nella splash, che
+sta davanti alla finestra e non e' ancora guardata: la riga raccontava uno
+scaricamento che l'utente non aveva chiesto e non poteva fermare. Qui la riga
+si accende solo per quello che l'utente ha premuto, e li' l'occhio e' gia' sul
+ pezzo che si sta prendendo.
+
+Il tempo che manca e' una stima, e per questo la parola e' «circa»: si
+calcola da quanto e' passato e da quanto manca, e la rete cambia velocita'.
+Con ZERO file fatti non si scrive niente, perche' il primo capitolo puo'
+durare piu' di tutti gli altri e una stima fatta sul primo file sbaglia di
+un ordine di grandezza.
+
+PERCHE' IN FONDO E NON DOVE ERA
+La fascia viola e' il BORDO della finestra, e un bordo non e' il posto dove
+si guarda mentre si aspetta. Tre pixel non bastano a dire due cose che
+servono entrambe: che cosa e quanto manca. E in alto la riga coprirebbe il
+titolo della schermata, che e' la prima cosa che si cerca aprendo una
+schermata.
+
+File: SidebarView.py (`_Scaricamento`)
+
+IL VIOLA E' UNO SOLO
+Il viola e' #64398b in chiaro E in scuro, e non cambia. Il tema cambia lo
+sfondo, il testo e i bordi. La fascia e la rail sono un pezzo dell'app e
+restano come sono: sopra un viola slavato le icone bianche sparirebbero.
+
+I colori sono campionati dagli asset originali, non scelti a occhio:
+
+    ruolo           chiaro    scuro
+    sfondo          #ffffff   #1f1f1f
+    pannello        #ffffff   #262626
+    bordo           #e3e3e3   #3d3d3d
+    testo           #333333   #f0f0f0
+    grigio          #8e8e8e   #a7a7a7
+    lavato          #efeaf5   #2e2838
+    hover           #f0edf2   #333333
+
+--------------------------------------------------------------------------------
+  3. LA RICERCA DELLE PUBBLICAZIONI
+--------------------------------------------------------------------------------
+
+Il campo sta SOPRA l'elenco, nelle Pubblicazioni. Ogni lettera rilancia la
+ricerca. Parte anche con Invio.
+
+    3741 pubblicazioni -> "profe"   -> 3 risultati  in 23 ms
+                     -> "svegliatevi" -> 1013 risultati
+                     -> "zzzz"       -> nessuna
+
+La ricerca la fa il DATABASE, non Python. Il catalogo ha 320.427
+pubblicazioni e il database ne ha 3.741 per l'italiano; filtrarle in
+Python vuol dire leggerle tutte e costruire 3.741 oggetti per buttarne via
+3.000. Qui la domanda va al database, che ha l'indice, e tornano solo quelle
+che tornano.
+
+I gruppi vuoti si chiudono da soli. Cinque gruppi: Libri, Opuscoli, Torre
+di Guardia, Svegliatevi!, Guida per l'adunanza.
+
+--------------------------------------------------------------------------------
+  4. LA LISTA CHE NON SI BLOCCA
+--------------------------------------------------------------------------------
+
+Questa e' la cosa piu' cambiata in assoluto, e il numero spiega tutto.
+
+    PRIMA      1.147 ms per costruire la lista, 15.466 widget
+    ADESSO        36 ms,                                 241 widget
+
+Un widget Qt non e' una riga di tabella: e' un oggetto con una finestra, un
+layout, una geometria e un evento di disegno. 3.741 righe per quattro widget
+sono quindicimila oggetti, e un secondo e mezzo di congelamento totale.
+
+Ora c'e' un modello e una vista:
+
+    QAbstractTableModel   i dati. Non disegna e non crea niente: 3.741 righe
+                          sono 3.741 voci Python.
+    QTableView            il disegno. Crea un delegato SOLO per le righe che
+                          si vedono, cioe' una quindicina.
+
+I due pulsanti per riga — il download e il cestino — non sono widget dentro
+le celle: sono disegnati. Un pulsante dentro una cella e' un widget per
+cella, e il problema verrebbe solo spostato.
+
+File: SubViews/PubListView.py
+
+--------------------------------------------------------------------------------
+  5. I DOWNLOAD: SEMPRE E SOLO A SCELTA
+--------------------------------------------------------------------------------
+
+**Nessun download parte senza che l'utente prema il pulsante di quella riga.**
+
+Non e' una scelta di stile. Un download automatico fa tre cose che non si
+possono disfare:
+
+  * se la linea non regge si interrompe a meta' e lascia un file parziale
+    dove l'app lo cerca come se fosse intero: il file c'e', la dimensione e'
+    quasi giusta, e dentro non c'e' niente
+  * consuma traffico senza che nessuno l'abbia chiesto
+  * se si scrive mentre qualcun altro sta leggendo, gli elenchi sono mezzo
+    aggiornati e mezzo no
+
+Cosa e' stato TOLTO perche' non rispettava la regola:
+
+  * non esiste un "scarica tutto" da nessuna parte. Ogni riga ha il suo
+    pulsante, perche' una riga sola puo' volerla e le altre no
+
+Nelle Impostazioni > Aggiornamenti c'e' la casella «Offline». Comanda il
+CONTROLLO e i due CATALOGHI, che sono un file ciascuno, e non i download
+delle pubblicazioni. E' il contrario del valore salvato
+(`aggiornamenti_automatici`): con «Offline» spenta all'apertura il programma
+chiede al server se i cataloghi sono piu' nuovi e li prende; con «Offline»
+accesa non va in rete, e l'unico modo e' il tasto in alto. Vedi la sezione 10.
+
+I CAPITOLI DI UN PACCHETTO NON SONO UNA RICHIESTA E SONO TANTE
+Scaricare una pubblicazione e' due cose in sequenza: il `.jwpub`, e poi il
+testo dei suoi capitoli, che nel pacchetto e' cifrato e quindi si va a
+prendere la versione pubblica. Il secondo passo, per «Altri argomenti», sono
+**145 richieste** una dopo l'altra; per la Bibbia sono **1.189**.
+
+E quel ciclo non si puo' chiamare dal main thread. Le callback di
+`FileDownloader` arrivano sul main thread, quindi chiamare da li' il ciclo dei
+capitoli tiene la finestra ferma per tutto il lavoro. Misurato: scaricando
+«Altri argomenti» la finestra non rispondeva e KDE offriva di terminarlo, poi
+si e' ripresa da sola quando aveva finito. Ora il ciclo va in `background()`
+e l'avanzamento torna con un segnale.
+
+E il nome del capitolo non va stampato: 145 righe `Scarico 501100123.html ✅`
+mentre la finestra e' ferma sono la cosa che l'utente guarda. Non sa cosa sia
+`501100123`, e il capitolo successivo non si distingue dal precedente. Quello
+che serve e' «quanti ne mancano», e lo dice la riga in fondo.
+
+File: Utility/Aggiornamenti.py, SubViews/UpdatesView.py, SubViews/PubView.py
+
+--------------------------------------------------------------------------------
+  6. LE COPERTINE: PRIMA IL LOCALE, POI LA RETE
+--------------------------------------------------------------------------------
+
+La regola e' una e vale per tutto:
+
+    **prima quello che c'e' in casa, dalla rete solo quello che non c'e'**
+
+TRE GRADINI, IN QUESTO ORDINE
+    1. il pacchetto scaricato. Ogni pacchetto scompattato ha
+       `manifest.json` con la lista delle immagini e la cartella
+       `contents/` con i file. Se la pubblicazione e' scaricata,
+       la copertina e' gia' sul disco e non costa niente.
+    2. la cache locale, in `dati/copertine/`
+    3. la rete
+
+Tre famiglie di URL, e si confondono fra loro:
+
+    copertina di un libro, per la CHIAVE BREVE
+        img/p/{chiave}/{lingua}/pt/{chiave}_{lingua}_{taglia}.jpg
+        img/p/{chiave}/{edizione}/{lingua}/pt/{chiave}_{lingua}_{edizione}_{taglia}.jpg
+
+    locandina di un articolo o di un video, per il DOCID
+        img/p/{docid}/univ/{segmento}/{docid}_univ_{forma}_{taglia}.jpg
+        NOTA: /univ/ sta SEMPRE, e solo dopo viene art o wpub.
+              Saltarlo da' 403 che sembra "immagine assente".
+
+Tutte misurate il 2 ottobre 2026, risposte vere:
+
+    200  lff, bhs, libri senza edizione
+    200  w/202612, g/202611, periodici con edizione
+    403  g/202605   Svegliatevi' esce a novembre: gli altri mesi non
+                    esistono e il 403 e' la risposta GIUSTA
+    403  sjj        il cantico non ha copertina
+    403  locandina senza /univ/
+    403  locandina pnr xl   'xl' non esiste per la forma panoramica
+
+TRE COSE CHE HANNO FATTO PERDERE TEMPO, E SONO STATE MISURATE
+
+  1. LA CHIAVE E' KeySymbol, NON Symbol.
+     `Symbol` e' il simbolo lungo delle API (`w26`, `mwb26`) e dà 403.
+     `KeySymbol` e' quello breve (`w`, `mwb`). Con quello lungo la griglia
+     si riempie di spazi vuoti senza che nessuno capisca perche'.
+
+  2. LE TAGLIE DEI LIBRI SONO xs, md, lg. NON ESISTE "sm".
+     Chiedere "sm" a un libro dà 403 e la colonna resta vuota per tutte le
+     righe. "sm" esiste per le LOCANDINE, non per le copertine di libro:
+     sono due famiglie diverse, anche per le taglie.
+
+     Questa riga era gia' scritta, e ci sono cascato lo stesso: la sezione
+     «Novità» chiedeva "sm" e le righe restavano col glifo del libro senza
+     dire niente. Il 403 non lascia traccia, quindi l'unico modo di accorgersi
+     e' misurare: su dieci siglie della sezione, `md` risponde per otto.
+
+     E due pubblicazioni non hanno copertina su NESSUNA misura, che non e' la
+     stessa cosa di una misura sbagliata:
+
+         T-sfr    xs 403  sm 403  md 403  lg 403    <- non e' stata pubblicata
+         wp      xs 403  sm 403  md 403  lg 403    <- idem
+         lffi     md 200 (10.215 byte)
+
+     In quel caso la riga mostra il glifo. Non si mette un altro indirizzo per
+     tirarla fuori: un indirizzo che funziona oggi e non domani e' peggio di
+     un glifo che e' la verita'.
+
+  2 bis. LE COPERTINE HANNO ANCHE UN PERCORSO CHE VIENE DAL CATALOGO.
+     `ImageAsset.NameFragment` dice il nome del file, e quel nome funziona:
+
+         https://app.jw-cdn.org/catalogs/publications/images/b5/1102024313_univ_sqr-600x600.jpg
+         HTTP 200, 100.503 byte
+
+     Provato su `T-sfr` e su `wp`, cioe' sulle due che con l'altro percorso
+     rispondono 403: vanno bene. Quindi la copertina esiste per tutte e la
+     domanda non e' «esiste», e' «da dove la prendo». Il pezzo che manca e'
+     leggere quel nome dal catalogo.
+
+  3. IL CDN E' INCOERENTE SULLO STESSO FILE.
+     Per la stessa pubblicazione, lo stesso identico file:
+        img/p/lff/I/pt/lff_I_lg.jpg              200
+        img/p/lff/202601/I/pt/lff_I_202601_lg.jpg  403
+     Non si puo' scegliere in anticipo quale sia quello giusto, perche' la
+     regola dipende dal titolo e non si scrive a mano. Quindi si prova il
+     semplice e, se risponde 403, si prova con l'edizione. Il 403 si
+     ricorda, quindi la seconda volta non si richiede piu' niente.
+
+LA MATRICE FORMA-TAGLIA DELLE LOCANDINE
+    pnr  xs sm md lg          lsr  xs sm md lg xl
+    lss  xs sm md lg xl       sqr  xs sm md lg xl
+    sqs  xs sm md lg          wss  solo xs sm lg
+
+    E' un DIZIONARIO forma -> taglie e non una lista sola, perche' una lista
+    accetterebbe combinazioni che il CDN non ha e ognuna costerebbe una
+    richiesta e un 403.
+
+File: Utility/Copertine.py
+
+--------------------------------------------------------------------------------
+  7. LE COPERTINE NON BLOCCANO LA FINESTRA
+--------------------------------------------------------------------------------
+
+Il difetto che c'era: la copertina si scaricava dentro `data()` del modello,
+e `data()` viene chiamato mentre Qt sta DISEGNANDO. Il risultato era la
+finestra che si blocca, riparte, si blocca di nuovo, e le immagini che
+arrivano una alla volta.
+
+    PRIMA       2 copertine al secondo, main thread fermo
+    ADESSO     33 copertine in 5 secondi, 555 tic su 500 possibili
+    (zero pause)
+
+Il confine sta in due funzioni, e sta esattamente nel posto giusto:
+
+    il thread scarica i BYTE      Copertine.dati_copertina  — non tocca Qt
+    il main thread fa il PIXMAP   Copertine.pixmap_da_dati  — non tocca la rete
+
+`QPixmap` va creato dove c'e' la `QApplication`. Crearlo in un thread
+secondario funziona una volta e poi non piu', e non lo dice.
+
+Tre lavoratori, non uno: con uno la misura era mezza immagine al secondo,
+non per la rete ma per quanti fili si tengono aperti insieme. Tre non e'
+un numero a caso: abbastanza da non aspettare, abbastanza pochi da non
+sembrare un attacco al server. Con cento richieste aperte insieme il server
+risponde 429 e si blocca tutto, e il risultato e' PEGGIORE di uno alla volta.
+
+La cache e' per CHIAVE DI PUBBLICAZIONE e non per numero di riga. Il numero
+di riga cambia a ogni filtro, e prima le copertine erano indicizzate da li':
+dopo tre ricerche la griglia mostrava copertine sbagliate. La chiave contiene
+sigla, lingua, anno e numero dell'uscita — con la sola sigla i periodici si
+confonderebbero, perche' `w` ha una riga al mese.
+
+File: Utility/CaricaCopertine.py, SubViews/PubListView.py
+
+--------------------------------------------------------------------------------
+  8. I MEDIA: AUDIO E VIDEO
+--------------------------------------------------------------------------------
+
+Sezione Multimedia. Due schede, Audio e Video, nella stessa sezione perche'
+vengono dalla stessa domanda al server e si scelgono insieme.
+
+SI SCEGLIE UNA PUBBLICAZIONE, POI I SUOI MEDIA
+    Pubblicazioni -> apri una pubblicazione -> Multimedia (o le cuffie)
+
+La sezione si ricorda di quale pubblicazione si tratta e NON scarica niente.
+Il caricamento parte quando apri la sezione o quando premi le cuffie.
+
+IL FILTRO GUARDA IL MIME, NON IL FORMATO
+Ogni voce ha un `format` (JWPUB, PDF, RTF, ZIP) e un `mimetype`. Il `format`
+non distingue un video da una copertina, e quasi tutte le voci sono JWPUB.
+Si guarda il `mimetype`. Misurato su `lff`, che ha 167 voci:
+
+        72 con mimetype che comincia per audio/    <- gli audio veri
+         0 video
+        95 altro: PDF, ZIP, EPUB, RTF, il pacchetto
+
+Prima il filtro guardava solo se c'era un mimetime qualunque, e metteva in
+elenco anche i 95 file che non sono media. Il risultato era una scheda Audio
+con dentro dei PDF.
+
+LE ANTEPRIME: TRE MODI, IN ORDINE
+    1. la locandina dentro il pacchetto, per docid
+    2. la copertina del libro dentro il pacchetto
+    3. l'indirizzo che il server ha gia' scritto   (`trackImage`)
+    4. la locandina ricostruita dal docid
+
+I due livelli di rete NON sono scambiabili:
+
+    lff      72 voci con docid, 112 con trackImage
+    sjj       0 voci con docid, 165 con trackImage
+    nwtsty    0 e 0
+
+Togliendone uno, meta' delle immagini non compare — e meta' di quelle non
+compaiono sono quelle in cima, che si vedono di piu'.
+
+IL bitRate E' GIA' IN kbit/s
+Misurati 127.0 e 159.4. Sono kilo, non bit. Dividendo per mille come se
+fossero bit si otteneva 0, e ogni riga mostrava "0 kbit/s".
+
+File: SubViews/MediaView.py
+
+--------------------------------------------------------------------------------
+  8 BIS. LA LETTURA DI UN CAPITOLO
+--------------------------------------------------------------------------------
+
+LE FIGURE: SI ABBINANO PER DIMENSIONI, NON CONTANDO
+---------------------------------------------------
+Il capitolo e' un pezzo di HTML che viene da wol.jw.org, e le sue `<img>`
+non hanno dentro se stesse il file: hanno un indirizzo che il motore non
+puo' aprire. Le figure stanno dentro il pacchetto .jwpub, e vanno abbinate
+a mano.
+
+Abbinare per ordine non funziona. Misurato sul capitolo «Non si guardo
+indietro» del libro *Cammina coraggiosamente con Dio*:
+
+    la pagina      9 figure: la figura di apertura, le due miniature della
+                  «edizione stampata», e sei foto del capitolo
+    il pacchetto  11 righe, di cui 3 sono la stessa miniatura due volte e
+                  una e' la copertina quadrata
+
+Con il conto ogni figura finiva sbagliata, e per quattro immagini su nove
+il risultato era un riquadro vuoto: i byte di una figura SVG venivano
+scritti dentro un `data:image/jpeg`, e il motore non riusciva a disegnarli.
+
+La regola adesso e' guardare le **dimensioni**: la pagina le scrive
+nell'<img> (`width="1200" height="674"`) e il pacchetto le sa nella tabella
+`Multimedia`. Le figure senza dimensioni (le miniature vettoriali) si
+abbinano a quelle che restano, nell'ordine del pacchetto. E ogni figura
+viene scritta con il **suo** tipo: `image/svg+xml` per i vettori,
+`image/jpeg` per le fotografie.
+
+IL BLOCCO BIANCO DIETRO I VETTORIALI
+------------------------------------
+La «edizione stampata» e' un disegno (SVG) **senza fondo**: il testo
+dentro e' nero, e su una pagina scura nero su nero non si legge.
+
+Il testo dentro un'immagine non si puo' cambiare, ma il fondo intorno si':
+ogni vettore riceve un blocco bianco dietro, della sua stessa misura, e
+il testo nero torna su un foglio bianco, come sulla pagina stampata. Le
+fotografie non hanno bisogno di questo: hanno il loro fondo, e un
+rettangolo bianco sotto si vedrebbe.
+
+LE FRECCE DI PAGINA: AI LATI, E COMPAIONO AL PASSAGGIO DEL MOUSE
+-----------------------------------------------------------------
+Il capitolo **non ha** una barra sua: niente nome del libro, niente nome
+del capitolo, niente frecce in alto. La fascia viola ha gia' la freccia
+indietro, e il capitolo si legge meglio senza una riga in piu' sopra.
+
+Le due frecce che cambiano pagina stanno ai **due lati** del capitolo, e
+sono **sempre nascoste**: compare quella della zona in cui sta il
+puntatore, e l'altra sparisce. Il puntatore a destra vede la freccia di
+destra, a sinistra quella di sinistra, in mezzo nessuna.
+
+Le frecce che non portano da nessuna parte non si accendono mai: agli
+estremi del capitolo non c'e' pagina dopo (o prima).
+
+IL PUNTATORE LO PRENDE UN WIDGET CHE NON ESISTE ANCORA
+-----------------------------------------------------
+Il `QWebEngineView` non riceve il mouse: lo riceve il **widget interno**
+che Chromium ci mette dentro, e quel widget nasce quando la pagina viene
+disegnata la prima volta. Un filtro messo solo sul motore non vede
+niente, e le frecce restano accese spente.
+
+Per questo il filtro va sul motore **e** sui suoi figli, e viene rimesso
+a ogni pagina caricata.
+
+LA ROTELLA, E LA FRECCIA CHE STA SOTTO IL PUNTATORE
+---------------------------------------------------
+La freccia compare quando il puntatore e' sulla sua zona, e li' la freccia
+ci resta **sopra**: il puntatore che e' sopra un pulsante non vede piu' la
+pagina, e la rotella non scorreva niente.  Il capitolo sembrava bloccato, e
+ogni tanto tornava indietro.
+
+Per questo la freccia, quando riceve la rotella, la passa alla pagina: e'
+la pagina sotto di lei che deve scorrere.
+
+LA PAGINA NON SI RICARICA DA SOLA
+---------------------------------
+Il capitolo si carica **una** volta, quando si apre.  Non e' una cosa da
+niente: una riga messa nel posto sbagliato (il caricamento dentro il
+metodo che mette i filtri) faceva ricaricare la pagina da sola, e il
+capitolo ripartiva da capo mentre l'utente lo stava leggendo: lo
+scorrimento andava indietro, e la scrittura del giorno perdeva i suoi
+giorni.
+
+L'HEADER SI TOGLIE DOPO, E SOLO NELLA BIBBIA
+---------------------------------------------
+L'header della Bibbia e' il titolo del capitolo, e si toglie dopo il
+caricamento.  Quello di una pubblicazione e' la figura di apertura, e
+quella si vuole: toglierlo a caso (prima del caricamento, e quindi
+sulla pagina di prima) lo faceva sparire a meta' delle volte.
+
+Nella scrittura del giorno l'header e' anche il giorno: toglierlo faceva
+diventare trenta i giorni, e la giornata aperta non era piu' quella
+giusta.
+
+IL CAPITOLO CHIUSO MENTRE CARICA
+-------------------------------
+Il capitolo puo' essere chiuso mentre la pagina si sta caricando (e'
+quello che succede quando si torna indietro).  Il richiamo del JavaScript
+arriva lo stesso, e allora il motore non c'e' piu': senza un controllo il
+programma stampa «wrapped C/C++ object of type WebView has been deleted» e
+lascia credere che sia successo qualcosa di grave, mentre e' solo una
+pagina arrivata tardi.
+
+LA BARRA DI SCORRIMENTO: QUELLA DEL PROGRAMMA
+---------------------------------------------
+Il capitolo e' una pagina web, e il motore ci disegna la sua barra: grigia,
+di una misura sua (undici pixel), e diversa da tutte le altre.
+
+In ogni altra sezione la barra e' quella del programma — 6 pixel, viola, la
+maniglia sottile — e questa non puo' essere un'altra.  Quindi nel capitolo
+la barra e' **quella del programma**, accanto al capitolo, e il CSS della
+pagina tiene a zero la del motore: le due non si vedono insieme.
+
+Le due vanno d'accordo: quando la pagina scorre, la barra segue (un giro
+ogni 150 millisecondi), e quando la barra si muove, la pagina va li'.
+
+I COLORI DEL CAPITOLO VENGONO DAL TEMA
+--------------------------------------
+Il capitolo e' una pagina web, e i colori di una pagina web sono i suoi:
+il foglio di stile del progetto originale ha i colori del **sito**, grigi
+su bianco. Ma la pagina vive dentro una finestra che puo' essere scura, e
+il testo restava nero su nero: non si leggeva niente.
+
+Adesso al foglio di stile si aggiunge un pezzo con i colori del tema:
+
+    il testo del capitolo    il colore del tema (in scuro e' bianco)
+    i grigi intermedi       il grigio del tema (in scuro e' piu' chiaro)
+    le caselle chiare       fondo chiaro e testo **scuro**: un foglio
+                            stampato e' bianco, e il testo nero su
+                            bianco e' l'unica cosa che si legge
+    la barra di scorrimento  viola, come in tutte le altre sezioni
+
+La barra di scorrimento la disegna il motore di Chromium, e senza questi
+comandi e' grigia, mentre in ogni altra sezione e' viola.
+
+File: SubViews/ArticleView.py, SubViews/WebBrowserArticleView.py,
+      SubViews/WebBrowserAdditionalView.py, Utility/JWPubManager.py,
+      Utility/Stuff.py
+
+--------------------------------------------------------------------------------
+  9. LE API: QUELLO CHE ESISTE E QUELLO CHE NO
+--------------------------------------------------------------------------------
+
+E' la parte piu' facile da sbagliare, perche' due indirizzi su tre che
+si trovano in giro sono MORTI. Misurati il 2 ottobre 2026:
+
+    b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS
+        HTTP 200, 128.376 byte per una pubblicazione          <- FUNZIONA
+
+    pub-media.jw.org/GETPUBMEDIALINKS
+        il dominio non e' nel DNS                              <- NON ESISTE
+
+    mediator.jw.org/v1/categories/I/Video
+        HTTP 404                                               <- NON ESISTE
+
+Quindi l'unico indirizzo da usare e' `b.jw-cdn.org`, ed e' gia' quello che
+il progetto usava. Se un giorno smette di rispondere, la cosa da cambiare
+e' `BASE_MEDIA` in Utility/MepsAPI.py e nient'altro.
+
+LA RISPOSTA, COME ARRIVA DAVVERO
+La risposta e' a tre livelli:  files -> lingua -> formato -> lista di voci.
+
+Il campo `format` DENTRO la voce e' VUOTO. Il formato vero e' la chiave del
+terzo livello:
+
+    files -> "I" -> "JWPUB" -> [ {...} ]
+
+Chiedere `voce["format"]` restituisce "" ed e' falso, e un confronto con una
+stringa vuota non solleva nessun errore: la lista dei formati veniva vuota e
+un "questo video non esiste" che non aveva motivo di esistere.
+
+OGNI VOCE HA, E SERVE A TUTTO:
+
+    per il testo       title, format, formatDescr, filesize
+    per il video       frameWidth, frameHeight, frameRate
+    per l'audio        duration, bitRate
+    per le qualita'     subtitled, specialty, edition
+    per le tracce      track, hasTrack, markers
+    per l'identita'    pub, docid, booknum, mimetype
+    per scaricare      file.url, file.checksum, file.modifiedDatetime
+
+Il checksum e' l'MD5 del file. Senza controllarlo un download interrotto a
+meta' sembra riuscito: il file c'e', la dimensione e' quasi giusta, e il
+database dentro e' illeggibile.
+
+LA GRANULARITA' PER CAPITOLO: COME FUNZIONA DAVVERO
+Qui e' stato scritto prima che `booknum` e `chapid` filtrassero per capitolo.
+ERA SBAGLIATO, e va detto perche' un'API che promette una cosa e ne fa
+un'altra e' peggio di un'API che non esiste. Misurato sulla Bibbia:
+
+    booknum=24                 HTTP 200, 1 voce, hasTrack=0
+    booknum=24, chapid=51      HTTP 200, 1 voce, hasTrack=0
+    track=1                    HTTP 404
+    senza parametri            HTTP 200, 1 voce, hasTrack=0
+
+Le prime due rispondono 200 ma restituiscono LA PUBBLICAZIONE INTERA, cioe'
+lo stesso pacchetto da 122 MB. Non filtrano niente: il parametro viene
+accettato e ignorato. Il 200 dice che la richiesta e' valida, non che il
+risultato sia quello che si voleva.
+
+Il modo vero NON e' un parametro, e' un campo: `hasTrack`. Quando e' vero la
+pubblicazione ha tracce separate e nella risposta sono gia' tutte, una voce
+per traccia, con l'indirizzo proprio:
+
+    sjj_I   172 voci, di cui 165 con hasTrack
+        "1 Le qualita' di Geova"   track 1   .../sjj_I_01.rtf
+        "2 Geova e' il tuo nome"   track 2   .../sjj_I_02.rtf
+
+Si chiede la pubblicazione e si sceglie la traccia dalla risposta.
+
+IL MODULO SI PROVA DA SOLO, SENZA FINESTRA
+
+    python3 Utility/MepsAPI.py            tre pubblicazioni di prova
+    python3 Utility/MepsAPI.py lff I      una sola
+
+Non usa PyQt e non disegna niente. E' il posto dove mettere le prove quando
+si scrive una funzione nuova: prima si prova qui, poi si collega alla finestra.
+
+SENZA DIPENDENZE
+Niente `requests`, niente pip. Solo `urllib` della libreria standard, come
+nel resto del progetto: un programma che si installa con pip e' un programma
+che va installato, e questa app si apre con `python3 JWLibraryApp.py`.
+
+File: Utility/MepsAPI.py
+
+--------------------------------------------------------------------------------
+  10. GLI AGGIORNAMENTI
+--------------------------------------------------------------------------------
+
+Ci sono DUE cataloghi, e non uno. Sono due file, due domande e due
+scaricamenti, tenuti separati perche' uno puo' cambiare senza che l'altro
+cambi.
+
+    catalog.db                 il CATALOGO DELLE PUBBLICAZIONI
+                               216 MB scompattati, 3.744 pubblicazioni in
+                               italiano, 320.559 righe di asset
+
+    catalogs/media/I.json.gz   il CATALOGO DEI MEDIA
+                               872 KB compressi, 7,3 MB scompattati,
+                               4.848 voci, dentro video e audio
+
+PERCHE' DUE E NON UNO
+Il catalogo delle pubblicazioni elenca i LIBRI. Per l'italiano tutte e
+3.741 le voci hanno formato `application/x-jwpub`, e un video non c'e'. Quindi
+«le ultime novita' sui video e sull'audio» non sono una domanda a cui quel
+catalogo possa rispondere, e non si rispondono con quello.
+
+Il secondo catalogo sta sullo stesso server e cambia con la stessa
+frequenza. L'indirizzo e' documentato in `jwapi-master/notes.txt`:
+
+    https://app.jw-cdn.org/catalogs/media/I.json.gz
+
+IL CATALOGO DEI MEDIA NON E' UN OGGETTO JSON
+E' **JSON su una riga per riga**. Infatti scompattando tutto e facendo
+`json.loads` si ottiene
+
+    json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 38)
+
+che sembra un file rotto e non e' niente del genere: sono 4.848 documenti
+attaccati, uno per riga. Ogni riga ha una chiave `type`: `category`,
+`media-item`, `language`, `catalogSchemaVersion`, `signature`.
+
+E LE CATEGORIE SONO LE SEZIONI DELL'APP ORIGINALE
+Non e' un'ipotesi, sono le sezioni con lo stesso nome e le stesse voci.
+`LatestAudioVideo` e' la risposta a «le ultime novita'», e `TeachingToolbox`
+e' il «Kit dell'insegnante»:
+
+    TeachingToolbox   «Kit dell'insegnante»       4 voci
+    ConvReleases      «Pubblicazioni al congresso»  3 sottogruppi
+    VideoOnDemand     «Categorie»                14 sottogruppi
+    Audio             «Audio»                    20 sottogruppi
+    LatestAudioVideo  «Latest»                   15 voci
+
+Misurato su `Latest`, 5 voci su 15:
+
+    2026-10-03  1:37  Come usare le sezioni espandibili nelle pubblicazioni
+    2026-10-03  2:31  Come usare al meglio «Guida alle ricerche»
+    2026-10-03  4:10  Confido in te                        video
+    2026-10-03  4:10  Confido in te                        audio
+    2026-09-07 54:58  JW Broadcasting (settembre 2026)
+
+Ogni voce ha `firstPublished` (la data vera) e `duration` (i secondi), e
+dentro `images` gli indirizzi delle miniature **gia' scritti**: non se ne
+ricostruisce nessuno, che e' il modo tipico di mettere nel programma un
+collegamento che oggi va e domani no.
+
+COME SI AGGIORNA, E L'UNICO INTERRUTTORE
+Una casella sola nelle Impostazioni > Aggiornamenti, «Offline», e funziona
+in due modi:
+
+    spenta     a ogni apertura il programma chiede al server se c'e' un
+               catalogo piu' nuovo, e se c'e' lo prende. Entro un'ora
+               dall'ultimo tentativo, per non chiedere a ogni apertura.
+
+    accesa     non chiede niente.
+
+Non e' un interruttore nuovo perche' la casella c'era gia': comandava il
+controllo delle pubblicazioni e non i cataloghi, quindi accesa e spenta
+facevano la stessa cosa. Una impostazione che non cambia niente e' peggio
+di nessuna impostazione, perche' fa credere che il programma badi.
+
+DOVE SI AGGIORNA IL CATALOGO: NELLA HOME E NELLE IMPOSTAZIONI
+-------------------------------------------------------------
+Il catalogo — il database delle pubblicazioni — si aggiorna in due posti e
+in nessun'altro:
+
+    Home            il tasto dell'aggiornamento e' l'unico strumento che
+                    c'e', e li' quello che ci si aspetta: il catalogo
+                    e' l'elenco di tutto quello che si puo' scaricare.
+
+    Impostazioni    un pulsante esplicito, «Aggiorna il catalogo adesso»,
+                    nella scheda Aggiornamenti.
+
+Il tasto dell'aggiornamento **nelle altre sezioni** ricarica quello che si
+sta guardando e non chiede niente al server: sono 210 megabyte, e scaricarli
+mentre si sta leggendo un capitolo e' una cosa che l'utente non ha chiesto
+in quel momento. Mentre si legge, il tasto ricarica il capitolo.
+
+
+DOVE AVVIENE IL CONTROLLO: NELLA SPLASH
+---------------------------------------
+Il controllo automatico non avviene piu' dentro la finestra principale ma
+nella schermata di avvio, che sta davanti e non e' ancora guardata. Cambia
+solo **dove si vede** la barra, non cosa viene fatto:
+
+    prima    la finestra si apriva e i 58 megabyte scendevano davanti agli
+             occhi, con la riga di scaricamento in fondo a una schermata
+             che non conteneva ancora niente dell'utente
+    adesso   la finestra non e' ancora sullo schermo, il lavoro lo fa la
+             splash con la sua barra e con la percentuale, e la finestra si
+             apre quando ha finito
+
+Il tasto di aggiornamento in alto continua a funzionare come prima, e usa
+la riga in fondo: li' l'occhio e' gia' sul pezzo che si sta prendendo.
+
+IL CONFRONTO E' SUI NOMI E SULLE DATE
+Il manifest dice `current`, e quel nome e' la versione:
+
+    https://app.jw-cdn.org/catalogs/publications/v4/manifest.json
+    {"version": 1, "current": "aed3f28f-f54c-4cb5-96d8-53cdc5d7eb87"}
+
+La versione registrata sta in `userData/catalogo_versione.txt`, in un file
+SUO e non dentro `aggiornamenti.json`: quel file lo riscrive anche il
+controllo delle pubblicazioni, e se ne avesse scritto la riga la finirebbe
+dentro. Misurato: il pulsante scaricava il catalogo, lo sostituiva, e un
+secondo dopo non sapeva piu' di averlo fatto.
+
+Il nome dice «c'e' qualcosa di diverso» e la data dice se e' qualcosa che
+ci serve: il nome cambia ogni volta che il catalogo viene ricostruito sul
+server, anche quando la lista e' identica, e prendere 58 MB per quello
+sarebbe spreco. Quindi: una richiesta sola se il nome coincide (il caso
+normale, e non si guarda manco la data), e un `HEAD` sugli altri casi.
+
+IL CATALOGO SI SCARICA DA SE', NON A MANO
+`load_file_async` ha questa riga, e va letta prima di usare quella strada:
+
+    if destination.exists():
+        print(f"Il file esista gia' [{destination}]")
+        completion(str(destination), None)
+        return
+
+Il nome che arriva dal server e' sempre `catalog.db.gz`, quindi se il
+catalogo c'e' gia' — e c'e' quasi sempre — quella riga dice «sono gia' fatto»
+e non scarica niente. Il programma non lo sapeva e scriveva «File salvato»:
+sembrava un aggiornamento, era un no-op. Il risultato e' che il catalogo non
+e' mai stato aggiornato da quando esiste, e il messaggio «il catalogo da
+aggiornare» stava li' per sempre non perche' promettesse, ma perche' era la
+verita'.
+
+I TRE PASSI, E PERCHE' IL VECCHIO NON VIENE CANCELLATO PRIMA
+Manifest, download in `catalog.nuovo`, controllo, e solo allora il nuovo
+sostituisce il vecchio. Il catalogo e' l'unico file senza il quale il
+programma non funziona, e un download puo' fermarsi a meta': se il posto del
+vecchio e' gia' libero, in tutti quei casi la sezione Pubblicazioni diventa
+inutilizzabile. Il controllo e' una domanda vera a SQLite
+(`SELECT COUNT(*) FROM Publication`), non un `SELECT 1`: quest'ultimo
+funziona anche su un database che si apre e non contiene niente, che e'
+esattamente il file che non si deve mettere al posto del catalogo.
+
+DOPO IL CATALOGO, «DA AGGIORNARE» SPARISCE DA SOLO
+La scritta non sta in un file ma nel risultato dell'ultimo controllo, e
+prima restava li' per sempre. Non era un promemoria: era la verita'. Il
+catalogo non si aggiornava, quindi la risposta era sempre «vecchio». Ora la
+domanda e' una sola e vera, e quando non c'e' niente di nuovo la scritta non
+c'e'.
+
+LE PUBBLICAZIONI NUOVE: NON C'E' UNA LISTA, C'E' UNA COLONNA
+La sezione Novita' controllava quattro sigle SCRITTE A MANO piu' i
+periodici letti dal catalogo. Quattro sigle scritte a mano non cambiano:
+quando esce una pubblicazione nuova non ne compare una di quinta, e quindi
+non si vede. Non e' un difetto di qualcosa che si rompe: e' una lista che non
+puo' crescere.
+
+Il catalogo sa tutto quello che esiste, e per ogni riga sa QUANDO e' entrata:
+`PublicationAsset.CatalogedOn`. Quindi la domanda ha una risposta, scritta
+dal server. Misurato il 5 ottobre 2026:
+
+    2026-10-04  sjj      Cantiamo a Geova con gioia         ieri
+    2026-10-03  rsg      Guida alle ricerche                 2 giorni
+    2026-10-03  gwt      La Parola di Dio e' verita'         2 giorni
+    2026-10-03  mwb      Guida alle attivita' per l'adunanza  2 giorni
+    2026-10-02  hdu      Come vengono usate le donazioni     3 giorni
+    2026-09-25  mrt      Altri argomenti                      10 giorni
+    2026-09-22  lfs      Biografie di testimoni di Geova     13 giorni
+    2026-09-15  w        La Torre di Guardia…                2 settimane
+
+LA COLONNA GIUSTA E' L'ULTIMA, NON LA PRIMA
+Ogni pubblicazione ha piu' righe in `PublicationAsset` — una per formato,
+una per lingua — e ognuna ha la sua data. Per un libro nuovo tutte le righe
+hanno la stessa data. Per un periodico no: `w` ha 1.620 righe, e la piu'
+vecchia e' del 2015. Prendendo la prima data la Torre di Guardia sarebbe
+«una pubblicazione del 2016» per sempre e non comparirebbe mai.
+
+    T-sfr   2025-10-04 .. 2025-10-04     una volta sola
+    es27    2026-10-03 .. 2026-10-03     e la data e' vera
+    ypq     2016-05-02 .. 2016-05-02     non e' nuova, e non deve comparire
+    w       2015-07-01 .. 2026-09-15     1.620 righe, e la seconda data
+                                         e' l'ultimo numero uscito
+
+TRENTA GIORNI, E PERCHE'
+Non e' un numero scelto a caso: un mese e' l'unita' con cui si guarda il
+mondo. E non serve una finestra piu' corta, perche' il controllo gira al
+massimo una volta all'ora: con sette giorni una pubblicazione arrivata sabato
+sparisce di lunedi', e chi guarda di lunedi' non la vede e non capisce
+perche'.
+
+QUELLE GIA' SCARICATE NON COMPARIRONO
+Il confronto e' con quello che c'e' davvero sul disco, non con quello che il
+programma ricorda di aver scaricato: la riga non resta neppure se il
+pacchetto e' stato cancellato a mano.
+
+E NEMMENO SE IL SERVER NON HA MAI RISPOSTO
+Le righe nuove vengono dal catalogo, che e' gia' sul disco, quindi la sezione
+mostra che cosa e' uscito anche se il server non e' mai stato contattato.
+Prima, in quel caso, diceva «non e' mai stato controllato» e restava vuota.
+
+IL PULSANTE «SCARICA» DI QUELLA SEZIONE
+Funziona, e fino a poco tempo fa NON funzionava. Il rilancio dei segnali era
+scritto cosi':
+
+    for nome in ("messaggio", "cambiato", "scaricaRichiesta"):
+        segnale = getattr(self._updates, nome, None)
+        if segnale is not None and hasattr(self, nome):
+            segnale.connect(getattr(self, nome).emit)
+
+`hasattr(self, nome)` chiedeva a `_NovitaInHome`, e quella classe non
+dichiarava nessuno dei tre: condizione sempre falsa, collegamento mai
+fatto. Il pulsante c'era, era giusto, era premibile, e premendolo non
+succedeva niente — che e' il peggio, perche' un pulsante che non da' segni
+sembra un pulsante che non ha ancora finito.
+
+File: Utility/Aggiornamenti.py, Utility/CatalogoMedia.py,
+--------------------------------------------------------------------------------
+  10 bis. LA HOME
+--------------------------------------------------------------------------------
+
+Dall'alto in basso, e ogni sezione ha il titolo grande a sinistra e la lingua
+a destra sulla stessa riga, come nella schermata della app precedente:
+
+    la data e il versetto di oggi     «lunedì, 5 ottobre»
+                                     «Geova è colui che esamina i cuori
+                                       (Prov. 17:3)»
+    Preferiti                         le card con la copertina
+    Notizie                           la striscia delle notizie vere
+    Novità e aggiornamenti            cosa si può scaricare, riga per riga
+    Novità                            le voci curate dal catalogo, a righe
+    Kit dell'insegnante               4 video con la durata sulla miniatura
+    Le ultime novità                  video e audio usciti di recente
+
+Tutte e sei vengono da dati del server, non da liste scritte qui. Le ultime
+trei hanno una struttura diversa dalle prime tre perche' la domanda e'
+diversa: le prime sono «quello che ho» e «quello che posso scaricare», le
+ultime sono «che cosa è uscito».
+
+LE DUE «NOVITÀ» SONO DUE COSE DIVERSE
+`Novità e aggiornamenti` ha un bottone «Scarica» su ogni riga: parla di
+quello che puoi scaricare. `Novità` non ha bottoni: parla di che cosa è
+uscito. Sono nomi simili per due domande diverse, e per questo stanno
+lontani e l'una è sopra l'altra. Chi cerca «le novità» e trova l'elenco di
+quello che non ha ancora scaricato ha trovato la cosa sbagliata.
+
+LE TAVOLE SONO DIVERSE, E IL PERCHÉ È NEL LAYOUT
+I Preferiti sono schede quadrate: lì la miniatura è la cosa che si sceglie
+guardandola. `Novità` è un elenco a righe, miniatura a sinistra e titolo
+accanto: il titolo è lungo e spiega di che cosa si tratta, e una scheda
+stretta lo taglierebbe dopo tre parole. Nell'app precedente è così, e il
+`…` sta in fondo a destra.
+
+LA DURATA STA SOPRA LA MINIATURA, E DENTRO
+Nella card di un video c'è la durata nell'angolo in alto a sinistra, con il
+triangolino. Sta **dentro** la miniatura e non sopra: un riquadro che sta
+sopra l'immagine è una finestra a parte, e una finestra a parte davanti a
+un'immagine finisce o davanti a tutto il resto o dietro, secondo l'ordine in
+cui Qt le ha costruite. Dentro, un figlio si disegna sopra il contenuto del
+padre.
+
+I TRE PUNTINI APRONO SEMPRE LO STESSO MENÙ
+Preferiti, Novità, Kit dell'insegnante e Le ultime novità aprono tutti il
+menu' di `DownloadsView`. Non se ne costruisce una copia per sezione: se un
+giorno quello ha una voce in più, le altre sezioni devono averla subito
+anche loro. E la voce dice «togli dai Preferiti» solo se la pubblicazione
+davvero è fra i Preferiti: su una riga che elenca le novità direbbe «togli»
+a una cosa che non è mai stata messa fra i Preferiti.
+
+File: SubViews/HomeView.py (`_Novita`, `_RigaNovita`, `_CardMedia`,
+      `_SezioneMedia`)
+
+      SubViews/UpdatesView.py, SubViews/HomeView.py
+  11. I PREFERITI
+--------------------------------------------------------------------------------
+
+Tasto destro su una riga dell'elenco -> "Metti fra i Preferiti".
+Tasto destro su una card della Home -> "Togli dai Preferiti".
+
+Si puo' mettere ANCHE di una pubblicazione non scaricata: e' una nota sul
+cosa voglio, non il cosa ho. Il titolo si puo' aprire solo se il pacchetto
+c'e', quindi quel voce appare solo in quel caso.
+
+Non se ne inventano. Se la sezione e' vuota dice che e' vuota: una sezione
+che sparisce sembra un difetto, e un preferito finto e' peggio di uno spazio
+vuoto, perche' l'utente non saprebbe quale toccare per cambiarlo.
+
+File: Utility/Preferiti.py, SubViews/HomeView.py
+
+--------------------------------------------------------------------------------
+  12. DUE SCELTE CHE SEMBRANO BANALI E NON LO SONO
+--------------------------------------------------------------------------------
+
+La chiave di un Preferito e' sigla E lingua insieme. Con la sola sigla,
+mettere l'italiano cancellerebbe l'inglese: sono due pubblicazioni diverse.
+
+E un altro avvertimento, che vale per ogni impostazione: `bool(dati.get("flag", False))` va bene
+per una chiave che manca, ma `bool(dati.get("flag", "no"))` NON va bene,
+perche' in Python la stringa vuota e' vera e una casella di spunta spenta
+diventa accesa. E' successo, e il sintomo e' una casella che si accende da
+sola e che nessuno riesce a spegnere.
+
+--------------------------------------------------------------------------------
+  13. LE ICONE
+--------------------------------------------------------------------------------
+
+82 SVG, identici byte per byte a quelli della app precedente (verificato con
+`diff`). Vengono disegnati sostituendo `currentColor` con il colore vero,
+perche' dentro un file SVG `currentColor` non vuol dire niente: lo
+interpreta il CSS, e il CSS non c'e'.
+
+IL TRABATTO CHE E' COSTATO UNA CRASH
+Il disegno va in un pixmap di 2*lato e poi si mette in una QIcon cosi':
+
+    pixmap.setDevicePixelRatio(2.0)      <- QUESTA RIGA
+    return QIcon(pixmap)
+
+Senza, `QIcon.pixmap(lato, lato)` cerca il pezzo piu' vicino alla misura
+richiesta e, trovando il pixmap da 2*lato, lo RITAGLIA invece di ridurlo. Lo
+chiede gia' pronto e non lo ridimensiona. Misurato su home a 160:
+
+    render(pittore, rettangolo) 160   x[ 13..146]   <- giusto
+    icon().pixmap(160, 160)           x[ 26..159]   <- tagliato a destra
+
+Il sintomo nella finestra era una traccia che non somigliava a niente: per
+la casa una diagonale, per le frecce un arco, per l'ingranaggio una curva.
+Casella giusta, colore giusto, disegno sbagliato, e sembrava un difetto di
+stile invece che di dimensione.
+
+LA TABELLA DEI NOMI
+`icon()` vuole il NOME DEL PROGETTO ORIGINALE (`house.fill`), non il nome
+del file Tabler (`home`). Sono due nomi diversi e somigliano: il punto e' nel
+primo, il trattino nel secondo. Passando il nome del file la ricerca non
+trova niente e `icon()` restituisce un'icona VUOTA senza avviso: una
+finestra tutta viola e senza icone sembra un problema di colori.
+
+Le chiavi senza file sono la trappola peggiore. Adesso la tabella ha 42
+chiavi e ZERO senza file, controllato. Le 82 icone del progetto precedente
+sono state scelte per la navigazione e NON coprono i comandi del lettore:
+non ci sono il glifo dello schermo intero ne' quello dei sottotitoli.
+
+File: Utility/Stuff.py, Files/icons/
+
+--------------------------------------------------------------------------------
+  14. I FONT
+--------------------------------------------------------------------------------
+
+12 file WOFF, gli stessi della app precedente con gli stessi nomi. Noto Sans
+e Noto Serif per il testo, Roboto per le schermate, DejaVu per i glifi
+mancanti.
+
+`addApplicationFont` li accetta perche' passa da FreeType, e FreeType sa
+leggerli. Verificato: i dodici file entrano e restituiscono le famiglie
+giuste.
+
+Senza questi il testo ha un'altra larghezza e le colonne non coincidono. Non
+e' un dettaglio: e' la differenza fra "simile" e "uguale".
+
+Il foglio di stile lo mette sull'APPLICAZIONE e non sui singoli widget, cosi'
+anche gli schermati creati dopo partono col font giusto.
+
+File: Utility/tema.py, Files/font/
+
+--------------------------------------------------------------------------------
+  15. LE TRAPPOLE DI Qt, RACCOLTE
+--------------------------------------------------------------------------------
+
+Sono la parte di questo foglio che vale di piu', perche' hanno fatto perdere
+tempo quattro volte e si presentano tutte con lo stesso aspetto: la
+finestra sparisce e NON C'E' NESSUNA RIGA DI TRACEBACK.
+
+UN'ECCEZIONE IN UN CALLBACK FA abort() E NON DICE NIENTE
+ dentro un segnale Qt, dentro `mousePressEvent`, dentro una callback di
+ `runJavaScript`. Si vede solo come una finestra che chiude. Il rimedio e'
+ mettere un try/except con la stampa dentro i callback che possono
+ fallire: il motivo piu' probabile di un crash cosi' e' un errore in una
+ callback, e l'unico modo per vederlo e' scriverlo.
+
+UN SEGNALE NON E' UNA CLASSE, MA UN DESCRITTORE
+ `self.clic = Signal()` dentro `__init__` NON funziona in PyQt6. Il
+ descrittore viene costruito quando la CLASSE viene creata, quindi un
+ segnale per ogni istanza non viene registrato e `connect` non esiste:
+     AttributeError: 'pyqtSignal' object has no attribute 'connect'
+ Il sintomo arriva al momento di collegare, non al momento di dichiarare.
+ E `emit` NON ha `connect`: si collega il segnale al segnale.
+
+IL FOGLIO DI STILE NON DISEGNA UN QWIDGET PURO
+ `background-color` e `border` su un QWidget puro vengono IGNORATI senza
+ avviso, perche' il suo `paintEvent` di default non disegna niente. Non si
+ vede con QLabel, QFrame o pulsanti: si vede solo con le classi che
+ scriviamo noi. Serve `WA_StyledBackground`, e c'e' `tema.sfondo(widget)`.
+
+ E il peggio: in chiaro il fondo e' bianco come la pagina e il bordo e'
+ #e3e3e3, quindi sembra che ci sia e sembra solo pallido. Passando al tema
+ scuro dovrebbe diventare #262626 su #1f1f1f e NON SI VEDE NULLA.
+
+LA REGOLA GENERICA DEVE ESSERE TRASPARENTE
+ `QWidget { background: sfondo }` colpisce TUTTI i widget, comprese le
+ caselle dei pulsanti e i contenitori che devono lasciar vedere il viola.
+ Il sintomo e' una fascia viola che finisce a meta' finestra e icone che
+ galleggiano sul bianco. Sembra che la fascia sia della lunghezza sbagliata.
+
+UN DELEGATO CHE NON CHIAMA LA BASE NON DISEGNA I RUOLI
+ Se si scrive `paint()` da capo e non si chiama il metodo della classe
+ base, Qt non disegna nessun ruolo: ogni cosa va dipinta a mano.
+
+UN FLAG & UN INTERO E' UNA COMBINAZIONE INVALIDA
+ `opzione.state & getattr(opzione, "State_Selected", 0)` fa `abort()`.
+ `State_Selected` sta in `QStyle.StateFlag`, non nell'opzione: quel getattr
+ dava sempre 0 e `flag & 0` e' inesistente. Il sintomo diceva
+ `QTableView::paintEvent`, quattro piani piu' in su del motivo vero.
+
+`deleteLater()` NON SI DA A UN WIDGET CHE QUALCUN ALTRO USA
+ un ciclo di svuotamento che chiama `deleteLater()` su tutto quello che
+ trova cancella anche i widget fissi. Poi il riuso dà:
+     RuntimeError: wrapped C/C++ object of type QLabel has been deleted
+
+OGGETTO DISTRUTTO PRIMA CHE ARRIVI LA RISPOSTA
+ una richiesta in background torna quando torna, e la sezione puo' essere
+ stata distrutta nel frattempo. Si controlla con `sip.isdeleted(self)`.
+ `is None` non serve: l'oggetto non diventa None.
+
+UNA CALLBACK DI `background()` VIENE CHIAMATA SENZA ARGOMENTI
+ dentro `Ext_DispatchQueue` c'e' `func()`. Se la funzione ne vuole uno va in
+ errore, di nuovo con `abort()` e di nuovo senza spiegazione. Il risultato
+ passa per una lista che il thread riempie e il main thread legge: e' sicuro
+ perche' fra le due c'e' il segnale, che e' una coda.
+
+`QLabel` NON HA `clicked`
+ solo i pulsanti e le caselle di spunta lo hanno. Se serve, si scrive una
+ classe che lo aggiunge.
+
+UN `NameError` FA LA STESSA FINE DI UN'ECCEZIONE, E IL MOTIVO E' UN ALTRO
+ una variabile che non c'e' in un callback fa `abort()` come un'eccezione
+ vera, e non lascia traccia. Due volte di fila, entrambe nella riga degli
+ scaricamenti:
+
+     NameError: name 'time' is not defined
+     AttributeError: 'PubView' object has no attribute
+                     '_scaricamento_avanza'
+
+ Il secondo e' il piu' subdolo: `_scaricamento_avanza` e' un metodo di
+ `SidebarView`, e la funzione che lo chiamava stava dentro `PubView`. Un
+ metodo di una finestra non si chiama da una schermata: si **emette il
+ segnale**, e la finestra ascolta.
+
+ `--verifica` NON LI CATTURA, perche' costruisce le schermate e non preme
+ nessun pulsante. Dieci schermate verdi e il pulsante morto: serve far
+ girare il download vero.
+
+UNA VARIABILE CREATA DENTRO UN THREAD NON SI VEDE NELLA CALLBACK
+ dentro `background(func, completion=...)` la `completion` viene chiamata
+ dal main thread e chiude la funzione che l'ha lanciata: vede le variabili
+ di QUELLA funzione, e non quelle nate dentro `func`.
+
+     def _lavora(self):
+         risultato = []                 <- questa si vede
+         catalogo = []                  <- questa no
+         def lavoro():
+             risultato.append(...)      <- e questa scrive nelle due
+             catalogo.append(...)
+         background(lavoro,
+                    completion=lambda: self._finito(risultato, catalogo))
+
+ Il sintomo e' un `NameError` quando arriva il richiamo, e la sezione non
+ mostra niente senza dire niente. Quindi le liste che il thread riempie si
+ dichiarano **tutte** fuori dal `def`, e per la stessa ragione.
+
+UN METODO DI UNA FINESTRA NON SI CHIAMA DA UN ALTRO THREAD
+ `dopo_url` gira dentro `background()` e accendeva la riga di scaricamento
+ da li'. I segnali sono collegati in modo diretto, quindi il metodo collegato
+ veniva eseguito **in quel thread**, e toccare un widget fuori dal suo
+ thread porta ad `abort()`.
+
+ Il rimedio e' quello che il resto del programma usa gia': la parte di
+ finestra passa da `on_main`, che rimette tutto sul main thread attraverso
+ un segnale. Un trucco che si chiama `in_finestra(azione)` dentro quella
+ funzione rende il confine leggibile invece di sparselo in tre righe.
+
+UN METODO O UNA FUNZIONE SCRITTA DUE VOLTE NELLO STESSO POSTO
+ `catalogo_vecchio` era definito due volte in `Utility/Aggiornamenti.py`:
+ la nuova e la vecchia. Vinceva la seconda, quindi la nuova era codice
+ morto e sembrava funzionare. Il sintomo e' che la prova passa e il
+ comportamento e' quello di prima.
+
+ `controllo.py` cerca i metodi scritti due volte **dentro una classe** e non
+ le funzioni a livello di modulo. Qui non l'aveva visto, e questa notte ha
+ fatto perdere un'ora: la versione nuova diceva la verita' e quella che
+ girava guardava l'eta' del file.
+
+--------------------------------------------------------------------------------
+  16. I CONTROLLI
+--------------------------------------------------------------------------------
+
+`./jw.sh --verifica`
+    costruisce TUTTE le schermate, non le importa soltanto, e chiama il
+    server davvero. Un modulo che si importa ma non si costruisce passa la
+    verifica e poi non fa partire l'app: e' gia' successo.
+
+`python3 controllo.py`
+    legge il codice e cerca quattro cose, tutte di quelle che hanno fatto
+    perdere tempo: nomi che si usano e non esistono, overload di PyQt6 che
+    non esistono, righe che continuano dentro una stringa, chiavi di
+    dizionario mai cercate.
+
+    NON ha una lista di nomi scritta a mano: chiede a PyQt6 e alla libreria
+    standard quali metodi hanno. La prima versione aveva duecento nomi
+    nella lista e dava 183 falsi allarmi. Un controllo che dice giusto due
+    volte su cento fa perdere la fiducia, e un controllo in cui non ti fidi
+    non serve a niente.
+
+Adesso: 0 difetti di codice. Le voci che segnala sono chiavi di icone
+tracciate per schermate che verranno.
+
+--------------------------------------------------------------------------------
+  17. QUELLO CHE NON E' FINITO
+--------------------------------------------------------------------------------
+
+Elenco corto e vero. Meglio questo che uno lungo e falso.
+
+LE COPERTINE DI ALCUNE PUBBLICAZIONI NON SI VEDONO
+ Il percorso vero delle copertine e' `app.jw-cdn.org/catalogs/publications/`
+ piu' il nome che il catalogo scrive in `ImageAsset.NameFragment`, e
+ risponde per tutte, trattato e rivista compresi:
+
+     images/b5/1102024313_univ_sqr-600x600.jpg    HTTP 200, 100.503 byte
+     images/2b/2013000_univ_sqr-400.jpg           HTTP 200,  56.423 byte
+
+ Il programmo invece usa un altro indirizzo, fatto da sigla e lingua, che
+ per alcune pubblicazioni non esiste: `T-sfr` e `wp` rispondono 403 su tutte
+ le misure, e `sm` non esiste per nessuna. La riga mostra allora il glifo
+ del libro, che e' quello che mostra tutto il resto del programma quando
+ l'immagine non c'e'. Il pezzo che manca e' leggere il nome dal catalogo,
+ non scoprire gli indirizzi.
+
+ALCUNE MINIATURE SONO TAGLIATE STORTE
+ Non e' un indirizzo sbagliato: e' una dimensione. Le card dei Preferiti e
+ della sezione Notizie usano `Copertine.pixmap_quadrata`, che riduce
+ tenendo le proporzioni e ritaglia il centro. Su una copertina molto
+ verticale il ritaglio toglie il titolo e la miniatura sembra sbagliata.
+ Sulle tre sezioni nuove della Home la miniatura e' 112 o 64 pixel e il
+ risultato si vede bene; sulle card da 150 e' quello che si vede male.
+
+IL LETTORE BIBLIA E' INCOMPLETO
+ Nella sezione Bibbia si arriva ai capitoli e si legge. Non ci sono ancora la
+ capsula dei capitoli in cima, la riga "31 paragrafi · 5 citazioni
+ bibliche", i "Vedi anche", il "come e' fatto" e il pannello di lato con le
+ citazioni. Nella app precedente ci sono tutti.
+
+I DATI STANNO ACCANTO AL PROGRAMMA
+ `Paths.py` mette i dati in `jw-librix/dati/`. Va bene finche' l'app si
+ lancia dalla sua cartella, ma dentro un'AppImage la cartella del programma
+ e' in sola lettura. Serve: scegliere i percorsi al primo avvio
+ (pubblicazioni, immagini, video, backup, dati) e ricordarli in un file
+ fuori dall'app, modificabili poi nelle Impostazioni.
+
+MANCA IL CONTROLLO DEGLI AGGIORNAMENTI DELL'APP E DEL PLUGIN
+ Il plugin timer si mette a mano in `plugin/timer/`. Mancano i tasti che
+ guardano su GitHub se c'e' una versione nuova dell'app (v1) e del plugin
+ timer (v1), che stanno in due repository separati.
+
+MANCA IL TRABATTO PER LINGUE DA DESTRA A DESTRA
+ Per l'arabo, l'ebraico, l'urdu e il pashto le frecce vanno invertite
+ orizzontalmente. Nella app precedente se ne occupa una regola CSS; qui non
+ c'e'. Con `mepsLanguageId` diversi si vedrebbe subito.
+
+--------------------------------------------------------------------------------
+  18. I FILE, PER COSA SONO
+--------------------------------------------------------------------------------
+
+    jw.sh                          avvia l'app dal terminale
+    installa.sh                    icona, voce di menu, comando jwlibrix
+    JWLibriX.desktop               la voce di menu che installa.sh copia
+    JWLibraryApp.py                il programma, --verifica, --dati
+    SplashScreen.py                la schermata di avvio con il log
+    SidebarView.py                 la finestra: rail, fascia, navigazione,
+                                   player, riga degli scaricamenti
+    ContentView.py                 il contenitore della finestra
+    WebBrowserView.py              il motore web
+    crea_jwpub.py                  costruisce un .jwpub da soli (LEGGIMI 6)
+    Utility/Plugin.py              carica i plugin da plugin/<nome>/
+    Utility/Lettore.py             il lettore audio e video
+    Utility/Schermi.py             gli schermi esterni
+    Utility/UserData/              sottolineature, note, segnalibri,
+                                   playlist, backup .jwlibrary
+    SubViews/AdunanzeView.py       le Adunanze
+    SubViews/ContenutiView.py      i contenuti multimediali di una pagina
+    SubViews/VisoreDocumento.py    PDF, Word, immagini aggiunte a mano
+    SubViews/PersonalStudyView.py  le Ricerche
+    SubViews/PlaylistView.py       le playlist
+    SubViews/DownloadsView.py      Scaricati
+    SubViews/LettoreView.py        il lettore grande
+    SubViews/LettoreSchermo.py     lo schermo intero
+    SubViews/SchermoEsterno.py     la finestra sui monitor esterni
+    SubViews/RicercaLocale.py      la ricerca sotto la lente
+    plugin/                        vuota: qui va il plugin timer, che e'
+                                   un repository a parte (jw-librix-timer)
+    Utility/tema.py                i due temi, i colori, i font, WA_StyledBackground
+    Utility/Stuff.py               le icone, la tabella dei nomi, lo script
+    Utility/Copertine.py           copertine e locandine, locale prima
+    Utility/CaricaCopertine.py     il caricatore in background
+    Utility/MepsAPI.py             le API del server, con le prove a terra
+    Utility/Aggiornamenti.py       cosa c'e' di nuovo, e cosa e' automatico
+    Utility/CatalogoMedia.py        il catalogo dei media: video e audio
+    Utility/Preferiti.py           i Preferiti
+    Utility/DBManager.py           il catalogo e la ricerca
+    Utility/JWPubManager.py        i pacchetti .jwpub
+    Utility/Paths.py               la radice dei dati
+    SubViews/HomeView.py           la Home
+    SubViews/SettingsView.py       le Impostazioni
+    SubViews/PubView.py            le Pubblicazioni, con la ricerca
+    SubViews/PubListView.py        l'elenco: modello, vista, delegato
+    SubViews/UpdatesView.py        la sezione Novita'
+    SubViews/MediaView.py          audio e video
+    SubViews/ArticleView.py        un capitolo
+    SubViews/BibleView.py          la Bibbia
+    SubViews/WebBrowserArticleView.py   la pagina del capitolo e il ponte
+    WebBrowserView.py              il motore, la coda dei comandi, il ponte
+    Files/script.js                il JavaScript, IDENTICO all'originale
+    Files/font/                    12 file WOFF
+    Files/icons/                   82 SVG + LICENSE-TablerIcons
+
+Per i materiali di terze parti e la provenienza di ogni file:
+`jwl/assets/DOVE-SONO-I-MATERIALI.txt`. Nella app vecchia, non copiata qui.
+
+================================================================================
+  Tutto quello che c'e' in questo foglio e' stato misurato o provato.
+  Dove non sono sicuro, il file dice che non sono sicuro.
+================================================================================

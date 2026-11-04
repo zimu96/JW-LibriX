@@ -1,0 +1,6996 @@
+{
+ "lingue": [
+  {
+   "id": 0,
+   "simbolo": "E",
+   "nome": "English",
+   "nome_vernacolare": "English",
+   "iso": "en",
+   "pubblicazioni": 3819
+  },
+  {
+   "id": 1,
+   "simbolo": "S",
+   "nome": "Spanish",
+   "nome_vernacolare": "Español",
+   "iso": "es",
+   "pubblicazioni": 3769
+  },
+  {
+   "id": 2,
+   "simbolo": "X",
+   "nome": "German",
+   "nome_vernacolare": "Deutsch",
+   "iso": "de",
+   "pubblicazioni": 3714
+  },
+  {
+   "id": 3,
+   "simbolo": "F",
+   "nome": "French",
+   "nome_vernacolare": "Français",
+   "iso": "fr",
+   "pubblicazioni": 3772
+  },
+  {
+   "id": 4,
+   "simbolo": "I",
+   "nome": "Italian",
+   "nome_vernacolare": "Italiano",
+   "iso": "it",
+   "pubblicazioni": 3741
+  },
+  {
+   "id": 5,
+   "simbolo": "T",
+   "nome": "Portuguese (Brazil)",
+   "nome_vernacolare": "Português (Brasil)",
+   "iso": "pt",
+   "pubblicazioni": 3668
+  },
+  {
+   "id": 6,
+   "simbolo": "O",
+   "nome": "Dutch",
+   "nome_vernacolare": "Nederlands",
+   "iso": "nl",
+   "pubblicazioni": 3715
+  },
+  {
+   "id": 7,
+   "simbolo": "J",
+   "nome": "Japanese",
+   "nome_vernacolare": "日本語",
+   "iso": "ja",
+   "pubblicazioni": 3624
+  },
+  {
+   "id": 8,
+   "simbolo": "AU",
+   "nome": "Abua",
+   "nome_vernacolare": "Abua",
+   "iso": "  ",
+   "pubblicazioni": 253
+  },
+  {
+   "id": 9,
+   "simbolo": "AC",
+   "nome": "Acholi",
+   "nome_vernacolare": "Acholi",
+   "iso": "  ",
+   "pubblicazioni": 479
+  },
+  {
+   "id": 10,
+   "simbolo": "AF",
+   "nome": "Afrikaans",
+   "nome_vernacolare": "Afrikaans",
+   "iso": "af",
+   "pubblicazioni": 1221
+  },
+  {
+   "id": 11,
+   "simbolo": "AL",
+   "nome": "Albanian",
+   "nome_vernacolare": "shqip",
+   "iso": "  ",
+   "pubblicazioni": 1518
+  },
+  {
+   "id": 12,
+   "simbolo": "AM",
+   "nome": "Amharic",
+   "nome_vernacolare": "አማርኛ",
+   "iso": "am",
+   "pubblicazioni": 1598
+  },
+  {
+   "id": 13,
+   "simbolo": "AI",
+   "nome": "Amis",
+   "nome_vernacolare": "阿美語",
+   "iso": "  ",
+   "pubblicazioni": 229
+  },
+  {
+   "id": 14,
+   "simbolo": "A",
+   "nome": "Arabic",
+   "nome_vernacolare": "العربية",
+   "iso": "ar",
+   "pubblicazioni": 2156
+  },
+  {
+   "id": 15,
+   "simbolo": "R",
+   "nome": "Armenian (West)",
+   "nome_vernacolare": "Արեւմտահայերէն",
+   "iso": "  ",
+   "pubblicazioni": 985
+  },
+  {
+   "id": 16,
+   "simbolo": "AE",
+   "nome": "Assamese",
+   "nome_vernacolare": "অসমীয়া",
+   "iso": "as",
+   "pubblicazioni": 485
+  },
+  {
+   "id": 17,
+   "simbolo": "AS",
+   "nome": "Assyrian",
+   "nome_vernacolare": "ܐܵܬܘܿܪܵܝܵܐ",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 18,
+   "simbolo": "IE",
+   "nome": "Ateso",
+   "nome_vernacolare": "Ateso",
+   "iso": "  ",
+   "pubblicazioni": 185
+  },
+  {
+   "id": 19,
+   "simbolo": "AR",
+   "nome": "Bambara",
+   "nome_vernacolare": "Bamanankan",
+   "iso": "bm",
+   "pubblicazioni": 191
+  },
+  {
+   "id": 20,
+   "simbolo": "BM",
+   "nome": "Yemba",
+   "nome_vernacolare": "Dschang",
+   "iso": "  ",
+   "pubblicazioni": 127
+  },
+  {
+   "id": 21,
+   "simbolo": "AO",
+   "nome": "Baoule",
+   "nome_vernacolare": "Wawle",
+   "iso": "  ",
+   "pubblicazioni": 466
+  },
+  {
+   "id": 22,
+   "simbolo": "BH",
+   "nome": "Bari",
+   "nome_vernacolare": "Bari",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 23,
+   "simbolo": "BS",
+   "nome": "Bassa (Cameroon)",
+   "nome_vernacolare": "Basaa (Kamerun)",
+   "iso": "  ",
+   "pubblicazioni": 389
+  },
+  {
+   "id": 24,
+   "simbolo": "BA",
+   "nome": "Bassa (Liberia)",
+   "nome_vernacolare": "Ɓǎsɔ́ɔ̀ (Ɖàbíɖà)",
+   "iso": "  ",
+   "pubblicazioni": 192
+  },
+  {
+   "id": 25,
+   "simbolo": "AK",
+   "nome": "Batak (Karo)",
+   "nome_vernacolare": "Batak (Karo)",
+   "iso": "  ",
+   "pubblicazioni": 383
+  },
+  {
+   "id": 26,
+   "simbolo": "OI",
+   "nome": "Odia",
+   "nome_vernacolare": "ଓଡ଼ିଆ",
+   "iso": "or",
+   "pubblicazioni": 309
+  },
+  {
+   "id": 27,
+   "simbolo": "BT",
+   "nome": "Batak (Toba)",
+   "nome_vernacolare": "Batak (Toba)",
+   "iso": "  ",
+   "pubblicazioni": 482
+  },
+  {
+   "id": 29,
+   "simbolo": "BE",
+   "nome": "Bengali",
+   "nome_vernacolare": "বাংলা",
+   "iso": "bn",
+   "pubblicazioni": 1272
+  },
+  {
+   "id": 30,
+   "simbolo": "IK",
+   "nome": "Biak",
+   "nome_vernacolare": "Biak",
+   "iso": "  ",
+   "pubblicazioni": 253
+  },
+  {
+   "id": 31,
+   "simbolo": "BI",
+   "nome": "Bicol",
+   "nome_vernacolare": "Bicol",
+   "iso": "  ",
+   "pubblicazioni": 1376
+  },
+  {
+   "id": 32,
+   "simbolo": "LM",
+   "nome": "Bislama",
+   "nome_vernacolare": "Bislama",
+   "iso": "bi",
+   "pubblicazioni": 1320
+  },
+  {
+   "id": 33,
+   "simbolo": "BO",
+   "nome": "Boulou",
+   "nome_vernacolare": "Bulu",
+   "iso": "  ",
+   "pubblicazioni": 348
+  },
+  {
+   "id": 36,
+   "simbolo": "BL",
+   "nome": "Bulgarian",
+   "nome_vernacolare": "Български",
+   "iso": "bg",
+   "pubblicazioni": 1534
+  },
+  {
+   "id": 37,
+   "simbolo": "BU",
+   "nome": "Myanmar",
+   "nome_vernacolare": "မြန်မာ",
+   "iso": "my",
+   "pubblicazioni": 1481
+  },
+  {
+   "id": 38,
+   "simbolo": "CB",
+   "nome": "Cambodian",
+   "nome_vernacolare": "ខ្មែរ",
+   "iso": "km",
+   "pubblicazioni": 683
+  },
+  {
+   "id": 39,
+   "simbolo": "CV",
+   "nome": "Cebuano",
+   "nome_vernacolare": "Cebuano",
+   "iso": "  ",
+   "pubblicazioni": 1856
+  },
+  {
+   "id": 40,
+   "simbolo": "CC",
+   "nome": "Chavacano",
+   "nome_vernacolare": "Chavacano",
+   "iso": "  ",
+   "pubblicazioni": 339
+  },
+  {
+   "id": 42,
+   "simbolo": "CN",
+   "nome": "Chichewa",
+   "nome_vernacolare": "Chichewa",
+   "iso": "ny",
+   "pubblicazioni": 1712
+  },
+  {
+   "id": 43,
+   "simbolo": "CH",
+   "nome": "Chinese Mandarin (Traditional)",
+   "nome_vernacolare": "中文繁體（國語）",
+   "iso": "  ",
+   "pubblicazioni": 3018
+  },
+  {
+   "id": 45,
+   "simbolo": "CG",
+   "nome": "Chitonga",
+   "nome_vernacolare": "Chitonga",
+   "iso": "  ",
+   "pubblicazioni": 1052
+  },
+  {
+   "id": 46,
+   "simbolo": "CK",
+   "nome": "Chokwe",
+   "nome_vernacolare": "Chokwe",
+   "iso": "  ",
+   "pubblicazioni": 440
+  },
+  {
+   "id": 47,
+   "simbolo": "CW",
+   "nome": "Cibemba",
+   "nome_vernacolare": "Cibemba",
+   "iso": "  ",
+   "pubblicazioni": 985
+  },
+  {
+   "id": 48,
+   "simbolo": "NM",
+   "nome": "Cinamwanga",
+   "nome_vernacolare": "Cinamwanga",
+   "iso": "  ",
+   "pubblicazioni": 324
+  },
+  {
+   "id": 49,
+   "simbolo": "CT",
+   "nome": "Chitonga (Malawi)",
+   "nome_vernacolare": "Chitonga (Malawi)",
+   "iso": "  ",
+   "pubblicazioni": 511
+  },
+  {
+   "id": 50,
+   "simbolo": "CY",
+   "nome": "Cree Plains (Roman)",
+   "nome_vernacolare": "nēhiyawēwin",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 51,
+   "simbolo": "CR",
+   "nome": "Haitian Creole",
+   "nome_vernacolare": "Kreyòl ayisyen",
+   "iso": "ht",
+   "pubblicazioni": 746
+  },
+  {
+   "id": 52,
+   "simbolo": "C",
+   "nome": "Croatian",
+   "nome_vernacolare": "Hrvatski",
+   "iso": "hr",
+   "pubblicazioni": 1882
+  },
+  {
+   "id": 53,
+   "simbolo": "B",
+   "nome": "Czech",
+   "nome_vernacolare": "Čeština",
+   "iso": "cs",
+   "pubblicazioni": 2257
+  },
+  {
+   "id": 54,
+   "simbolo": "D",
+   "nome": "Danish",
+   "nome_vernacolare": "Dansk",
+   "iso": "da",
+   "pubblicazioni": 3696
+  },
+  {
+   "id": 55,
+   "simbolo": "DK",
+   "nome": "Dayak Ngaju",
+   "nome_vernacolare": "Dayak Ngaju",
+   "iso": "  ",
+   "pubblicazioni": 95
+  },
+  {
+   "id": 57,
+   "simbolo": "DI",
+   "nome": "Dinka",
+   "nome_vernacolare": "Dinka",
+   "iso": "  ",
+   "pubblicazioni": 132
+  },
+  {
+   "id": 58,
+   "simbolo": "DA",
+   "nome": "Douala",
+   "nome_vernacolare": "Douala",
+   "iso": "  ",
+   "pubblicazioni": 317
+  },
+  {
+   "id": 59,
+   "simbolo": "ED",
+   "nome": "Edo",
+   "nome_vernacolare": "Edo",
+   "iso": "  ",
+   "pubblicazioni": 304
+  },
+  {
+   "id": 60,
+   "simbolo": "EF",
+   "nome": "Efik",
+   "nome_vernacolare": "Efịk",
+   "iso": "  ",
+   "pubblicazioni": 1195
+  },
+  {
+   "id": 62,
+   "simbolo": "ST",
+   "nome": "Estonian",
+   "nome_vernacolare": "eesti",
+   "iso": "et",
+   "pubblicazioni": 1718
+  },
+  {
+   "id": 63,
+   "simbolo": "EW",
+   "nome": "Ewe",
+   "nome_vernacolare": "Eʋegbe",
+   "iso": "ee",
+   "pubblicazioni": 1514
+  },
+  {
+   "id": 64,
+   "simbolo": "FA",
+   "nome": "Fante",
+   "nome_vernacolare": "Mfantse",
+   "iso": "  ",
+   "pubblicazioni": 316
+  },
+  {
+   "id": 65,
+   "simbolo": "FR",
+   "nome": "Faroese",
+   "nome_vernacolare": "Føroyskt",
+   "iso": "fo",
+   "pubblicazioni": 735
+  },
+  {
+   "id": 66,
+   "simbolo": "FN",
+   "nome": "Fijian",
+   "nome_vernacolare": "vakaViti",
+   "iso": "fj",
+   "pubblicazioni": 521
+  },
+  {
+   "id": 67,
+   "simbolo": "FI",
+   "nome": "Finnish",
+   "nome_vernacolare": "Suomi",
+   "iso": "fi",
+   "pubblicazioni": 3236
+  },
+  {
+   "id": 68,
+   "simbolo": "GA",
+   "nome": "Ga",
+   "nome_vernacolare": "Ga",
+   "iso": "  ",
+   "pubblicazioni": 1362
+  },
+  {
+   "id": 69,
+   "simbolo": "GB",
+   "nome": "Kiribati",
+   "nome_vernacolare": "Kiribati",
+   "iso": "  ",
+   "pubblicazioni": 387
+  },
+  {
+   "id": 70,
+   "simbolo": "GY",
+   "nome": "Giryama",
+   "nome_vernacolare": "Giryama",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 71,
+   "simbolo": "GO",
+   "nome": "Gouro",
+   "nome_vernacolare": "Goro",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 72,
+   "simbolo": "G",
+   "nome": "Greek",
+   "nome_vernacolare": "Ελληνική",
+   "iso": "el",
+   "pubblicazioni": 2251
+  },
+  {
+   "id": 73,
+   "simbolo": "GL",
+   "nome": "Greenlandic",
+   "nome_vernacolare": "Kalaallisut",
+   "iso": "kl",
+   "pubblicazioni": 1102
+  },
+  {
+   "id": 74,
+   "simbolo": "GI",
+   "nome": "Guarani",
+   "nome_vernacolare": "Guarani",
+   "iso": "  ",
+   "pubblicazioni": 711
+  },
+  {
+   "id": 75,
+   "simbolo": "GU",
+   "nome": "Gujarati",
+   "nome_vernacolare": "ગુજરાતી",
+   "iso": "gu",
+   "pubblicazioni": 1026
+  },
+  {
+   "id": 76,
+   "simbolo": "EG",
+   "nome": "Gun",
+   "nome_vernacolare": "Gungbe",
+   "iso": "  ",
+   "pubblicazioni": 690
+  },
+  {
+   "id": 78,
+   "simbolo": "HK",
+   "nome": "Chin (Hakha)",
+   "nome_vernacolare": "Chin (Hakha)",
+   "iso": "  ",
+   "pubblicazioni": 852
+  },
+  {
+   "id": 79,
+   "simbolo": "HA",
+   "nome": "Hausa",
+   "nome_vernacolare": "Hausa",
+   "iso": "ha",
+   "pubblicazioni": 410
+  },
+  {
+   "id": 80,
+   "simbolo": "HW",
+   "nome": "Hawaiian",
+   "nome_vernacolare": "ʻŌlelo Hawaiʻi",
+   "iso": "  ",
+   "pubblicazioni": 30
+  },
+  {
+   "id": 81,
+   "simbolo": "HY",
+   "nome": "Haya",
+   "nome_vernacolare": "Ekihaya",
+   "iso": "  ",
+   "pubblicazioni": 54
+  },
+  {
+   "id": 82,
+   "simbolo": "Q",
+   "nome": "Hebrew",
+   "nome_vernacolare": "עברית",
+   "iso": "he",
+   "pubblicazioni": 769
+  },
+  {
+   "id": 83,
+   "simbolo": "HR",
+   "nome": "Herero",
+   "nome_vernacolare": "Otjiherero",
+   "iso": "hz",
+   "pubblicazioni": 352
+  },
+  {
+   "id": 84,
+   "simbolo": "HV",
+   "nome": "Hiligaynon",
+   "nome_vernacolare": "Hiligaynon",
+   "iso": "  ",
+   "pubblicazioni": 1860
+  },
+  {
+   "id": 85,
+   "simbolo": "HI",
+   "nome": "Hindi",
+   "nome_vernacolare": "हिंदी",
+   "iso": "hi",
+   "pubblicazioni": 1461
+  },
+  {
+   "id": 86,
+   "simbolo": "MO",
+   "nome": "Hiri Motu",
+   "nome_vernacolare": "Hiri Motu",
+   "iso": "ho",
+   "pubblicazioni": 494
+  },
+  {
+   "id": 87,
+   "simbolo": "HO",
+   "nome": "Ajië",
+   "nome_vernacolare": "A'jië",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 88,
+   "simbolo": "HU",
+   "nome": "Hula",
+   "nome_vernacolare": "Vula’a",
+   "iso": "  ",
+   "pubblicazioni": 42
+  },
+  {
+   "id": 89,
+   "simbolo": "H",
+   "nome": "Hungarian",
+   "nome_vernacolare": "Magyar",
+   "iso": "hu",
+   "pubblicazioni": 2204
+  },
+  {
+   "id": 90,
+   "simbolo": "IA",
+   "nome": "Iban",
+   "nome_vernacolare": "Iban",
+   "iso": "  ",
+   "pubblicazioni": 444
+  },
+  {
+   "id": 91,
+   "simbolo": "IG",
+   "nome": "Ibanag",
+   "nome_vernacolare": "Ibanag",
+   "iso": "  ",
+   "pubblicazioni": 361
+  },
+  {
+   "id": 92,
+   "simbolo": "IC",
+   "nome": "Icelandic",
+   "nome_vernacolare": "Íslenska",
+   "iso": "is",
+   "pubblicazioni": 1335
+  },
+  {
+   "id": 93,
+   "simbolo": "ID",
+   "nome": "Idoma",
+   "nome_vernacolare": "Idoma",
+   "iso": "  ",
+   "pubblicazioni": 226
+  },
+  {
+   "id": 94,
+   "simbolo": "IF",
+   "nome": "Ifugao",
+   "nome_vernacolare": "Ifugao",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 95,
+   "simbolo": "AA",
+   "nome": "Igala",
+   "nome_vernacolare": "Igala",
+   "iso": "  ",
+   "pubblicazioni": 108
+  },
+  {
+   "id": 96,
+   "simbolo": "IB",
+   "nome": "Igbo",
+   "nome_vernacolare": "Igbo",
+   "iso": "ig",
+   "pubblicazioni": 1498
+  },
+  {
+   "id": 97,
+   "simbolo": "IJ",
+   "nome": "Ijaw",
+   "nome_vernacolare": "Ijaw",
+   "iso": "  ",
+   "pubblicazioni": 191
+  },
+  {
+   "id": 98,
+   "simbolo": "IL",
+   "nome": "Iloko",
+   "nome_vernacolare": "Iloko",
+   "iso": "  ",
+   "pubblicazioni": 1971
+  },
+  {
+   "id": 99,
+   "simbolo": "IN",
+   "nome": "Indonesian",
+   "nome_vernacolare": "Indonesia",
+   "iso": "id",
+   "pubblicazioni": 1489
+  },
+  {
+   "id": 100,
+   "simbolo": "IU",
+   "nome": "Inuktitut (Syllabics)",
+   "nome_vernacolare": "ᐃᓄᒃᑎᑐᑦ (ᖃᓂᐅᔮᖅᐸᐃᑦ)",
+   "iso": "iu",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 101,
+   "simbolo": "GC",
+   "nome": "Irish",
+   "nome_vernacolare": "Gaeilge",
+   "iso": "ga",
+   "pubblicazioni": 163
+  },
+  {
+   "id": 103,
+   "simbolo": "IS",
+   "nome": "Isoko",
+   "nome_vernacolare": "Isoko",
+   "iso": "  ",
+   "pubblicazioni": 570
+  },
+  {
+   "id": 104,
+   "simbolo": "IT",
+   "nome": "Itsekiri",
+   "nome_vernacolare": "Itsekiri",
+   "iso": "  ",
+   "pubblicazioni": 195
+  },
+  {
+   "id": 105,
+   "simbolo": "IV",
+   "nome": "Ivatan",
+   "nome_vernacolare": "Ivatan",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 106,
+   "simbolo": "JA",
+   "nome": "Javanese",
+   "nome_vernacolare": "Jawa",
+   "iso": "jv",
+   "pubblicazioni": 397
+  },
+  {
+   "id": 107,
+   "simbolo": "AH",
+   "nome": "Kachin",
+   "nome_vernacolare": "Kachin",
+   "iso": "  ",
+   "pubblicazioni": 298
+  },
+  {
+   "id": 108,
+   "simbolo": "KL",
+   "nome": "Kalanga (Botswana)",
+   "nome_vernacolare": "Kalanga (Botswana)",
+   "iso": "  ",
+   "pubblicazioni": 174
+  },
+  {
+   "id": 109,
+   "simbolo": "KJ",
+   "nome": "Kalenjin",
+   "nome_vernacolare": "Kalenjin",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 110,
+   "simbolo": "KA",
+   "nome": "Kannada",
+   "nome_vernacolare": "ಕನ್ನಡ",
+   "iso": "kn",
+   "pubblicazioni": 1486
+  },
+  {
+   "id": 111,
+   "simbolo": "KR",
+   "nome": "Karen (S'gaw)",
+   "nome_vernacolare": "ကညီ(စှီၤ)ကျိာ်",
+   "iso": "  ",
+   "pubblicazioni": 400
+  },
+  {
+   "id": 112,
+   "simbolo": "KE",
+   "nome": "Tairuma",
+   "nome_vernacolare": "Tairuma",
+   "iso": "  ",
+   "pubblicazioni": 37
+  },
+  {
+   "id": 114,
+   "simbolo": "KS",
+   "nome": "Khasi",
+   "nome_vernacolare": "Khasi",
+   "iso": "  ",
+   "pubblicazioni": 103
+  },
+  {
+   "id": 115,
+   "simbolo": "KB",
+   "nome": "Kamba",
+   "nome_vernacolare": "Kikamba",
+   "iso": "  ",
+   "pubblicazioni": 473
+  },
+  {
+   "id": 116,
+   "simbolo": "KD",
+   "nome": "Kikaonde",
+   "nome_vernacolare": "Kikaonde",
+   "iso": "  ",
+   "pubblicazioni": 463
+  },
+  {
+   "id": 117,
+   "simbolo": "KG",
+   "nome": "Kikongo",
+   "nome_vernacolare": "Kikongo",
+   "iso": "  ",
+   "pubblicazioni": 749
+  },
+  {
+   "id": 118,
+   "simbolo": "KQ",
+   "nome": "Kikuyu",
+   "nome_vernacolare": "Gĩkũyũ",
+   "iso": "ki",
+   "pubblicazioni": 518
+  },
+  {
+   "id": 119,
+   "simbolo": "KU",
+   "nome": "Kiluba",
+   "nome_vernacolare": "Kiluba",
+   "iso": "lu",
+   "pubblicazioni": 963
+  },
+  {
+   "id": 120,
+   "simbolo": "KK",
+   "nome": "Kinyakyusa",
+   "nome_vernacolare": "Kinyakyusa",
+   "iso": "  ",
+   "pubblicazioni": 22
+  },
+  {
+   "id": 121,
+   "simbolo": "YW",
+   "nome": "Kinyarwanda",
+   "nome_vernacolare": "Ikinyarwanda",
+   "iso": "rw",
+   "pubblicazioni": 1418
+  },
+  {
+   "id": 123,
+   "simbolo": "RU",
+   "nome": "Kirundi",
+   "nome_vernacolare": "Ikirundi",
+   "iso": "rn",
+   "pubblicazioni": 1102
+  },
+  {
+   "id": 124,
+   "simbolo": "KI",
+   "nome": "Kisi",
+   "nome_vernacolare": "Kisiei",
+   "iso": "  ",
+   "pubblicazioni": 347
+  },
+  {
+   "id": 125,
+   "simbolo": "II",
+   "nome": "Kisii",
+   "nome_vernacolare": "Kisii",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 128,
+   "simbolo": "KT",
+   "nome": "Konkani (Roman)",
+   "nome_vernacolare": "Konkani (Romi)",
+   "iso": "  ",
+   "pubblicazioni": 308
+  },
+  {
+   "id": 129,
+   "simbolo": "KO",
+   "nome": "Korean",
+   "nome_vernacolare": "한국어",
+   "iso": "ko",
+   "pubblicazioni": 3468
+  },
+  {
+   "id": 130,
+   "simbolo": "OS",
+   "nome": "Kosraean",
+   "nome_vernacolare": "Kosraean",
+   "iso": "  ",
+   "pubblicazioni": 115
+  },
+  {
+   "id": 131,
+   "simbolo": "KP",
+   "nome": "Kpelle",
+   "nome_vernacolare": "Kpelle",
+   "iso": "  ",
+   "pubblicazioni": 200
+  },
+  {
+   "id": 132,
+   "simbolo": "UN",
+   "nome": "Guna",
+   "nome_vernacolare": "Dule",
+   "iso": "  ",
+   "pubblicazioni": 128
+  },
+  {
+   "id": 134,
+   "simbolo": "WG",
+   "nome": "Kwangali",
+   "nome_vernacolare": "Rukwangali",
+   "iso": "  ",
+   "pubblicazioni": 549
+  },
+  {
+   "id": 135,
+   "simbolo": "KY",
+   "nome": "Kwanyama",
+   "nome_vernacolare": "Oshikwanyama",
+   "iso": "kj",
+   "pubblicazioni": 713
+  },
+  {
+   "id": 136,
+   "simbolo": "KW",
+   "nome": "Kwara'ae",
+   "nome_vernacolare": "Kwara'ae",
+   "iso": "  ",
+   "pubblicazioni": 48
+  },
+  {
+   "id": 137,
+   "simbolo": "LN",
+   "nome": "Lango",
+   "nome_vernacolare": "Lango",
+   "iso": "  ",
+   "pubblicazioni": 39
+  },
+  {
+   "id": 138,
+   "simbolo": "LA",
+   "nome": "Laotian",
+   "nome_vernacolare": "ລາວ",
+   "iso": "lo",
+   "pubblicazioni": 453
+  },
+  {
+   "id": 139,
+   "simbolo": "LF",
+   "nome": "Drehu",
+   "nome_vernacolare": "Drehu",
+   "iso": "  ",
+   "pubblicazioni": 773
+  },
+  {
+   "id": 140,
+   "simbolo": "LI",
+   "nome": "Lingala",
+   "nome_vernacolare": "Lingala",
+   "iso": "ln",
+   "pubblicazioni": 961
+  },
+  {
+   "id": 141,
+   "simbolo": "L",
+   "nome": "Lithuanian",
+   "nome_vernacolare": "lietuvių",
+   "iso": "lt",
+   "pubblicazioni": 1556
+  },
+  {
+   "id": 142,
+   "simbolo": "OM",
+   "nome": "Loma",
+   "nome_vernacolare": "Lɔɔma",
+   "iso": "  ",
+   "pubblicazioni": 164
+  },
+  {
+   "id": 143,
+   "simbolo": "LC",
+   "nome": "Luchazi",
+   "nome_vernacolare": "Luchazi",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 144,
+   "simbolo": "LU",
+   "nome": "Luganda",
+   "nome_vernacolare": "Luganda",
+   "iso": "lg",
+   "pubblicazioni": 922
+  },
+  {
+   "id": 145,
+   "simbolo": "LG",
+   "nome": "Lugbara",
+   "nome_vernacolare": "Lugbara",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 147,
+   "simbolo": "LK",
+   "nome": "Bukusu",
+   "nome_vernacolare": "Bukusu",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 148,
+   "simbolo": "LB",
+   "nome": "Olunyole",
+   "nome_vernacolare": "Olunyole",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 150,
+   "simbolo": "LW",
+   "nome": "Wanga",
+   "nome_vernacolare": "Kiwanga",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 151,
+   "simbolo": "LO",
+   "nome": "Luo",
+   "nome_vernacolare": "Dholuo",
+   "iso": "  ",
+   "pubblicazioni": 673
+  },
+  {
+   "id": 152,
+   "simbolo": "LS",
+   "nome": "Mizo",
+   "nome_vernacolare": "Mizo",
+   "iso": "  ",
+   "pubblicazioni": 838
+  },
+  {
+   "id": 153,
+   "simbolo": "LV",
+   "nome": "Luvale",
+   "nome_vernacolare": "Luvale",
+   "iso": "  ",
+   "pubblicazioni": 470
+  },
+  {
+   "id": 154,
+   "simbolo": "MS",
+   "nome": "Maasai",
+   "nome_vernacolare": "Maasai",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 155,
+   "simbolo": "MC",
+   "nome": "Macedonian",
+   "nome_vernacolare": "македонски",
+   "iso": "mk",
+   "pubblicazioni": 1342
+  },
+  {
+   "id": 156,
+   "simbolo": "MU",
+   "nome": "Maguindanao",
+   "nome_vernacolare": "Maguindanao",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 157,
+   "simbolo": "MG",
+   "nome": "Malagasy",
+   "nome_vernacolare": "Malagasy",
+   "iso": "  ",
+   "pubblicazioni": 1144
+  },
+  {
+   "id": 158,
+   "simbolo": "ML",
+   "nome": "Malay",
+   "nome_vernacolare": "Melayu",
+   "iso": "ms",
+   "pubblicazioni": 641
+  },
+  {
+   "id": 159,
+   "simbolo": "MY",
+   "nome": "Malayalam",
+   "nome_vernacolare": "മലയാളം",
+   "iso": "ml",
+   "pubblicazioni": 1746
+  },
+  {
+   "id": 160,
+   "simbolo": "MT",
+   "nome": "Maltese",
+   "nome_vernacolare": "Malti",
+   "iso": "mt",
+   "pubblicazioni": 1327
+  },
+  {
+   "id": 161,
+   "simbolo": "MI",
+   "nome": "Manipuri",
+   "nome_vernacolare": "মৈতৈলোন্",
+   "iso": "  ",
+   "pubblicazioni": 109
+  },
+  {
+   "id": 163,
+   "simbolo": "MA",
+   "nome": "Maori",
+   "nome_vernacolare": "Te Reo Māori",
+   "iso": "mi",
+   "pubblicazioni": 39
+  },
+  {
+   "id": 164,
+   "simbolo": "OL",
+   "nome": "Maragoli",
+   "nome_vernacolare": "Luragooli",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 165,
+   "simbolo": "MW",
+   "nome": "Maranaw",
+   "nome_vernacolare": "Maranaw",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 166,
+   "simbolo": "MR",
+   "nome": "Marathi",
+   "nome_vernacolare": "मराठी",
+   "iso": "mr",
+   "pubblicazioni": 1375
+  },
+  {
+   "id": 167,
+   "simbolo": "RE",
+   "nome": "Nengone",
+   "nome_vernacolare": "Nengone",
+   "iso": "  ",
+   "pubblicazioni": 51
+  },
+  {
+   "id": 169,
+   "simbolo": "MH",
+   "nome": "Marshallese",
+   "nome_vernacolare": "Kajin M̦ajel̦",
+   "iso": "mh",
+   "pubblicazioni": 551
+  },
+  {
+   "id": 171,
+   "simbolo": "CE",
+   "nome": "Mauritian Creole",
+   "nome_vernacolare": "Kreol Morisien",
+   "iso": "  ",
+   "pubblicazioni": 662
+  },
+  {
+   "id": 172,
+   "simbolo": "ME",
+   "nome": "Mende",
+   "nome_vernacolare": "Mɛnde",
+   "iso": "  ",
+   "pubblicazioni": 109
+  },
+  {
+   "id": 173,
+   "simbolo": "UU",
+   "nome": "Meru",
+   "nome_vernacolare": "Kĩmĩĩrũ",
+   "iso": "  ",
+   "pubblicazioni": 148
+  },
+  {
+   "id": 174,
+   "simbolo": "MK",
+   "nome": "Kongo",
+   "nome_vernacolare": "Kikongo (Rép. dém. du congo)",
+   "iso": "  ",
+   "pubblicazioni": 789
+  },
+  {
+   "id": 175,
+   "simbolo": "MM",
+   "nome": "Moore",
+   "nome_vernacolare": "Moore",
+   "iso": "  ",
+   "pubblicazioni": 391
+  },
+  {
+   "id": 176,
+   "simbolo": "NA",
+   "nome": "Nama",
+   "nome_vernacolare": "ǀApakhoen gowab",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 178,
+   "simbolo": "OD",
+   "nome": "Ndonga",
+   "nome_vernacolare": "Oshindonga",
+   "iso": "ng",
+   "pubblicazioni": 523
+  },
+  {
+   "id": 180,
+   "simbolo": "NP",
+   "nome": "Nepali",
+   "nome_vernacolare": "नेपाली",
+   "iso": "ne",
+   "pubblicazioni": 1388
+  },
+  {
+   "id": 181,
+   "simbolo": "MP",
+   "nome": "Tok Pisin",
+   "nome_vernacolare": "Tok Pisin",
+   "iso": "  ",
+   "pubblicazioni": 675
+  },
+  {
+   "id": 182,
+   "simbolo": "NI",
+   "nome": "Nias",
+   "nome_vernacolare": "Nias",
+   "iso": "  ",
+   "pubblicazioni": 402
+  },
+  {
+   "id": 183,
+   "simbolo": "NN",
+   "nome": "Niuean",
+   "nome_vernacolare": "Faka-Niue",
+   "iso": "  ",
+   "pubblicazioni": 803
+  },
+  {
+   "id": 184,
+   "simbolo": "N",
+   "nome": "Norwegian",
+   "nome_vernacolare": "Norsk",
+   "iso": "no",
+   "pubblicazioni": 3695
+  },
+  {
+   "id": 188,
+   "simbolo": "NZ",
+   "nome": "Nzema",
+   "nome_vernacolare": "Nzema",
+   "iso": "  ",
+   "pubblicazioni": 622
+  },
+  {
+   "id": 189,
+   "simbolo": "OG",
+   "nome": "Khana",
+   "nome_vernacolare": "Khana",
+   "iso": "  ",
+   "pubblicazioni": 265
+  },
+  {
+   "id": 191,
+   "simbolo": "OT",
+   "nome": "Otetela",
+   "nome_vernacolare": "Ɔtɛtɛla",
+   "iso": "  ",
+   "pubblicazioni": 721
+  },
+  {
+   "id": 192,
+   "simbolo": "PU",
+   "nome": "Palauan",
+   "nome_vernacolare": "Palauan",
+   "iso": "  ",
+   "pubblicazioni": 457
+  },
+  {
+   "id": 194,
+   "simbolo": "PN",
+   "nome": "Pangasinan",
+   "nome_vernacolare": "Pangasinan",
+   "iso": "  ",
+   "pubblicazioni": 957
+  },
+  {
+   "id": 195,
+   "simbolo": "PA",
+   "nome": "Papiamento (Curaçao)",
+   "nome_vernacolare": "Papiamentu (Kòrsou)",
+   "iso": "  ",
+   "pubblicazioni": 1107
+  },
+  {
+   "id": 196,
+   "simbolo": "ZN",
+   "nome": "Zande",
+   "nome_vernacolare": "Zande",
+   "iso": "  ",
+   "pubblicazioni": 402
+  },
+  {
+   "id": 197,
+   "simbolo": "PR",
+   "nome": "Persian",
+   "nome_vernacolare": "فارسی",
+   "iso": "  ",
+   "pubblicazioni": 835
+  },
+  {
+   "id": 198,
+   "simbolo": "P",
+   "nome": "Polish",
+   "nome_vernacolare": "polski",
+   "iso": "pl",
+   "pubblicazioni": 2943
+  },
+  {
+   "id": 199,
+   "simbolo": "PP",
+   "nome": "Pohnpeian",
+   "nome_vernacolare": "Lokaiahn Pohnpei",
+   "iso": "  ",
+   "pubblicazioni": 479
+  },
+  {
+   "id": 200,
+   "simbolo": "PJ",
+   "nome": "Punjabi",
+   "nome_vernacolare": "ਪੰਜਾਬੀ",
+   "iso": "pa",
+   "pubblicazioni": 1169
+  },
+  {
+   "id": 201,
+   "simbolo": "RA",
+   "nome": "Cook Islands Māori",
+   "nome_vernacolare": "Reo Rarotonga",
+   "iso": "  ",
+   "pubblicazioni": 1190
+  },
+  {
+   "id": 202,
+   "simbolo": "M",
+   "nome": "Romanian",
+   "nome_vernacolare": "Română",
+   "iso": "ro",
+   "pubblicazioni": 2029
+  },
+  {
+   "id": 204,
+   "simbolo": "RN",
+   "nome": "Ronga",
+   "nome_vernacolare": "Xironga",
+   "iso": "  ",
+   "pubblicazioni": 258
+  },
+  {
+   "id": 205,
+   "simbolo": "RO",
+   "nome": "Rotuman",
+   "nome_vernacolare": "Rotuạm ta",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 206,
+   "simbolo": "RR",
+   "nome": "Runyankore",
+   "nome_vernacolare": "Runyankore",
+   "iso": "  ",
+   "pubblicazioni": 528
+  },
+  {
+   "id": 207,
+   "simbolo": "U",
+   "nome": "Russian",
+   "nome_vernacolare": "Русский",
+   "iso": "ru",
+   "pubblicazioni": 2026
+  },
+  {
+   "id": 208,
+   "simbolo": "RT",
+   "nome": "Runyoro-Rutooro",
+   "nome_vernacolare": "Rutoro",
+   "iso": "  ",
+   "pubblicazioni": 405
+  },
+  {
+   "id": 209,
+   "simbolo": "SA",
+   "nome": "Waray-Waray",
+   "nome_vernacolare": "Waray-Waray",
+   "iso": "  ",
+   "pubblicazioni": 939
+  },
+  {
+   "id": 211,
+   "simbolo": "SM",
+   "nome": "Samoan",
+   "nome_vernacolare": "Faa-Samoa",
+   "iso": "sm",
+   "pubblicazioni": 1553
+  },
+  {
+   "id": 212,
+   "simbolo": "SG",
+   "nome": "Sango",
+   "nome_vernacolare": "Sango",
+   "iso": "sg",
+   "pubblicazioni": 541
+  },
+  {
+   "id": 213,
+   "simbolo": "SE",
+   "nome": "Sepedi",
+   "nome_vernacolare": "Sepedi",
+   "iso": "  ",
+   "pubblicazioni": 1265
+  },
+  {
+   "id": 214,
+   "simbolo": "SB",
+   "nome": "Serbian (Cyrillic)",
+   "nome_vernacolare": "српски (ћирилица)",
+   "iso": "sr",
+   "pubblicazioni": 2040
+  },
+  {
+   "id": 215,
+   "simbolo": "ER",
+   "nome": "Serer",
+   "nome_vernacolare": "Seereer",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 216,
+   "simbolo": "SU",
+   "nome": "Sesotho (Lesotho)",
+   "nome_vernacolare": "Sesotho (Lesotho)",
+   "iso": "st",
+   "pubblicazioni": 1052
+  },
+  {
+   "id": 217,
+   "simbolo": "SC",
+   "nome": "Seychelles Creole",
+   "nome_vernacolare": "Kreol Seselwa",
+   "iso": "  ",
+   "pubblicazioni": 774
+  },
+  {
+   "id": 218,
+   "simbolo": "CA",
+   "nome": "Shona",
+   "nome_vernacolare": "Shona",
+   "iso": "sn",
+   "pubblicazioni": 1532
+  },
+  {
+   "id": 219,
+   "simbolo": "SK",
+   "nome": "Silozi",
+   "nome_vernacolare": "Silozi",
+   "iso": "  ",
+   "pubblicazioni": 1221
+  },
+  {
+   "id": 220,
+   "simbolo": "SN",
+   "nome": "Sinhala",
+   "nome_vernacolare": "සිංහල",
+   "iso": "si",
+   "pubblicazioni": 1560
+  },
+  {
+   "id": 221,
+   "simbolo": "V",
+   "nome": "Slovak",
+   "nome_vernacolare": "Slovenčina",
+   "iso": "sk",
+   "pubblicazioni": 1940
+  },
+  {
+   "id": 222,
+   "simbolo": "SV",
+   "nome": "Slovenian",
+   "nome_vernacolare": "Slovenščina",
+   "iso": "sl",
+   "pubblicazioni": 2110
+  },
+  {
+   "id": 223,
+   "simbolo": "SP",
+   "nome": "Solomon Islands Pidgin",
+   "nome_vernacolare": "Solomon Islands Pidgin",
+   "iso": "  ",
+   "pubblicazioni": 761
+  },
+  {
+   "id": 224,
+   "simbolo": "SO",
+   "nome": "Somali",
+   "nome_vernacolare": "Soomaali",
+   "iso": "so",
+   "pubblicazioni": 33
+  },
+  {
+   "id": 225,
+   "simbolo": "SR",
+   "nome": "Sranantongo",
+   "nome_vernacolare": "Sranantongo",
+   "iso": "  ",
+   "pubblicazioni": 1633
+  },
+  {
+   "id": 226,
+   "simbolo": "UK",
+   "nome": "Sukuma",
+   "nome_vernacolare": "Kisukuma",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 227,
+   "simbolo": "SD",
+   "nome": "Sunda",
+   "nome_vernacolare": "Sunda",
+   "iso": "su",
+   "pubblicazioni": 243
+  },
+  {
+   "id": 228,
+   "simbolo": "SW",
+   "nome": "Swahili",
+   "nome_vernacolare": "Kiswahili",
+   "iso": "  ",
+   "pubblicazioni": 1991
+  },
+  {
+   "id": 229,
+   "simbolo": "ZS",
+   "nome": "Swahili (Congo)",
+   "nome_vernacolare": "Kiswahili (Congo)",
+   "iso": "  ",
+   "pubblicazioni": 659
+  },
+  {
+   "id": 230,
+   "simbolo": "Z",
+   "nome": "Swedish",
+   "nome_vernacolare": "Svenska",
+   "iso": "sv",
+   "pubblicazioni": 3455
+  },
+  {
+   "id": 231,
+   "simbolo": "TG",
+   "nome": "Tagalog",
+   "nome_vernacolare": "Tagalog",
+   "iso": "tl",
+   "pubblicazioni": 2262
+  },
+  {
+   "id": 232,
+   "simbolo": "TH",
+   "nome": "Tahitian",
+   "nome_vernacolare": "Tahiti",
+   "iso": "ty",
+   "pubblicazioni": 1263
+  },
+  {
+   "id": 234,
+   "simbolo": "TL",
+   "nome": "Tamil",
+   "nome_vernacolare": "தமிழ்",
+   "iso": "ta",
+   "pubblicazioni": 1741
+  },
+  {
+   "id": 235,
+   "simbolo": "TA",
+   "nome": "Tausug",
+   "nome_vernacolare": "Tausug",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 236,
+   "simbolo": "TU",
+   "nome": "Telugu",
+   "nome_vernacolare": "తెలుగు",
+   "iso": "te",
+   "pubblicazioni": 1464
+  },
+  {
+   "id": 237,
+   "simbolo": "SI",
+   "nome": "Thai",
+   "nome_vernacolare": "ไทย",
+   "iso": "th",
+   "pubblicazioni": 1721
+  },
+  {
+   "id": 239,
+   "simbolo": "CI",
+   "nome": "Chin (Tiddim)",
+   "nome_vernacolare": "Chin (Tedim)",
+   "iso": "  ",
+   "pubblicazioni": 114
+  },
+  {
+   "id": 240,
+   "simbolo": "TI",
+   "nome": "Tigrinya",
+   "nome_vernacolare": "ትግርኛ",
+   "iso": "ti",
+   "pubblicazioni": 1283
+  },
+  {
+   "id": 241,
+   "simbolo": "TV",
+   "nome": "Tiv",
+   "nome_vernacolare": "Tiv",
+   "iso": "  ",
+   "pubblicazioni": 631
+  },
+  {
+   "id": 242,
+   "simbolo": "TR",
+   "nome": "Toaripi",
+   "nome_vernacolare": "Toaripi",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 243,
+   "simbolo": "OE",
+   "nome": "Tokelauan",
+   "nome_vernacolare": "Faka-Tokelau",
+   "iso": "  ",
+   "pubblicazioni": 29
+  },
+  {
+   "id": 244,
+   "simbolo": "TO",
+   "nome": "Tongan",
+   "nome_vernacolare": "Faka-Tonga",
+   "iso": "to",
+   "pubblicazioni": 1224
+  },
+  {
+   "id": 245,
+   "simbolo": "TE",
+   "nome": "Chuukese",
+   "nome_vernacolare": "Chuuk",
+   "iso": "  ",
+   "pubblicazioni": 489
+  },
+  {
+   "id": 246,
+   "simbolo": "SH",
+   "nome": "Tshiluba",
+   "nome_vernacolare": "Tshiluba",
+   "iso": "  ",
+   "pubblicazioni": 1136
+  },
+  {
+   "id": 247,
+   "simbolo": "TS",
+   "nome": "Tsonga",
+   "nome_vernacolare": "Xitsonga",
+   "iso": "ts",
+   "pubblicazioni": 886
+  },
+  {
+   "id": 248,
+   "simbolo": "TN",
+   "nome": "Setswana",
+   "nome_vernacolare": "Setswana",
+   "iso": "tn",
+   "pubblicazioni": 1525
+  },
+  {
+   "id": 249,
+   "simbolo": "TB",
+   "nome": "Chitumbuka",
+   "nome_vernacolare": "Chitumbuka",
+   "iso": "  ",
+   "pubblicazioni": 669
+  },
+  {
+   "id": 250,
+   "simbolo": "TK",
+   "nome": "Turkish",
+   "nome_vernacolare": "Türkçe",
+   "iso": "tr",
+   "pubblicazioni": 1683
+  },
+  {
+   "id": 251,
+   "simbolo": "VL",
+   "nome": "Tuvaluan",
+   "nome_vernacolare": "Tuvalu",
+   "iso": "  ",
+   "pubblicazioni": 547
+  },
+  {
+   "id": 252,
+   "simbolo": "TW",
+   "nome": "Twi",
+   "nome_vernacolare": "Twi",
+   "iso": "ak",
+   "pubblicazioni": 1910
+  },
+  {
+   "id": 253,
+   "simbolo": "K",
+   "nome": "Ukrainian",
+   "nome_vernacolare": "Українська",
+   "iso": "uk",
+   "pubblicazioni": 2561
+  },
+  {
+   "id": 254,
+   "simbolo": "UB",
+   "nome": "Umbundu",
+   "nome_vernacolare": "Umbundu",
+   "iso": "  ",
+   "pubblicazioni": 494
+  },
+  {
+   "id": 255,
+   "simbolo": "UD",
+   "nome": "Urdu",
+   "nome_vernacolare": "اُردو",
+   "iso": "ur",
+   "pubblicazioni": 961
+  },
+  {
+   "id": 256,
+   "simbolo": "UR",
+   "nome": "Urhobo",
+   "nome_vernacolare": "Urhobo",
+   "iso": "  ",
+   "pubblicazioni": 443
+  },
+  {
+   "id": 257,
+   "simbolo": "VE",
+   "nome": "Venda",
+   "nome_vernacolare": "Luvenda",
+   "iso": "ve",
+   "pubblicazioni": 643
+  },
+  {
+   "id": 258,
+   "simbolo": "VT",
+   "nome": "Vietnamese",
+   "nome_vernacolare": "Việt",
+   "iso": "vi",
+   "pubblicazioni": 1325
+  },
+  {
+   "id": 259,
+   "simbolo": "WA",
+   "nome": "Wallisian",
+   "nome_vernacolare": "Faka'uvea",
+   "iso": "  ",
+   "pubblicazioni": 840
+  },
+  {
+   "id": 260,
+   "simbolo": "W",
+   "nome": "Welsh",
+   "nome_vernacolare": "Cymraeg",
+   "iso": "cy",
+   "pubblicazioni": 529
+  },
+  {
+   "id": 261,
+   "simbolo": "WO",
+   "nome": "Wolof",
+   "nome_vernacolare": "Wolof",
+   "iso": "wo",
+   "pubblicazioni": 124
+  },
+  {
+   "id": 262,
+   "simbolo": "XO",
+   "nome": "Xhosa",
+   "nome_vernacolare": "IsiXhosa",
+   "iso": "xh",
+   "pubblicazioni": 864
+  },
+  {
+   "id": 263,
+   "simbolo": "YA",
+   "nome": "Chiyao",
+   "nome_vernacolare": "Chiyao",
+   "iso": "  ",
+   "pubblicazioni": 444
+  },
+  {
+   "id": 264,
+   "simbolo": "YP",
+   "nome": "Yapese",
+   "nome_vernacolare": "Waab",
+   "iso": "  ",
+   "pubblicazioni": 420
+  },
+  {
+   "id": 265,
+   "simbolo": "YG",
+   "nome": "Tarok",
+   "nome_vernacolare": "Tarok",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 267,
+   "simbolo": "YR",
+   "nome": "Yoruba",
+   "nome_vernacolare": "Yorùbá",
+   "iso": "yo",
+   "pubblicazioni": 1412
+  },
+  {
+   "id": 268,
+   "simbolo": "ZU",
+   "nome": "Zulu",
+   "nome_vernacolare": "IsiZulu",
+   "iso": "zu",
+   "pubblicazioni": 1278
+  },
+  {
+   "id": 269,
+   "simbolo": "GK",
+   "nome": "Kekchi",
+   "nome_vernacolare": "Q’eqchi’",
+   "iso": "  ",
+   "pubblicazioni": 430
+  },
+  {
+   "id": 271,
+   "simbolo": "GE",
+   "nome": "Georgian",
+   "nome_vernacolare": "ქართული",
+   "iso": "ka",
+   "pubblicazioni": 1440
+  },
+  {
+   "id": 272,
+   "simbolo": "LD",
+   "nome": "Lunda",
+   "nome_vernacolare": "Lunda",
+   "iso": "  ",
+   "pubblicazioni": 619
+  },
+  {
+   "id": 273,
+   "simbolo": "OA",
+   "nome": "Afan Oromo",
+   "nome_vernacolare": "Afaan Oromoo",
+   "iso": "om",
+   "pubblicazioni": 801
+  },
+  {
+   "id": 274,
+   "simbolo": "PK",
+   "nome": "Karen (Pwo Western)",
+   "nome_vernacolare": "Karen (Pwo Western)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 275,
+   "simbolo": "KIM",
+   "nome": "Kimbundu",
+   "nome_vernacolare": "Kimbundu",
+   "iso": "  ",
+   "pubblicazioni": 518
+  },
+  {
+   "id": 276,
+   "simbolo": "BQ",
+   "nome": "Basque",
+   "nome_vernacolare": "Euskara",
+   "iso": "eu",
+   "pubblicazioni": 458
+  },
+  {
+   "id": 277,
+   "simbolo": "CQ",
+   "nome": "Cakchiquel (Western)",
+   "nome_vernacolare": "Kaqchikel occidental",
+   "iso": "  ",
+   "pubblicazioni": 310
+  },
+  {
+   "id": 278,
+   "simbolo": "AN",
+   "nome": "Catalan",
+   "nome_vernacolare": "Català",
+   "iso": "ca",
+   "pubblicazioni": 696
+  },
+  {
+   "id": 279,
+   "simbolo": "CHS",
+   "nome": "Chinese Mandarin (Simplified)",
+   "nome_vernacolare": "中文简体（普通话）",
+   "iso": "  ",
+   "pubblicazioni": 3018
+  },
+  {
+   "id": 284,
+   "simbolo": "AB",
+   "nome": "Lamba",
+   "nome_vernacolare": "Lamba",
+   "iso": "  ",
+   "pubblicazioni": 54
+  },
+  {
+   "id": 285,
+   "simbolo": "LT",
+   "nome": "Latvian",
+   "nome_vernacolare": "Latviešu",
+   "iso": "lv",
+   "pubblicazioni": 1385
+  },
+  {
+   "id": 286,
+   "simbolo": "MZ",
+   "nome": "Mam",
+   "nome_vernacolare": "Mam",
+   "iso": "  ",
+   "pubblicazioni": 507
+  },
+  {
+   "id": 287,
+   "simbolo": "MQN",
+   "nome": "Marquesian (Nuku Hiva)",
+   "nome_vernacolare": "Marquisien (Nuku Hiva)",
+   "iso": "  ",
+   "pubblicazioni": 51
+  },
+  {
+   "id": 288,
+   "simbolo": "DU",
+   "nome": "Medumba",
+   "nome_vernacolare": "Bangangté",
+   "iso": "  ",
+   "pubblicazioni": 103
+  },
+  {
+   "id": 289,
+   "simbolo": "NG",
+   "nome": "Ngambaye",
+   "nome_vernacolare": "Ngambay",
+   "iso": "  ",
+   "pubblicazioni": 100
+  },
+  {
+   "id": 292,
+   "simbolo": "QU",
+   "nome": "Quechua (Cuzco)",
+   "nome_vernacolare": "Quechua (Cusco)",
+   "iso": "  ",
+   "pubblicazioni": 736
+  },
+  {
+   "id": 293,
+   "simbolo": "QC",
+   "nome": "Quiche",
+   "nome_vernacolare": "Quiché",
+   "iso": "  ",
+   "pubblicazioni": 388
+  },
+  {
+   "id": 295,
+   "simbolo": "DM",
+   "nome": "Sidama",
+   "nome_vernacolare": "Sidaamu Afoo",
+   "iso": "  ",
+   "pubblicazioni": 441
+  },
+  {
+   "id": 296,
+   "simbolo": "AW",
+   "nome": "Tshwa",
+   "nome_vernacolare": "ciTshwa",
+   "iso": "  ",
+   "pubblicazioni": 501
+  },
+  {
+   "id": 297,
+   "simbolo": "HM",
+   "nome": "Hmong (White)",
+   "nome_vernacolare": "Hmoob Dawb",
+   "iso": "  ",
+   "pubblicazioni": 453
+  },
+  {
+   "id": 298,
+   "simbolo": "RD",
+   "nome": "Kurdish Kurmanji",
+   "nome_vernacolare": "Kurdî (Kurmancî)",
+   "iso": "  ",
+   "pubblicazioni": 295
+  },
+  {
+   "id": 301,
+   "simbolo": "RH",
+   "nome": "Romansh (Ladin)",
+   "nome_vernacolare": "Rumantsch (Ladin)",
+   "iso": "rm",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 302,
+   "simbolo": "RHS",
+   "nome": "Romansh (Sursilvan)",
+   "nome_vernacolare": "romontsch (sursilvan)",
+   "iso": "rm",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 303,
+   "simbolo": "SHA",
+   "nome": "Shan",
+   "nome_vernacolare": "Shan",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 304,
+   "simbolo": "AJ",
+   "nome": "Azerbaijani (Cyrillic)",
+   "nome_vernacolare": "Aзәрбајҹан (кирил әлифбасы)",
+   "iso": "  ",
+   "pubblicazioni": 598
+  },
+  {
+   "id": 305,
+   "simbolo": "KAB",
+   "nome": "Kabiye",
+   "nome_vernacolare": "Kabɩyɛ",
+   "iso": "  ",
+   "pubblicazioni": 385
+  },
+  {
+   "id": 307,
+   "simbolo": "TAT",
+   "nome": "Tatar",
+   "nome_vernacolare": "татар",
+   "iso": "tt",
+   "pubblicazioni": 841
+  },
+  {
+   "id": 308,
+   "simbolo": "BY",
+   "nome": "Buryat",
+   "nome_vernacolare": "Буряад",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 309,
+   "simbolo": "GBA",
+   "nome": "Gbaya",
+   "nome_vernacolare": "Gbaya",
+   "iso": "  ",
+   "pubblicazioni": 106
+  },
+  {
+   "id": 310,
+   "simbolo": "NV",
+   "nome": "Navajo",
+   "nome_vernacolare": "Diné Bizaad",
+   "iso": "nv",
+   "pubblicazioni": 218
+  },
+  {
+   "id": 311,
+   "simbolo": "OB",
+   "nome": "To’abaita",
+   "nome_vernacolare": "Toabaita",
+   "iso": "  ",
+   "pubblicazioni": 52
+  },
+  {
+   "id": 313,
+   "simbolo": "OU",
+   "nome": "Moundang",
+   "nome_vernacolare": "Moundang",
+   "iso": "  ",
+   "pubblicazioni": 72
+  },
+  {
+   "id": 314,
+   "simbolo": "RM",
+   "nome": "Romany (Macedonia)",
+   "nome_vernacolare": "Romane (Makedonija)",
+   "iso": "  ",
+   "pubblicazioni": 329
+  },
+  {
+   "id": 315,
+   "simbolo": "RV",
+   "nome": "Roviana",
+   "nome_vernacolare": "Roviana",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 316,
+   "simbolo": "WL",
+   "nome": "Wolaita",
+   "nome_vernacolare": "Wolayttattuwa",
+   "iso": "  ",
+   "pubblicazioni": 608
+  },
+  {
+   "id": 317,
+   "simbolo": "MIS",
+   "nome": "Miskito",
+   "nome_vernacolare": "Miskitu",
+   "iso": "  ",
+   "pubblicazioni": 334
+  },
+  {
+   "id": 318,
+   "simbolo": "AZ",
+   "nome": "Kazakh",
+   "nome_vernacolare": "Қазақ",
+   "iso": "kk",
+   "pubblicazioni": 768
+  },
+  {
+   "id": 319,
+   "simbolo": "UG",
+   "nome": "Uighur (Cyrillic)",
+   "nome_vernacolare": "Уйғур (кирилл йезиғи)",
+   "iso": "ug",
+   "pubblicazioni": 380
+  },
+  {
+   "id": 320,
+   "simbolo": "KZ",
+   "nome": "Kirghiz",
+   "nome_vernacolare": "Кыргыз",
+   "iso": "ky",
+   "pubblicazioni": 853
+  },
+  {
+   "id": 321,
+   "simbolo": "AP",
+   "nome": "Aymara",
+   "nome_vernacolare": "Aymara",
+   "iso": "ay",
+   "pubblicazioni": 538
+  },
+  {
+   "id": 322,
+   "simbolo": "DT",
+   "nome": "Dakota",
+   "nome_vernacolare": "Dakota",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 323,
+   "simbolo": "EA",
+   "nome": "Enga",
+   "nome_vernacolare": "Enga",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 324,
+   "simbolo": "NC",
+   "nome": "Nicobarese",
+   "nome_vernacolare": "Nicobarese",
+   "iso": "  ",
+   "pubblicazioni": 177
+  },
+  {
+   "id": 326,
+   "simbolo": "LP",
+   "nome": "Saami (North)",
+   "nome_vernacolare": "Saami (North)",
+   "iso": "se",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 327,
+   "simbolo": "AD",
+   "nome": "Adyghe",
+   "nome_vernacolare": "Адыгабзэ",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 328,
+   "simbolo": "KHK",
+   "nome": "Khakass",
+   "nome_vernacolare": "Хакас",
+   "iso": "  ",
+   "pubblicazioni": 289
+  },
+  {
+   "id": 329,
+   "simbolo": "YK",
+   "nome": "Yakutsk",
+   "nome_vernacolare": "Сахалыы",
+   "iso": "  ",
+   "pubblicazioni": 148
+  },
+  {
+   "id": 330,
+   "simbolo": "KHA",
+   "nome": "Mongolian",
+   "nome_vernacolare": "Монгол",
+   "iso": "  ",
+   "pubblicazioni": 721
+  },
+  {
+   "id": 331,
+   "simbolo": "MAR",
+   "nome": "Mari",
+   "nome_vernacolare": "Марий",
+   "iso": "  ",
+   "pubblicazioni": 234
+  },
+  {
+   "id": 332,
+   "simbolo": "CU",
+   "nome": "Chuvash",
+   "nome_vernacolare": "Чӑвашла",
+   "iso": "cv",
+   "pubblicazioni": 419
+  },
+  {
+   "id": 333,
+   "simbolo": "KAD",
+   "nome": "Dusun",
+   "nome_vernacolare": "Dusun",
+   "iso": "  ",
+   "pubblicazioni": 33
+  },
+  {
+   "id": 334,
+   "simbolo": "JC",
+   "nome": "Popti’",
+   "nome_vernacolare": "Poptí",
+   "iso": "  ",
+   "pubblicazioni": 42
+  },
+  {
+   "id": 335,
+   "simbolo": "KAN",
+   "nome": "Akateko",
+   "nome_vernacolare": "Akateko",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 336,
+   "simbolo": "LAH",
+   "nome": "Lahu",
+   "nome_vernacolare": "Laˇhuˍ hkawˇ",
+   "iso": "  ",
+   "pubblicazioni": 242
+  },
+  {
+   "id": 337,
+   "simbolo": "KND",
+   "nome": "Konkani (Devanagari)",
+   "nome_vernacolare": "कोंकणी (देवनागरी)",
+   "iso": "  ",
+   "pubblicazioni": 15
+  },
+  {
+   "id": 338,
+   "simbolo": "ABK",
+   "nome": "Abkhaz",
+   "nome_vernacolare": "Аԥсуа",
+   "iso": "ab",
+   "pubblicazioni": 369
+  },
+  {
+   "id": 339,
+   "simbolo": "JL",
+   "nome": "Jula",
+   "nome_vernacolare": "Jula",
+   "iso": "  ",
+   "pubblicazioni": 492
+  },
+  {
+   "id": 341,
+   "simbolo": "ZR",
+   "nome": "Zarma",
+   "nome_vernacolare": "Zarma",
+   "iso": "  ",
+   "pubblicazioni": 61
+  },
+  {
+   "id": 342,
+   "simbolo": "BB",
+   "nome": "Bariba",
+   "nome_vernacolare": "Baatɔnum",
+   "iso": "  ",
+   "pubblicazioni": 123
+  },
+  {
+   "id": 343,
+   "simbolo": "OSS",
+   "nome": "Ossetian",
+   "nome_vernacolare": "Ирон",
+   "iso": "os",
+   "pubblicazioni": 846
+  },
+  {
+   "id": 346,
+   "simbolo": "LR",
+   "nome": "Lari",
+   "nome_vernacolare": "Kilari",
+   "iso": "  ",
+   "pubblicazioni": 216
+  },
+  {
+   "id": 347,
+   "simbolo": "KBY",
+   "nome": "Kabyle",
+   "nome_vernacolare": "Taqbaylit",
+   "iso": "  ",
+   "pubblicazioni": 233
+  },
+  {
+   "id": 348,
+   "simbolo": "KBR",
+   "nome": "Kabardin-Cherkess",
+   "nome_vernacolare": "Адыгэбзэ",
+   "iso": "  ",
+   "pubblicazioni": 303
+  },
+  {
+   "id": 349,
+   "simbolo": "BAL",
+   "nome": "Karachay-Balkar",
+   "nome_vernacolare": "Къарачай-малкъар",
+   "iso": "  ",
+   "pubblicazioni": 46
+  },
+  {
+   "id": 350,
+   "simbolo": "RDA",
+   "nome": "Kurdish Sorani",
+   "nome_vernacolare": "کوردی سۆرانی",
+   "iso": "  ",
+   "pubblicazioni": 39
+  },
+  {
+   "id": 351,
+   "simbolo": "KUK",
+   "nome": "Chin (Kuki)",
+   "nome_vernacolare": "Chin (Kuki)",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 352,
+   "simbolo": "LE",
+   "nome": "Lomwe",
+   "nome_vernacolare": "Elomwe",
+   "iso": "  ",
+   "pubblicazioni": 307
+  },
+  {
+   "id": 353,
+   "simbolo": "MAC",
+   "nome": "Macua",
+   "nome_vernacolare": "Emakhuwa",
+   "iso": "  ",
+   "pubblicazioni": 315
+  },
+  {
+   "id": 354,
+   "simbolo": "UE",
+   "nome": "Nuer",
+   "nome_vernacolare": "Thok Nath",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 355,
+   "simbolo": "SEN",
+   "nome": "Sena",
+   "nome_vernacolare": "Cisena",
+   "iso": "  ",
+   "pubblicazioni": 347
+  },
+  {
+   "id": 356,
+   "simbolo": "TJ",
+   "nome": "Tajiki",
+   "nome_vernacolare": "Тоҷикӣ",
+   "iso": "tg",
+   "pubblicazioni": 493
+  },
+  {
+   "id": 357,
+   "simbolo": "UZ",
+   "nome": "Uzbek",
+   "nome_vernacolare": "ўзбекча",
+   "iso": "uz",
+   "pubblicazioni": 646
+  },
+  {
+   "id": 358,
+   "simbolo": "DR",
+   "nome": "Uruund",
+   "nome_vernacolare": "Uruund",
+   "iso": "  ",
+   "pubblicazioni": 493
+  },
+  {
+   "id": 359,
+   "simbolo": "NW",
+   "nome": "Newari",
+   "nome_vernacolare": "नेवारी",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 360,
+   "simbolo": "ET",
+   "nome": "Bété",
+   "nome_vernacolare": "ˈBhɛtɩgbʋʋ",
+   "iso": "  ",
+   "pubblicazioni": 279
+  },
+  {
+   "id": 361,
+   "simbolo": "CO",
+   "nome": "Chuabo",
+   "nome_vernacolare": "Etxuwabo",
+   "iso": "  ",
+   "pubblicazioni": 306
+  },
+  {
+   "id": 362,
+   "simbolo": "VI",
+   "nome": "Tuvinian",
+   "nome_vernacolare": "Тыва",
+   "iso": "  ",
+   "pubblicazioni": 320
+  },
+  {
+   "id": 363,
+   "simbolo": "ZO",
+   "nome": "Chin (Zotung)",
+   "nome_vernacolare": "Chin (Zotung)",
+   "iso": "  ",
+   "pubblicazioni": 42
+  },
+  {
+   "id": 364,
+   "simbolo": "PJN",
+   "nome": "Punjabi (Shahmukhi)",
+   "nome_vernacolare": "پنجابی (شاہ مُکھی)",
+   "iso": "  ",
+   "pubblicazioni": 270
+  },
+  {
+   "id": 366,
+   "simbolo": "NB",
+   "nome": "Nambya",
+   "nome_vernacolare": "Nambya",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 367,
+   "simbolo": "DG",
+   "nome": "Dangme",
+   "nome_vernacolare": "Dangme",
+   "iso": "  ",
+   "pubblicazioni": 432
+  },
+  {
+   "id": 368,
+   "simbolo": "FF",
+   "nome": "Frafra",
+   "nome_vernacolare": "Farefare",
+   "iso": "  ",
+   "pubblicazioni": 272
+  },
+  {
+   "id": 369,
+   "simbolo": "KIN",
+   "nome": "Kinande",
+   "nome_vernacolare": "Kinande",
+   "iso": "  ",
+   "pubblicazioni": 224
+  },
+  {
+   "id": 370,
+   "simbolo": "KIT",
+   "nome": "Kituba",
+   "nome_vernacolare": "Kituba",
+   "iso": "  ",
+   "pubblicazioni": 190
+  },
+  {
+   "id": 373,
+   "simbolo": "ORR",
+   "nome": "Mahorian (Roman)",
+   "nome_vernacolare": "Shimaore (Alifuɓe)",
+   "iso": "  ",
+   "pubblicazioni": 27
+  },
+  {
+   "id": 374,
+   "simbolo": "KIP",
+   "nome": "Kipende",
+   "nome_vernacolare": "Kipende",
+   "iso": "  ",
+   "pubblicazioni": 267
+  },
+  {
+   "id": 375,
+   "simbolo": "BEL",
+   "nome": "Belorussian",
+   "nome_vernacolare": "Belorussian",
+   "iso": "be",
+   "pubblicazioni": 42
+  },
+  {
+   "id": 376,
+   "simbolo": "ALT",
+   "nome": "Altai",
+   "nome_vernacolare": "Алтай",
+   "iso": "  ",
+   "pubblicazioni": 308
+  },
+  {
+   "id": 377,
+   "simbolo": "BLN",
+   "nome": "Balinese",
+   "nome_vernacolare": "Bali",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 379,
+   "simbolo": "DO",
+   "nome": "Diola",
+   "nome_vernacolare": "Jóola",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 380,
+   "simbolo": "FO",
+   "nome": "Fon",
+   "nome_vernacolare": "Fɔngbe",
+   "iso": "  ",
+   "pubblicazioni": 365
+  },
+  {
+   "id": 381,
+   "simbolo": "FD",
+   "nome": "Fulfulde (Cameroon)",
+   "nome_vernacolare": "Fulfulde (Kamerun)",
+   "iso": "  ",
+   "pubblicazioni": 24
+  },
+  {
+   "id": 382,
+   "simbolo": "GN",
+   "nome": "Gokana",
+   "nome_vernacolare": "Gokana",
+   "iso": "  ",
+   "pubblicazioni": 261
+  },
+  {
+   "id": 383,
+   "simbolo": "IBI",
+   "nome": "Ibinda",
+   "nome_vernacolare": "Ibinda",
+   "iso": "  ",
+   "pubblicazioni": 279
+  },
+  {
+   "id": 384,
+   "simbolo": "IH",
+   "nome": "Esan",
+   "nome_vernacolare": "Esan",
+   "iso": "  ",
+   "pubblicazioni": 332
+  },
+  {
+   "id": 385,
+   "simbolo": "TCR",
+   "nome": "Bissau Guinean Creole",
+   "nome_vernacolare": "Kriol di Gine-Bisau",
+   "iso": "  ",
+   "pubblicazioni": 228
+  },
+  {
+   "id": 387,
+   "simbolo": "SL",
+   "nome": "Shilluk",
+   "nome_vernacolare": "Dhøg Cøllø",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 388,
+   "simbolo": "SBO",
+   "nome": "Serbian (Roman)",
+   "nome_vernacolare": "srpski (latinica)",
+   "iso": "sr",
+   "pubblicazioni": 2041
+  },
+  {
+   "id": 390,
+   "simbolo": "MSH",
+   "nome": "Mashi",
+   "nome_vernacolare": "Mashi",
+   "iso": "  ",
+   "pubblicazioni": 171
+  },
+  {
+   "id": 392,
+   "simbolo": "KSN",
+   "nome": "Kisonge",
+   "nome_vernacolare": "Kisongye",
+   "iso": "  ",
+   "pubblicazioni": 441
+  },
+  {
+   "id": 393,
+   "simbolo": "REA",
+   "nome": "Armenian",
+   "nome_vernacolare": "Հայերեն",
+   "iso": "hy",
+   "pubblicazioni": 1146
+  },
+  {
+   "id": 394,
+   "simbolo": "GCS",
+   "nome": "Scottish Gaelic",
+   "nome_vernacolare": "Gàidhlig",
+   "iso": "gd",
+   "pubblicazioni": 36
+  },
+  {
+   "id": 395,
+   "simbolo": "TOR",
+   "nome": "Toraja",
+   "nome_vernacolare": "Toraja",
+   "iso": "  ",
+   "pubblicazioni": 28
+  },
+  {
+   "id": 396,
+   "simbolo": "KM",
+   "nome": "Komi",
+   "nome_vernacolare": "Коми",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 397,
+   "simbolo": "LZ",
+   "nome": "Lezgian",
+   "nome_vernacolare": "Лезги",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 398,
+   "simbolo": "HE",
+   "nome": "Chechen",
+   "nome_vernacolare": "Нохчийн",
+   "iso": "ce",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 399,
+   "simbolo": "RCR",
+   "nome": "Réunion Creole",
+   "nome_vernacolare": "Kréol Rénioné",
+   "iso": "  ",
+   "pubblicazioni": 238
+  },
+  {
+   "id": 400,
+   "simbolo": "EZ",
+   "nome": "Erzya",
+   "nome_vernacolare": "Эрзянь",
+   "iso": "  ",
+   "pubblicazioni": 53
+  },
+  {
+   "id": 401,
+   "simbolo": "MAZ",
+   "nome": "Mazatec (Huautla)",
+   "nome_vernacolare": "Énná",
+   "iso": "  ",
+   "pubblicazioni": 414
+  },
+  {
+   "id": 402,
+   "simbolo": "MOK",
+   "nome": "Moksha",
+   "nome_vernacolare": "Мокшень",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 403,
+   "simbolo": "TZE",
+   "nome": "Tzeltal",
+   "nome_vernacolare": "Tseltal",
+   "iso": "  ",
+   "pubblicazioni": 455
+  },
+  {
+   "id": 404,
+   "simbolo": "TZO",
+   "nome": "Tzotzil",
+   "nome_vernacolare": "Tsotsil",
+   "iso": "  ",
+   "pubblicazioni": 720
+  },
+  {
+   "id": 405,
+   "simbolo": "UM",
+   "nome": "Udmurt",
+   "nome_vernacolare": "Удмурт",
+   "iso": "  ",
+   "pubblicazioni": 301
+  },
+  {
+   "id": 407,
+   "simbolo": "MAA",
+   "nome": "Chin (Mara)",
+   "nome_vernacolare": "Chin (Mara)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 408,
+   "simbolo": "TRN",
+   "nome": "Turkana",
+   "nome_vernacolare": "Ng'aturkana",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 409,
+   "simbolo": "NK",
+   "nome": "Nyaneka",
+   "nome_vernacolare": "Nyaneka",
+   "iso": "  ",
+   "pubblicazioni": 565
+  },
+  {
+   "id": 410,
+   "simbolo": "GZ",
+   "nome": "Gagauz",
+   "nome_vernacolare": "гaгaуз",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 412,
+   "simbolo": "WY",
+   "nome": "Wayuunaiki",
+   "nome_vernacolare": "Wayuunaiki",
+   "iso": "  ",
+   "pubblicazioni": 523
+  },
+  {
+   "id": 413,
+   "simbolo": "FT",
+   "nome": "Futuna (East)",
+   "nome_vernacolare": "Fakafutuna",
+   "iso": "  ",
+   "pubblicazioni": 40
+  },
+  {
+   "id": 414,
+   "simbolo": "BAK",
+   "nome": "Bashkir",
+   "nome_vernacolare": "башҡорт",
+   "iso": "ba",
+   "pubblicazioni": 444
+  },
+  {
+   "id": 415,
+   "simbolo": "RDC",
+   "nome": "Kurdish Kurmanji (Cyrillic)",
+   "nome_vernacolare": "К′öрди Кöрманщи (Кирили)",
+   "iso": "  ",
+   "pubblicazioni": 440
+  },
+  {
+   "id": 416,
+   "simbolo": "FS",
+   "nome": "Frisian",
+   "nome_vernacolare": "Frysk",
+   "iso": "fy",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 417,
+   "simbolo": "MAY",
+   "nome": "Maya",
+   "nome_vernacolare": "Maaya",
+   "iso": "  ",
+   "pubblicazioni": 815
+  },
+  {
+   "id": 418,
+   "simbolo": "AV",
+   "nome": "Avar",
+   "nome_vernacolare": "МагӀарул",
+   "iso": "av",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 419,
+   "simbolo": "LAD",
+   "nome": "Ladin (Gardenese)",
+   "nome_vernacolare": "Ladin de Gherdëina",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 421,
+   "simbolo": "QUB",
+   "nome": "Quechua (Bolivia)",
+   "nome_vernacolare": "Quechua (Bolivia)",
+   "iso": "  ",
+   "pubblicazioni": 693
+  },
+  {
+   "id": 422,
+   "simbolo": "TOB",
+   "nome": "Toba",
+   "nome_vernacolare": "Toba",
+   "iso": "  ",
+   "pubblicazioni": 158
+  },
+  {
+   "id": 423,
+   "simbolo": "SKL",
+   "nome": "Sakalava",
+   "nome_vernacolare": "Sakalava",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 424,
+   "simbolo": "TNK",
+   "nome": "Tankarana",
+   "nome_vernacolare": "Tankarana",
+   "iso": "  ",
+   "pubblicazioni": 409
+  },
+  {
+   "id": 425,
+   "simbolo": "TOT",
+   "nome": "Totonac",
+   "nome_vernacolare": "Totonaco",
+   "iso": "  ",
+   "pubblicazioni": 524
+  },
+  {
+   "id": 426,
+   "simbolo": "VZ",
+   "nome": "Vezo",
+   "nome_vernacolare": "Vezo",
+   "iso": "  ",
+   "pubblicazioni": 300
+  },
+  {
+   "id": 427,
+   "simbolo": "MTU",
+   "nome": "Motu",
+   "nome_vernacolare": "Motu",
+   "iso": "  ",
+   "pubblicazioni": 295
+  },
+  {
+   "id": 428,
+   "simbolo": "PAA",
+   "nome": "Papiamento (Aruba)",
+   "nome_vernacolare": "Papiamento (Aruba)",
+   "iso": "  ",
+   "pubblicazioni": 282
+  },
+  {
+   "id": 429,
+   "simbolo": "LHK",
+   "nome": "Lhukonzo",
+   "nome_vernacolare": "Lhukonzo",
+   "iso": "  ",
+   "pubblicazioni": 484
+  },
+  {
+   "id": 430,
+   "simbolo": "HUV",
+   "nome": "Huave (San Mateo del Mar)",
+   "nome_vernacolare": "Ombeayiiüts",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 431,
+   "simbolo": "MX",
+   "nome": "Mixe (North Central)",
+   "nome_vernacolare": "Ayuk",
+   "iso": "  ",
+   "pubblicazioni": 474
+  },
+  {
+   "id": 432,
+   "simbolo": "TJO",
+   "nome": "Tojolabal",
+   "nome_vernacolare": "Tojol-abʼal",
+   "iso": "  ",
+   "pubblicazioni": 471
+  },
+  {
+   "id": 433,
+   "simbolo": "AJR",
+   "nome": "Azerbaijani",
+   "nome_vernacolare": "Azərbaycan",
+   "iso": "  ",
+   "pubblicazioni": 715
+  },
+  {
+   "id": 434,
+   "simbolo": "TSC",
+   "nome": "Torres Strait Creole",
+   "nome_vernacolare": "Tores Streit Kriol",
+   "iso": "  ",
+   "pubblicazioni": 30
+  },
+  {
+   "id": 435,
+   "simbolo": "ZPI",
+   "nome": "Zapotec (Isthmus)",
+   "nome_vernacolare": "diidxazá",
+   "iso": "  ",
+   "pubblicazioni": 594
+  },
+  {
+   "id": 436,
+   "simbolo": "ZPX",
+   "nome": "Zapotec (Ixtlán)",
+   "nome_vernacolare": "Dillexhon",
+   "iso": "  ",
+   "pubblicazioni": 105
+  },
+  {
+   "id": 437,
+   "simbolo": "ZPV",
+   "nome": "Zapotec (Villa Alta)",
+   "nome_vernacolare": "Didza Xhidza",
+   "iso": "  ",
+   "pubblicazioni": 143
+  },
+  {
+   "id": 438,
+   "simbolo": "ELI",
+   "nome": "Liberian English",
+   "nome_vernacolare": "Liberian English",
+   "iso": "  ",
+   "pubblicazioni": 190
+  },
+  {
+   "id": 439,
+   "simbolo": "BTS",
+   "nome": "Betsimisaraka (Northern)",
+   "nome_vernacolare": "Betsimisaraka Avaratra",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 440,
+   "simbolo": "TTP",
+   "nome": "Tetun Dili",
+   "nome_vernacolare": "Tetun Dili",
+   "iso": "  ",
+   "pubblicazioni": 710
+  },
+  {
+   "id": 442,
+   "simbolo": "CHL",
+   "nome": "Chol",
+   "nome_vernacolare": "ch'ol",
+   "iso": "  ",
+   "pubblicazioni": 459
+  },
+  {
+   "id": 443,
+   "simbolo": "NHT",
+   "nome": "Nahuatl (Northern Puebla)",
+   "nome_vernacolare": "Náhuatl del norte de Puebla",
+   "iso": "  ",
+   "pubblicazioni": 506
+  },
+  {
+   "id": 445,
+   "simbolo": "TRH",
+   "nome": "Tarahumara (Central)",
+   "nome_vernacolare": "Ralámuli",
+   "iso": "  ",
+   "pubblicazioni": 269
+  },
+  {
+   "id": 446,
+   "simbolo": "TRS",
+   "nome": "Tarascan",
+   "nome_vernacolare": "Purépecha",
+   "iso": "  ",
+   "pubblicazioni": 432
+  },
+  {
+   "id": 447,
+   "simbolo": "MBK",
+   "nome": "Mbukushu",
+   "nome_vernacolare": "Thimbukushu",
+   "iso": "  ",
+   "pubblicazioni": 44
+  },
+  {
+   "id": 448,
+   "simbolo": "IGE",
+   "nome": "Igede",
+   "nome_vernacolare": "Igede",
+   "iso": "  ",
+   "pubblicazioni": 255
+  },
+  {
+   "id": 449,
+   "simbolo": "QUA",
+   "nome": "Quechua (Ayacucho)",
+   "nome_vernacolare": "Quechua (Ayacucho)",
+   "iso": "  ",
+   "pubblicazioni": 733
+  },
+  {
+   "id": 477,
+   "simbolo": "PH",
+   "nome": "Pashto",
+   "nome_vernacolare": "پښتو",
+   "iso": "ps",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 478,
+   "simbolo": "MWI",
+   "nome": "Mentawai",
+   "nome_vernacolare": "Mentawai",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 479,
+   "simbolo": "LX",
+   "nome": "Luxembourgish",
+   "nome_vernacolare": "Lëtzebuergesch",
+   "iso": "lb",
+   "pubblicazioni": 125
+  },
+  {
+   "id": 480,
+   "simbolo": "MDI",
+   "nome": "Madi",
+   "nome_vernacolare": "Madi",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 482,
+   "simbolo": "RMS",
+   "nome": "Romany (Eastern Slovakia)",
+   "nome_vernacolare": "Romanes (vichodno Slovačiko)",
+   "iso": "  ",
+   "pubblicazioni": 231
+  },
+  {
+   "id": 484,
+   "simbolo": "NHG",
+   "nome": "Nahuatl (Guerrero)",
+   "nome_vernacolare": "Náhuatl de Guerrero",
+   "iso": "  ",
+   "pubblicazioni": 435
+  },
+  {
+   "id": 485,
+   "simbolo": "TLN",
+   "nome": "Tlapanec",
+   "nome_vernacolare": "me̱ʼpha̱a̱",
+   "iso": "  ",
+   "pubblicazioni": 361
+  },
+  {
+   "id": 486,
+   "simbolo": "NDA",
+   "nome": "Ndau",
+   "nome_vernacolare": "Cindau",
+   "iso": "  ",
+   "pubblicazioni": 334
+  },
+  {
+   "id": 487,
+   "simbolo": "DGR",
+   "nome": "Digor",
+   "nome_vernacolare": "Дигорон",
+   "iso": "os",
+   "pubblicazioni": 253
+  },
+  {
+   "id": 488,
+   "simbolo": "TZU",
+   "nome": "Tzutujil",
+   "nome_vernacolare": "Tzʼutujil",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 489,
+   "simbolo": "BLF",
+   "nome": "Blackfoot",
+   "nome_vernacolare": "Siksikáíitsi'powahsini",
+   "iso": "  ",
+   "pubblicazioni": 28
+  },
+  {
+   "id": 491,
+   "simbolo": "NOR",
+   "nome": "Northern Ojibwe (Roman)",
+   "nome_vernacolare": "Anishinaabemowin",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 492,
+   "simbolo": "NOS",
+   "nome": "Northern Ojibwe (Syllabics)",
+   "nome_vernacolare": "ᐊᓂᔑᓈᐯᒧᐎᓐ",
+   "iso": "  ",
+   "pubblicazioni": 22
+  },
+  {
+   "id": 493,
+   "simbolo": "LJ",
+   "nome": "Lenje",
+   "nome_vernacolare": "Cilenje",
+   "iso": "  ",
+   "pubblicazioni": 205
+  },
+  {
+   "id": 494,
+   "simbolo": "QUN",
+   "nome": "Quechua (Ancash)",
+   "nome_vernacolare": "Quechua (Ancash)",
+   "iso": "  ",
+   "pubblicazioni": 649
+  },
+  {
+   "id": 495,
+   "simbolo": "OC",
+   "nome": "Cree Omushkego (Roman)",
+   "nome_vernacolare": "Cree Omushkego (Roman)",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 499,
+   "simbolo": "AKA",
+   "nome": "Akha",
+   "nome_vernacolare": "Akha",
+   "iso": "  ",
+   "pubblicazioni": 272
+  },
+  {
+   "id": 500,
+   "simbolo": "FLM",
+   "nome": "Chin (Falam)",
+   "nome_vernacolare": "Chin (Falam)",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 504,
+   "simbolo": "WAM",
+   "nome": "Wa",
+   "nome_vernacolare": "Vax",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 505,
+   "simbolo": "XV",
+   "nome": "Xavante",
+   "nome_vernacolare": "A'uwẽ mreme",
+   "iso": "  ",
+   "pubblicazioni": 162
+  },
+  {
+   "id": 508,
+   "simbolo": "BSN",
+   "nome": "Bosnian",
+   "nome_vernacolare": "Bosanski",
+   "iso": "bs",
+   "pubblicazioni": 22
+  },
+  {
+   "id": 516,
+   "simbolo": "CHJ",
+   "nome": "Chuj",
+   "nome_vernacolare": "Chuj",
+   "iso": "  ",
+   "pubblicazioni": 116
+  },
+  {
+   "id": 519,
+   "simbolo": "CLT",
+   "nome": "Chontal (Tabasco)",
+   "nome_vernacolare": "Yokotʼan",
+   "iso": "  ",
+   "pubblicazioni": 35
+  },
+  {
+   "id": 520,
+   "simbolo": "CLX",
+   "nome": "Chontal (Oaxaca)",
+   "nome_vernacolare": "Lataiki",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 523,
+   "simbolo": "COR",
+   "nome": "Cora (El Nayar)",
+   "nome_vernacolare": "Cora (El Nayar)",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 525,
+   "simbolo": "HCH",
+   "nome": "Wixárika",
+   "nome_vernacolare": "Wixárika",
+   "iso": "  ",
+   "pubblicazioni": 152
+  },
+  {
+   "id": 526,
+   "simbolo": "HST",
+   "nome": "Huastec (San Luis Potosi)",
+   "nome_vernacolare": "Tének",
+   "iso": "  ",
+   "pubblicazioni": 301
+  },
+  {
+   "id": 528,
+   "simbolo": "IXL",
+   "nome": "Ixil",
+   "nome_vernacolare": "Ixil",
+   "iso": "  ",
+   "pubblicazioni": 72
+  },
+  {
+   "id": 536,
+   "simbolo": "MXG",
+   "nome": "Mixtec (Guerrero)",
+   "nome_vernacolare": "tu’un sâví",
+   "iso": "  ",
+   "pubblicazioni": 376
+  },
+  {
+   "id": 537,
+   "simbolo": "MXO",
+   "nome": "Mixtec (Huajuapan)",
+   "nome_vernacolare": "Tu̱ʼun ndaʼví",
+   "iso": "  ",
+   "pubblicazioni": 125
+  },
+  {
+   "id": 538,
+   "simbolo": "MYO",
+   "nome": "Mayo",
+   "nome_vernacolare": "Yoremnok'ki",
+   "iso": "  ",
+   "pubblicazioni": 121
+  },
+  {
+   "id": 539,
+   "simbolo": "MZH",
+   "nome": "Mazahua",
+   "nome_vernacolare": "Jñatrjo",
+   "iso": "  ",
+   "pubblicazioni": 187
+  },
+  {
+   "id": 540,
+   "simbolo": "NHH",
+   "nome": "Nahuatl (Huasteca)",
+   "nome_vernacolare": "Náhuatl de la Huasteca",
+   "iso": "  ",
+   "pubblicazioni": 480
+  },
+  {
+   "id": 541,
+   "simbolo": "NHV",
+   "nome": "Nahuatl (Veracruz)",
+   "nome_vernacolare": "Náhuatl de Veracruz",
+   "iso": "  ",
+   "pubblicazioni": 171
+  },
+  {
+   "id": 543,
+   "simbolo": "OTM",
+   "nome": "Otomi (Mezquital Valley)",
+   "nome_vernacolare": "Ñañu",
+   "iso": "  ",
+   "pubblicazioni": 298
+  },
+  {
+   "id": 547,
+   "simbolo": "PPG",
+   "nome": "O'odham (Tohono) ",
+   "nome_vernacolare": "O’odham",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 548,
+   "simbolo": "NGM",
+   "nome": "Ngigua (San Marcos Tlacoyalco)",
+   "nome_vernacolare": "Ngigua de San Marcos Tlacoyalco",
+   "iso": "  ",
+   "pubblicazioni": 135
+  },
+  {
+   "id": 549,
+   "simbolo": "PPU",
+   "nome": "Popoluca (Highland)",
+   "nome_vernacolare": "Popoluca de la Sierra",
+   "iso": "  ",
+   "pubblicazioni": 168
+  },
+  {
+   "id": 555,
+   "simbolo": "YQ",
+   "nome": "Yaqui",
+   "nome_vernacolare": "Jiiak noki",
+   "iso": "  ",
+   "pubblicazioni": 100
+  },
+  {
+   "id": 558,
+   "simbolo": "BEA",
+   "nome": "Beas",
+   "nome_vernacolare": "Beas",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 559,
+   "simbolo": "LL",
+   "nome": "Lele",
+   "nome_vernacolare": "Lele",
+   "iso": "  ",
+   "pubblicazioni": 121
+  },
+  {
+   "id": 560,
+   "simbolo": "LVA",
+   "nome": "Romany (Lovari, Hungary)",
+   "nome_vernacolare": "Romani (lovári, Ungriko Them)",
+   "iso": "  ",
+   "pubblicazioni": 80
+  },
+  {
+   "id": 562,
+   "simbolo": "OKP",
+   "nome": "Okpe",
+   "nome_vernacolare": "Okpe",
+   "iso": "  ",
+   "pubblicazioni": 360
+  },
+  {
+   "id": 563,
+   "simbolo": "KUR",
+   "nome": "Kuria",
+   "nome_vernacolare": "Igikuria",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 564,
+   "simbolo": "SHU",
+   "nome": "Shuar",
+   "nome_vernacolare": "Shuar",
+   "iso": "  ",
+   "pubblicazioni": 248
+  },
+  {
+   "id": 565,
+   "simbolo": "AGR",
+   "nome": "Awajun",
+   "nome_vernacolare": "Awajún",
+   "iso": "  ",
+   "pubblicazioni": 67
+  },
+  {
+   "id": 568,
+   "simbolo": "KLK",
+   "nome": "Kalmyk",
+   "nome_vernacolare": "Хальмг",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 570,
+   "simbolo": "ZPD",
+   "nome": "Zapotec (del Valle)",
+   "nome_vernacolare": "Ditsa",
+   "iso": "  ",
+   "pubblicazioni": 114
+  },
+  {
+   "id": 571,
+   "simbolo": "ZPG",
+   "nome": "Zapotec (Guevea)",
+   "nome_vernacolare": "Dîdzrie’",
+   "iso": "  ",
+   "pubblicazioni": 59
+  },
+  {
+   "id": 572,
+   "simbolo": "ZPL",
+   "nome": "Zapotec (Lachiguiri)",
+   "nome_vernacolare": "diitza",
+   "iso": "  ",
+   "pubblicazioni": 377
+  },
+  {
+   "id": 574,
+   "simbolo": "ZPT",
+   "nome": "Zapotec (Quiatoni)",
+   "nome_vernacolare": "Zapoteco de Quiatoni",
+   "iso": "  ",
+   "pubblicazioni": 24
+  },
+  {
+   "id": 575,
+   "simbolo": "ZPC",
+   "nome": "Zapotec (Quiavicuzas)",
+   "nome_vernacolare": "Ditz zea",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 576,
+   "simbolo": "DRG",
+   "nome": "Dargwa",
+   "nome_vernacolare": "Дарган",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 578,
+   "simbolo": "KMK",
+   "nome": "Kumyk",
+   "nome_vernacolare": "Къумукъ",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 579,
+   "simbolo": "LAK",
+   "nome": "Lak",
+   "nome_vernacolare": "Лакку",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 581,
+   "simbolo": "LUC",
+   "nome": "Saint Lucian Creole",
+   "nome_vernacolare": "Kwéyòl (Patwa)",
+   "iso": "  ",
+   "pubblicazioni": 228
+  },
+  {
+   "id": 582,
+   "simbolo": "TBN",
+   "nome": "Tabasaran",
+   "nome_vernacolare": "Табасаран",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 584,
+   "simbolo": "TWS",
+   "nome": "Twi (Asante)",
+   "nome_vernacolare": "Twi (Asante)",
+   "iso": "tw",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 585,
+   "simbolo": "UZR",
+   "nome": "Uzbek (Roman)",
+   "nome_vernacolare": "o‘zbekcha (lotin)",
+   "iso": "uz",
+   "pubblicazioni": 333
+  },
+  {
+   "id": 586,
+   "simbolo": "MOU",
+   "nome": "Moussey",
+   "nome_vernacolare": "Moussey",
+   "iso": "  ",
+   "pubblicazioni": 55
+  },
+  {
+   "id": 590,
+   "simbolo": "CMG",
+   "nome": "Comorian (Ngazidja)",
+   "nome_vernacolare": "Shikomori (Ngazidja)",
+   "iso": "  ",
+   "pubblicazioni": 83
+  },
+  {
+   "id": 593,
+   "simbolo": "UGA",
+   "nome": "Uighur (Arabic)",
+   "nome_vernacolare": "ئۇيغۇر تىلى ‏(‏ئەرەب يېزىقى‏)‏‏‏‏",
+   "iso": "ug",
+   "pubblicazioni": 180
+  },
+  {
+   "id": 594,
+   "simbolo": "GRF",
+   "nome": "Garifuna",
+   "nome_vernacolare": "Garifuna",
+   "iso": "  ",
+   "pubblicazioni": 473
+  },
+  {
+   "id": 595,
+   "simbolo": "LWX",
+   "nome": "Low German",
+   "nome_vernacolare": "Plautdietsch",
+   "iso": "  ",
+   "pubblicazioni": 442
+  },
+  {
+   "id": 596,
+   "simbolo": "MYG",
+   "nome": "Mayangna",
+   "nome_vernacolare": "Mayangna",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 597,
+   "simbolo": "GZR",
+   "nome": "Gagauz (Roman)",
+   "nome_vernacolare": "gagauz (latin)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 598,
+   "simbolo": "WC",
+   "nome": "Cree Woods (Roman)",
+   "nome_vernacolare": "Nîhithawîwin",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 599,
+   "simbolo": "JU",
+   "nome": "Arabic (Sudanese Creole)",
+   "nome_vernacolare": "Arabi Juba",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 600,
+   "simbolo": "SRM",
+   "nome": "Saramaccan",
+   "nome_vernacolare": "Saamakatöngö",
+   "iso": "  ",
+   "pubblicazioni": 356
+  },
+  {
+   "id": 601,
+   "simbolo": "GIB",
+   "nome": "Guarani (Bolivia)",
+   "nome_vernacolare": "Guaraní boliviano",
+   "iso": "  ",
+   "pubblicazioni": 152
+  },
+  {
+   "id": 606,
+   "simbolo": "BRI",
+   "nome": "Bribri",
+   "nome_vernacolare": "Bribri",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 607,
+   "simbolo": "CRB",
+   "nome": "Carib",
+   "nome_vernacolare": "Kariʼnia",
+   "iso": "  ",
+   "pubblicazioni": 139
+  },
+  {
+   "id": 608,
+   "simbolo": "NBL",
+   "nome": "Ndebele",
+   "nome_vernacolare": "IsiNdebele",
+   "iso": "nr",
+   "pubblicazioni": 468
+  },
+  {
+   "id": 609,
+   "simbolo": "NHC",
+   "nome": "Nahuatl (Central)",
+   "nome_vernacolare": "Náhuatl del centro",
+   "iso": "  ",
+   "pubblicazioni": 488
+  },
+  {
+   "id": 610,
+   "simbolo": "SWI",
+   "nome": "Swati",
+   "nome_vernacolare": "SiSwati",
+   "iso": "ss",
+   "pubblicazioni": 547
+  },
+  {
+   "id": 611,
+   "simbolo": "CTC",
+   "nome": "Crimean Tatar (Cyrillic)",
+   "nome_vernacolare": "Къырымтатар (кирилл)",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 614,
+   "simbolo": "KUA",
+   "nome": "Kuanua",
+   "nome_vernacolare": "Tinata Tuna",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 617,
+   "simbolo": "WCS",
+   "nome": "Cree Woods (Syllabics)",
+   "nome_vernacolare": "ᓀᐦᐃᖬᐁᐧᐃᐧᐣ",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 618,
+   "simbolo": "CYS",
+   "nome": "Cree Plains (Syllabics)",
+   "nome_vernacolare": "ᓀᐦᐃᔭᐁᐧᐃᐧᐣ",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 620,
+   "simbolo": "NGL",
+   "nome": "Ngangela",
+   "nome_vernacolare": "Ngangela",
+   "iso": "  ",
+   "pubblicazioni": 374
+  },
+  {
+   "id": 621,
+   "simbolo": "PTJ",
+   "nome": "Pitjantjatjara",
+   "nome_vernacolare": "Pitjantjatjara",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 628,
+   "simbolo": "RPN",
+   "nome": "Rapa Nui",
+   "nome_vernacolare": "Rapa Nui",
+   "iso": "  ",
+   "pubblicazioni": 142
+  },
+  {
+   "id": 630,
+   "simbolo": "MXC",
+   "nome": "Mixtec (Costa)",
+   "nome_vernacolare": "Saʼan xiñi saví",
+   "iso": "  ",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 631,
+   "simbolo": "MXN",
+   "nome": "Mixtec (Tilantongo)",
+   "nome_vernacolare": "Ñutnuu",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 632,
+   "simbolo": "MXT",
+   "nome": "Mixtec (Tlaxiaco)",
+   "nome_vernacolare": "Sa'an savi",
+   "iso": "  ",
+   "pubblicazioni": 119
+  },
+  {
+   "id": 635,
+   "simbolo": "ALQ",
+   "nome": "Algonquin",
+   "nome_vernacolare": "Anishinàbemowin",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 636,
+   "simbolo": "JWK",
+   "nome": "Jiwaka",
+   "nome_vernacolare": "Jiwaka Yu",
+   "iso": "  ",
+   "pubblicazioni": 99
+  },
+  {
+   "id": 637,
+   "simbolo": "KMP",
+   "nome": "Komi-Permyak",
+   "nome_vernacolare": "Коми-пермяцкӧй",
+   "iso": "  ",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 639,
+   "simbolo": "ORK",
+   "nome": "Orokaiva",
+   "nome_vernacolare": "Orokaiva",
+   "iso": "  ",
+   "pubblicazioni": 46
+  },
+  {
+   "id": 640,
+   "simbolo": "YC",
+   "nome": "Cree West Swampy (Roman)",
+   "nome_vernacolare": "Ininîmowin",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 641,
+   "simbolo": "YCS",
+   "nome": "Cree West Swampy (Syllabics)",
+   "nome_vernacolare": "ᐃᓂᓃᒧᐏᐣ",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 643,
+   "simbolo": "NGB",
+   "nome": "Ngabere",
+   "nome_vernacolare": "Ngäbere",
+   "iso": "  ",
+   "pubblicazioni": 508
+  },
+  {
+   "id": 646,
+   "simbolo": "CIN",
+   "nome": "Cinyanja",
+   "nome_vernacolare": "Cinyanja",
+   "iso": "ny",
+   "pubblicazioni": 464
+  },
+  {
+   "id": 647,
+   "simbolo": "CPC",
+   "nome": "Curripaco",
+   "nome_vernacolare": "Curripaco",
+   "iso": "  ",
+   "pubblicazioni": 61
+  },
+  {
+   "id": 648,
+   "simbolo": "EMB",
+   "nome": "Emberá (Catío)",
+   "nome_vernacolare": "Embera Katio",
+   "iso": "  ",
+   "pubblicazioni": 305
+  },
+  {
+   "id": 649,
+   "simbolo": "MPD",
+   "nome": "Mapudungun",
+   "nome_vernacolare": "Mapudungun",
+   "iso": "  ",
+   "pubblicazioni": 445
+  },
+  {
+   "id": 650,
+   "simbolo": "WCH",
+   "nome": "Wichi (Pilcomayo)",
+   "nome_vernacolare": "Wichí",
+   "iso": "  ",
+   "pubblicazioni": 192
+  },
+  {
+   "id": 653,
+   "simbolo": "KMY",
+   "nome": "Kamayo",
+   "nome_vernacolare": "Kamayo",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 655,
+   "simbolo": "IKN",
+   "nome": "Inakeanon",
+   "nome_vernacolare": "Inakeanon",
+   "iso": "  ",
+   "pubblicazioni": 82
+  },
+  {
+   "id": 656,
+   "simbolo": "KNR",
+   "nome": "Kinaray-a",
+   "nome_vernacolare": "Kinaray-a",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 660,
+   "simbolo": "ACH",
+   "nome": "Achi",
+   "nome_vernacolare": "Achi",
+   "iso": "  ",
+   "pubblicazioni": 60
+  },
+  {
+   "id": 661,
+   "simbolo": "AZA",
+   "nome": "Kazakh (Arabic)",
+   "nome_vernacolare": "قازاق ٴتىلى (ارابشا جازۋى)",
+   "iso": "kk",
+   "pubblicazioni": 319
+  },
+  {
+   "id": 662,
+   "simbolo": "ADH",
+   "nome": "Adhola",
+   "nome_vernacolare": "Dhopadhola",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 663,
+   "simbolo": "FTL",
+   "nome": "Fataluku",
+   "nome_vernacolare": "Fataluku",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 664,
+   "simbolo": "MKS",
+   "nome": "Makasae",
+   "nome_vernacolare": "Makasae",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 666,
+   "simbolo": "ODW",
+   "nome": "Odawa",
+   "nome_vernacolare": "Nishnaabemwin",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 668,
+   "simbolo": "NBZ",
+   "nome": "Ndebele (Zimbabwe)",
+   "nome_vernacolare": "Ndebele (Zimbabwe)",
+   "iso": "nd",
+   "pubblicazioni": 459
+  },
+  {
+   "id": 669,
+   "simbolo": "PIC",
+   "nome": "Paicî",
+   "nome_vernacolare": "Paicî",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 670,
+   "simbolo": "XRC",
+   "nome": "Xârâcùù",
+   "nome_vernacolare": "Xârâcùù",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 671,
+   "simbolo": "AHK",
+   "nome": "Ashaninka",
+   "nome_vernacolare": "Ashaninka",
+   "iso": "  ",
+   "pubblicazioni": 119
+  },
+  {
+   "id": 673,
+   "simbolo": "JCR",
+   "nome": "Jamaican Creole",
+   "nome_vernacolare": "Patwa",
+   "iso": "  ",
+   "pubblicazioni": 201
+  },
+  {
+   "id": 674,
+   "simbolo": "KRI",
+   "nome": "Krio",
+   "nome_vernacolare": "Krio",
+   "iso": "  ",
+   "pubblicazioni": 369
+  },
+  {
+   "id": 675,
+   "simbolo": "MHK",
+   "nome": "Mohawk",
+   "nome_vernacolare": "Kanienʼkéha",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 677,
+   "simbolo": "SRI",
+   "nome": "Sarnami",
+   "nome_vernacolare": "Sarnami Hindoestani",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 679,
+   "simbolo": "CHN",
+   "nome": "Min Nan (Quanzhou)",
+   "nome_vernacolare": "闽南语（泉州）",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 680,
+   "simbolo": "MWL",
+   "nome": "Mambwe-Lungu",
+   "nome_vernacolare": "Cimambwe-Lungu",
+   "iso": "  ",
+   "pubblicazioni": 453
+  },
+  {
+   "id": 681,
+   "simbolo": "TND",
+   "nome": "Tandroy",
+   "nome_vernacolare": "Tandroy",
+   "iso": "  ",
+   "pubblicazioni": 395
+  },
+  {
+   "id": 682,
+   "simbolo": "RNY",
+   "nome": "Rumanyo",
+   "nome_vernacolare": "Rumanyo",
+   "iso": "  ",
+   "pubblicazioni": 83
+  },
+  {
+   "id": 683,
+   "simbolo": "PLG",
+   "nome": "Pilagá",
+   "nome_vernacolare": "Pilagá",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 684,
+   "simbolo": "QIS",
+   "nome": "Quichua (Santiago del Estero)",
+   "nome_vernacolare": "Quichua (Santiago del Estero)",
+   "iso": "  ",
+   "pubblicazioni": 145
+  },
+  {
+   "id": 685,
+   "simbolo": "ABN",
+   "nome": "Abaknon",
+   "nome_vernacolare": "Abaknon",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 686,
+   "simbolo": "ARO",
+   "nome": "Arosi",
+   "nome_vernacolare": "Arosi",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 687,
+   "simbolo": "AKN",
+   "nome": "Aukan",
+   "nome_vernacolare": "Okanisitongo",
+   "iso": "  ",
+   "pubblicazioni": 359
+  },
+  {
+   "id": 688,
+   "simbolo": "AYW",
+   "nome": "Ayiwo",
+   "nome_vernacolare": "Ayiwo",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 689,
+   "simbolo": "BAU",
+   "nome": "Bauro",
+   "nome_vernacolare": "Bauro",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 690,
+   "simbolo": "GTN",
+   "nome": "Gitonga",
+   "nome_vernacolare": "Gitonga",
+   "iso": "  ",
+   "pubblicazioni": 293
+  },
+  {
+   "id": 691,
+   "simbolo": "IBL",
+   "nome": "Ibaloi",
+   "nome_vernacolare": "Ibaloi",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 692,
+   "simbolo": "KNY",
+   "nome": "Kankanaey",
+   "nome_vernacolare": "Kankanaey",
+   "iso": "  ",
+   "pubblicazioni": 72
+  },
+  {
+   "id": 693,
+   "simbolo": "KWA",
+   "nome": "Kwaio",
+   "nome_vernacolare": "Kwaio",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 694,
+   "simbolo": "MLG",
+   "nome": "Malango",
+   "nome_vernacolare": "Malango",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 695,
+   "simbolo": "DAR",
+   "nome": "Dari",
+   "nome_vernacolare": "دری",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 696,
+   "simbolo": "NTU",
+   "nome": "Natügu",
+   "nome_vernacolare": "Natügu",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 697,
+   "simbolo": "ABB",
+   "nome": "Abbey",
+   "nome_vernacolare": "Abɛ",
+   "iso": "  ",
+   "pubblicazioni": 290
+  },
+  {
+   "id": 698,
+   "simbolo": "ATI",
+   "nome": "Attié",
+   "nome_vernacolare": "Akie",
+   "iso": "  ",
+   "pubblicazioni": 264
+  },
+  {
+   "id": 699,
+   "simbolo": "GUR",
+   "nome": "Guéré",
+   "nome_vernacolare": "wɛ",
+   "iso": "  ",
+   "pubblicazioni": 256
+  },
+  {
+   "id": 700,
+   "simbolo": "MBD",
+   "nome": "Mbunda",
+   "nome_vernacolare": "Mbunda",
+   "iso": "  ",
+   "pubblicazioni": 435
+  },
+  {
+   "id": 701,
+   "simbolo": "RMB",
+   "nome": "Romany (Western Bulgaria)",
+   "nome_vernacolare": "Ромски (западна България)",
+   "iso": "  ",
+   "pubblicazioni": 117
+  },
+  {
+   "id": 702,
+   "simbolo": "TPR",
+   "nome": "Toupouri",
+   "nome_vernacolare": "Toupouri",
+   "iso": "  ",
+   "pubblicazioni": 115
+  },
+  {
+   "id": 703,
+   "simbolo": "YCB",
+   "nome": "Yacouba",
+   "nome_vernacolare": "Yaoba",
+   "iso": "  ",
+   "pubblicazioni": 296
+  },
+  {
+   "id": 710,
+   "simbolo": "NYU",
+   "nome": "Nyungwe",
+   "nome_vernacolare": "Cinyungwe",
+   "iso": "  ",
+   "pubblicazioni": 331
+  },
+  {
+   "id": 711,
+   "simbolo": "SOL",
+   "nome": "Soli",
+   "nome_vernacolare": "Cisoli",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 713,
+   "simbolo": "VRU",
+   "nome": "Voru",
+   "nome_vernacolare": "Võro",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 717,
+   "simbolo": "MME",
+   "nome": "Mambae (Ermera)",
+   "nome_vernacolare": "Mambae (Ermera)",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 719,
+   "simbolo": "MAP",
+   "nome": "Maya (Mopán)",
+   "nome_vernacolare": "T'an",
+   "iso": "  ",
+   "pubblicazioni": 110
+  },
+  {
+   "id": 720,
+   "simbolo": "NEN",
+   "nome": "Nsenga (Zambia)",
+   "nome_vernacolare": "Cinsenga",
+   "iso": "  ",
+   "pubblicazioni": 254
+  },
+  {
+   "id": 721,
+   "simbolo": "SYL",
+   "nome": "Sylheti (Bengali)",
+   "nome_vernacolare": "সেলেটি (বাংলা)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 723,
+   "simbolo": "BDY",
+   "nome": "Bidayuh (Bukar)",
+   "nome_vernacolare": "Bidayuh (Bukar)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 724,
+   "simbolo": "DGA",
+   "nome": "Dagaare",
+   "nome_vernacolare": "Dagaare",
+   "iso": "  ",
+   "pubblicazioni": 210
+  },
+  {
+   "id": 725,
+   "simbolo": "MJK",
+   "nome": "Mandjak",
+   "nome_vernacolare": "Manjaku",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 726,
+   "simbolo": "QIC",
+   "nome": "Quichua (Chimborazo)",
+   "nome_vernacolare": "Quichua (Chimborazo)",
+   "iso": "  ",
+   "pubblicazioni": 391
+  },
+  {
+   "id": 727,
+   "simbolo": "QII",
+   "nome": "Quichua (Imbabura)",
+   "nome_vernacolare": "Quichua (Imbabura)",
+   "iso": "  ",
+   "pubblicazioni": 503
+  },
+  {
+   "id": 728,
+   "simbolo": "QIP",
+   "nome": "Quichua (Pastaza)",
+   "nome_vernacolare": "Quichua (Pastaza)",
+   "iso": "  ",
+   "pubblicazioni": 162
+  },
+  {
+   "id": 729,
+   "simbolo": "QIT",
+   "nome": "Quichua (Tena)",
+   "nome_vernacolare": "Quichua (Tena)",
+   "iso": "  ",
+   "pubblicazioni": 243
+  },
+  {
+   "id": 730,
+   "simbolo": "HLA",
+   "nome": "Halia",
+   "nome_vernacolare": "Halia",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 731,
+   "simbolo": "NKM",
+   "nome": "Nukumanu",
+   "nome_vernacolare": "Nukumanu",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 732,
+   "simbolo": "SFC",
+   "nome": "Senoufo (Cebaara)",
+   "nome_vernacolare": "Senarì",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 733,
+   "simbolo": "TCN",
+   "nome": "Ticuna",
+   "nome_vernacolare": "Ticuna",
+   "iso": "  ",
+   "pubblicazioni": 255
+  },
+  {
+   "id": 735,
+   "simbolo": "SHC",
+   "nome": "Shipibo-Conibo",
+   "nome_vernacolare": "Shipibo-Conibo",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 737,
+   "simbolo": "CNO",
+   "nome": "Chinantec (Ojitlan)",
+   "nome_vernacolare": "Jújmi kiʼtsa köwɨ̱",
+   "iso": "  ",
+   "pubblicazioni": 101
+  },
+  {
+   "id": 738,
+   "simbolo": "RGS",
+   "nome": "Rungus",
+   "nome_vernacolare": "Momogun",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 743,
+   "simbolo": "RMG",
+   "nome": "Romany (Southern Greece)",
+   "nome_vernacolare": "Ρομανί (Νότια Ελλάδα)",
+   "iso": "  ",
+   "pubblicazioni": 336
+  },
+  {
+   "id": 745,
+   "simbolo": "CPI",
+   "nome": "Chopi",
+   "nome_vernacolare": "Txitxopi",
+   "iso": "  ",
+   "pubblicazioni": 273
+  },
+  {
+   "id": 746,
+   "simbolo": "MWM",
+   "nome": "Makhuwa-Meetto",
+   "nome_vernacolare": "Imakhuwa Imeetto",
+   "iso": "  ",
+   "pubblicazioni": 185
+  },
+  {
+   "id": 747,
+   "simbolo": "MKD",
+   "nome": "Makonde",
+   "nome_vernacolare": "Shimakonde",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 749,
+   "simbolo": "CAB",
+   "nome": "Cabécar (Tayní)",
+   "nome_vernacolare": "Cabécar",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 750,
+   "simbolo": "IMN",
+   "nome": "Iu Mien",
+   "nome_vernacolare": "Iu-Mienh",
+   "iso": "  ",
+   "pubblicazioni": 65
+  },
+  {
+   "id": 751,
+   "simbolo": "KAZ",
+   "nome": "Kadazan",
+   "nome_vernacolare": "Kadazan",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 752,
+   "simbolo": "ALU",
+   "nome": "Alur",
+   "nome_vernacolare": "Alur",
+   "iso": "  ",
+   "pubblicazioni": 364
+  },
+  {
+   "id": 753,
+   "simbolo": "BMB",
+   "nome": "Bembe",
+   "nome_vernacolare": "Kibembe",
+   "iso": "  ",
+   "pubblicazioni": 39
+  },
+  {
+   "id": 756,
+   "simbolo": "DNS",
+   "nome": "Dengese",
+   "nome_vernacolare": "Londengese",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 757,
+   "simbolo": "KYK",
+   "nome": "Kanyok",
+   "nome_vernacolare": "Ciin-kanyok",
+   "iso": "  ",
+   "pubblicazioni": 126
+  },
+  {
+   "id": 758,
+   "simbolo": "LND",
+   "nome": "Lendu",
+   "nome_vernacolare": "Baledha",
+   "iso": "  ",
+   "pubblicazioni": 143
+  },
+  {
+   "id": 759,
+   "simbolo": "MBL",
+   "nome": "Mbala",
+   "nome_vernacolare": "Gimbala",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 760,
+   "simbolo": "SGA",
+   "nome": "Sanga",
+   "nome_vernacolare": "Kisanga",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 761,
+   "simbolo": "SGM",
+   "nome": "Songomeno",
+   "nome_vernacolare": "Losongomino",
+   "iso": "  ",
+   "pubblicazioni": 134
+  },
+  {
+   "id": 764,
+   "simbolo": "YMB",
+   "nome": "Yombe",
+   "nome_vernacolare": "Yombe",
+   "iso": "  ",
+   "pubblicazioni": 126
+  },
+  {
+   "id": 765,
+   "simbolo": "SBR",
+   "nome": "Samburu",
+   "nome_vernacolare": "Sampur",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 766,
+   "simbolo": "CGW",
+   "nome": "Chitonga (Zimbabwe)",
+   "nome_vernacolare": "Chitonga (Zimbabwe)",
+   "iso": "  ",
+   "pubblicazioni": 331
+  },
+  {
+   "id": 767,
+   "simbolo": "KLZ",
+   "nome": "Kalanga (Zimbabwe)",
+   "nome_vernacolare": "Kalanga (Zimbabwe)",
+   "iso": "  ",
+   "pubblicazioni": 49
+  },
+  {
+   "id": 768,
+   "simbolo": "GLC",
+   "nome": "Galician",
+   "nome_vernacolare": "Galego",
+   "iso": "gl",
+   "pubblicazioni": 475
+  },
+  {
+   "id": 769,
+   "simbolo": "VLC",
+   "nome": "Valencian",
+   "nome_vernacolare": "Valencià",
+   "iso": "ca",
+   "pubblicazioni": 490
+  },
+  {
+   "id": 772,
+   "simbolo": "MYW",
+   "nome": "Manyawa",
+   "nome_vernacolare": "Emanyawa",
+   "iso": "  ",
+   "pubblicazioni": 206
+  },
+  {
+   "id": 773,
+   "simbolo": "GHB",
+   "nome": "Guahibo",
+   "nome_vernacolare": "Guahibo",
+   "iso": "  ",
+   "pubblicazioni": 84
+  },
+  {
+   "id": 774,
+   "simbolo": "PMN",
+   "nome": "Pemon",
+   "nome_vernacolare": "Pemon pe",
+   "iso": "  ",
+   "pubblicazioni": 55
+  },
+  {
+   "id": 775,
+   "simbolo": "PRA",
+   "nome": "Piaroa",
+   "nome_vernacolare": "Huo̧ttö̧ja̧",
+   "iso": "  ",
+   "pubblicazioni": 153
+  },
+  {
+   "id": 777,
+   "simbolo": "WRO",
+   "nome": "Warao",
+   "nome_vernacolare": "Warao",
+   "iso": "  ",
+   "pubblicazioni": 80
+  },
+  {
+   "id": 778,
+   "simbolo": "YKP",
+   "nome": "Yukpa",
+   "nome_vernacolare": "Yukpa",
+   "iso": "  ",
+   "pubblicazioni": 58
+  },
+  {
+   "id": 779,
+   "simbolo": "RDU",
+   "nome": "Kurdish Kurmanji (Caucasus)",
+   "nome_vernacolare": "Kurdî Kurmancî (Kavkazûs)",
+   "iso": "  ",
+   "pubblicazioni": 446
+  },
+  {
+   "id": 780,
+   "simbolo": "KGL",
+   "nome": "Kikongo ya Leta",
+   "nome_vernacolare": "Kikongo ya leta",
+   "iso": "  ",
+   "pubblicazioni": 167
+  },
+  {
+   "id": 781,
+   "simbolo": "LGA",
+   "nome": "Lega",
+   "nome_vernacolare": "Lega",
+   "iso": "  ",
+   "pubblicazioni": 50
+  },
+  {
+   "id": 783,
+   "simbolo": "NGN",
+   "nome": "Ngbandi (Northern)",
+   "nome_vernacolare": "Ngbandi (ya Nɔrdi)",
+   "iso": "  ",
+   "pubblicazioni": 160
+  },
+  {
+   "id": 785,
+   "simbolo": "TPO",
+   "nome": "Portuguese (Portugal)",
+   "nome_vernacolare": "Português (Portugal)",
+   "iso": "pt",
+   "pubblicazioni": 451
+  },
+  {
+   "id": 786,
+   "simbolo": "RMN",
+   "nome": "Romany (Northern Greece)",
+   "nome_vernacolare": "Ρομανί (Βόρεια Ελλάδα)",
+   "iso": "  ",
+   "pubblicazioni": 45
+  },
+  {
+   "id": 795,
+   "simbolo": "AMG",
+   "nome": "Amuzgo (Guerrero)",
+   "nome_vernacolare": "Ñoomndaa",
+   "iso": "  ",
+   "pubblicazioni": 105
+  },
+  {
+   "id": 796,
+   "simbolo": "GRZ",
+   "nome": "Guerze",
+   "nome_vernacolare": "Kpɛlɛɛwoo",
+   "iso": "  ",
+   "pubblicazioni": 176
+  },
+  {
+   "id": 797,
+   "simbolo": "TER",
+   "nome": "Terêna",
+   "nome_vernacolare": "Terêna",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 798,
+   "simbolo": "MCS",
+   "nome": "Macushi",
+   "nome_vernacolare": "Makusi",
+   "iso": "  ",
+   "pubblicazioni": 161
+  },
+  {
+   "id": 799,
+   "simbolo": "SUS",
+   "nome": "Susu",
+   "nome_vernacolare": "Soso xui",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 801,
+   "simbolo": "PMR",
+   "nome": "Pomeranian",
+   "nome_vernacolare": "Pomerisch",
+   "iso": "  ",
+   "pubblicazioni": 279
+  },
+  {
+   "id": 802,
+   "simbolo": "QUH",
+   "nome": "Quechua (Huaylla Wanca)",
+   "nome_vernacolare": "Quechua Wanca",
+   "iso": "  ",
+   "pubblicazioni": 79
+  },
+  {
+   "id": 803,
+   "simbolo": "PLR",
+   "nome": "Pular",
+   "nome_vernacolare": "Fula",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 804,
+   "simbolo": "SAR",
+   "nome": "Sar",
+   "nome_vernacolare": "Sar",
+   "iso": "  ",
+   "pubblicazioni": 62
+  },
+  {
+   "id": 805,
+   "simbolo": "JAR",
+   "nome": "Jarai",
+   "nome_vernacolare": "Jarai",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 812,
+   "simbolo": "RMP",
+   "nome": "Romany (Northern Russia)",
+   "nome_vernacolare": "Романы (русска рома)",
+   "iso": "  ",
+   "pubblicazioni": 33
+  },
+  {
+   "id": 813,
+   "simbolo": "BTD",
+   "nome": "Batak (Dairi)",
+   "nome_vernacolare": "Pakpak",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 814,
+   "simbolo": "SGR",
+   "nome": "Sangir",
+   "nome_vernacolare": "Sangir",
+   "iso": "  ",
+   "pubblicazioni": 154
+  },
+  {
+   "id": 815,
+   "simbolo": "GRC",
+   "nome": "Gourmanchéma",
+   "nome_vernacolare": "Gulmancema",
+   "iso": "  ",
+   "pubblicazioni": 73
+  },
+  {
+   "id": 816,
+   "simbolo": "KHN",
+   "nome": "Kuhane (Subiya)",
+   "nome_vernacolare": "Kuhane (Subiya)",
+   "iso": "  ",
+   "pubblicazioni": 150
+  },
+  {
+   "id": 817,
+   "simbolo": "BZK",
+   "nome": "Belize Kriol",
+   "nome_vernacolare": "Bileez Kriol",
+   "iso": "  ",
+   "pubblicazioni": 324
+  },
+  {
+   "id": 818,
+   "simbolo": "DKA",
+   "nome": "Dayak Ahe",
+   "nome_vernacolare": "Dayak Ahe",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 819,
+   "simbolo": "MGR",
+   "nome": "Mangareva",
+   "nome_vernacolare": "Mangareva",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 820,
+   "simbolo": "XPA",
+   "nome": "Pennsylvania German",
+   "nome_vernacolare": "Pennsylvania Dutch (Deitsh)",
+   "iso": "  ",
+   "pubblicazioni": 182
+  },
+  {
+   "id": 822,
+   "simbolo": "ABU",
+   "nome": "Abui",
+   "nome_vernacolare": "Alor Abui",
+   "iso": "  ",
+   "pubblicazioni": 102
+  },
+  {
+   "id": 823,
+   "simbolo": "ADZ",
+   "nome": "Arabic (Algeria)",
+   "nome_vernacolare": "العربيّة (الدّارجة الجزائريّة)",
+   "iso": "  ",
+   "pubblicazioni": 23
+  },
+  {
+   "id": 824,
+   "simbolo": "AMO",
+   "nome": "Arabic (Morocco)",
+   "nome_vernacolare": "العربية (الدارجة المغربية)",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 825,
+   "simbolo": "ATN",
+   "nome": "Arabic (Tunisia)",
+   "nome_vernacolare": "العربية (الدّارجة‏ ‏التّونسيّة)",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 826,
+   "simbolo": "HSK",
+   "nome": "Hunsrik",
+   "nome_vernacolare": "Hunsrik",
+   "iso": "  ",
+   "pubblicazioni": 374
+  },
+  {
+   "id": 827,
+   "simbolo": "TAL",
+   "nome": "Talian",
+   "nome_vernacolare": "Talian",
+   "iso": "  ",
+   "pubblicazioni": 359
+  },
+  {
+   "id": 828,
+   "simbolo": "QUL",
+   "nome": "Quechua (Huallaga Huánuco)",
+   "nome_vernacolare": "Quechua de Huánuco (Huallaga)",
+   "iso": "  ",
+   "pubblicazioni": 243
+  },
+  {
+   "id": 830,
+   "simbolo": "RMA",
+   "nome": "Romany (Argentina)",
+   "nome_vernacolare": "Romanes Kalderash",
+   "iso": "  ",
+   "pubblicazioni": 174
+  },
+  {
+   "id": 831,
+   "simbolo": "LLO",
+   "nome": "Lolo",
+   "nome_vernacolare": "Ilolo",
+   "iso": "  ",
+   "pubblicazioni": 191
+  },
+  {
+   "id": 832,
+   "simbolo": "GAR",
+   "nome": "Garo (Abeng)",
+   "nome_vernacolare": "গারো (আবেং)",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 834,
+   "simbolo": "LTG",
+   "nome": "Latgalian",
+   "nome_vernacolare": "Latgalīšu",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 841,
+   "simbolo": "PQM",
+   "nome": "Poqomchi'",
+   "nome_vernacolare": "Poqomchi'",
+   "iso": "  ",
+   "pubblicazioni": 116
+  },
+  {
+   "id": 843,
+   "simbolo": "MGL",
+   "nome": "Mingrelian",
+   "nome_vernacolare": "მარგალური",
+   "iso": "  ",
+   "pubblicazioni": 310
+  },
+  {
+   "id": 846,
+   "simbolo": "LKT",
+   "nome": "Lakota",
+   "nome_vernacolare": "Lakotiya",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 848,
+   "simbolo": "TYW",
+   "nome": "Tyrewuju",
+   "nome_vernacolare": "Tilewuyu",
+   "iso": "  ",
+   "pubblicazioni": 114
+  },
+  {
+   "id": 850,
+   "simbolo": "AHN",
+   "nome": "Ahanta",
+   "nome_vernacolare": "Aɣɩnda",
+   "iso": "  ",
+   "pubblicazioni": 217
+  },
+  {
+   "id": 852,
+   "simbolo": "DGB",
+   "nome": "Dagbani",
+   "nome_vernacolare": "Dagbanli",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 854,
+   "simbolo": "KSM",
+   "nome": "Kasem",
+   "nome_vernacolare": "Kasem",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 855,
+   "simbolo": "KKB",
+   "nome": "Konkomba",
+   "nome_vernacolare": "Konkomba",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 856,
+   "simbolo": "KUS",
+   "nome": "Kusaal",
+   "nome_vernacolare": "Kusaal",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 857,
+   "simbolo": "SHW",
+   "nome": "Sehwi",
+   "nome_vernacolare": "Sehwi",
+   "iso": "  ",
+   "pubblicazioni": 190
+  },
+  {
+   "id": 858,
+   "simbolo": "TMR",
+   "nome": "Turkmen",
+   "nome_vernacolare": "Turkmen",
+   "iso": "tk",
+   "pubblicazioni": 625
+  },
+  {
+   "id": 860,
+   "simbolo": "OTS",
+   "nome": "Otomi (State of Mexico)",
+   "nome_vernacolare": "Ñätho",
+   "iso": "  ",
+   "pubblicazioni": 144
+  },
+  {
+   "id": 862,
+   "simbolo": "RMC",
+   "nome": "Romany (Macedonia) Cyrillic",
+   "nome_vernacolare": "Романе (Македонија) кирилица",
+   "iso": "  ",
+   "pubblicazioni": 328
+  },
+  {
+   "id": 865,
+   "simbolo": "APM",
+   "nome": "Apma",
+   "nome_vernacolare": "Apma",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 866,
+   "simbolo": "EFN",
+   "nome": "Efate (North)",
+   "nome_vernacolare": "Efate (North)",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 867,
+   "simbolo": "EFS",
+   "nome": "Efate (South)",
+   "nome_vernacolare": "Efate (South)",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 868,
+   "simbolo": "HNO",
+   "nome": "Hano",
+   "nome_vernacolare": "Hano",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 870,
+   "simbolo": "PMA",
+   "nome": "Paama",
+   "nome_vernacolare": "Paama",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 871,
+   "simbolo": "BTA",
+   "nome": "Betsimisaraka (Southern)",
+   "nome_vernacolare": "Betsimisaraka Atsimo",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 872,
+   "simbolo": "DMR",
+   "nome": "Damara",
+   "nome_vernacolare": "Damara",
+   "iso": "  ",
+   "pubblicazioni": 271
+  },
+  {
+   "id": 880,
+   "simbolo": "BTK",
+   "nome": "Batak (Simalungun)",
+   "nome_vernacolare": "Batak (Simalungun)",
+   "iso": "  ",
+   "pubblicazioni": 184
+  },
+  {
+   "id": 881,
+   "simbolo": "MDR",
+   "nome": "Madura",
+   "nome_vernacolare": "Madura",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 882,
+   "simbolo": "CHW",
+   "nome": "Min Nan (Taiwan)",
+   "nome_vernacolare": "閩南語（台灣）",
+   "iso": "  ",
+   "pubblicazioni": 147
+  },
+  {
+   "id": 883,
+   "simbolo": "TEW",
+   "nome": "Tewe",
+   "nome_vernacolare": "Ciutee",
+   "iso": "  ",
+   "pubblicazioni": 200
+  },
+  {
+   "id": 884,
+   "simbolo": "ARH",
+   "nome": "Arhuaco",
+   "nome_vernacolare": "Arhuaco",
+   "iso": "  ",
+   "pubblicazioni": 158
+  },
+  {
+   "id": 887,
+   "simbolo": "PAZ",
+   "nome": "Páez",
+   "nome_vernacolare": "Nasa Yuwe",
+   "iso": "  ",
+   "pubblicazioni": 156
+  },
+  {
+   "id": 888,
+   "simbolo": "CGA",
+   "nome": "Changana (Zimbabwe)",
+   "nome_vernacolare": "Xichangana (Zimbabwe)",
+   "iso": "ts",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 890,
+   "simbolo": "CSC",
+   "nome": "Corsican",
+   "nome_vernacolare": "Corsu",
+   "iso": "co",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 892,
+   "simbolo": "NKY",
+   "nome": "Nkoya",
+   "nome_vernacolare": "Nkoya",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 893,
+   "simbolo": "QIB",
+   "nome": "Quichua (Chibuleo)",
+   "nome_vernacolare": "Quichua (Chibuleo)",
+   "iso": "  ",
+   "pubblicazioni": 24
+  },
+  {
+   "id": 895,
+   "simbolo": "BSH",
+   "nome": "Bushi",
+   "nome_vernacolare": "Kibushi",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 896,
+   "simbolo": "OTE",
+   "nome": "Otomi (Eastern Highland)",
+   "nome_vernacolare": "Ñuhü",
+   "iso": "  ",
+   "pubblicazioni": 82
+  },
+  {
+   "id": 897,
+   "simbolo": "IAA",
+   "nome": "Iaai",
+   "nome_vernacolare": "Iaai",
+   "iso": "  ",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 898,
+   "simbolo": "KWN",
+   "nome": "Numèè (Kwenyii)",
+   "nome_vernacolare": "Kwényï",
+   "iso": "  ",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 899,
+   "simbolo": "YNG",
+   "nome": "Yuanga",
+   "nome_vernacolare": "Yuanga",
+   "iso": "  ",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 905,
+   "simbolo": "RML",
+   "nome": "Romany (Albania)",
+   "nome_vernacolare": "rome (Shqipëri)",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 906,
+   "simbolo": "HSV",
+   "nome": "Huastec (Veracruz)",
+   "nome_vernacolare": "Tének de Veracruz",
+   "iso": "  ",
+   "pubblicazioni": 44
+  },
+  {
+   "id": 907,
+   "simbolo": "SGH",
+   "nome": "Shughni",
+   "nome_vernacolare": "Шуғнонӣ",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 908,
+   "simbolo": "NKN",
+   "nome": "Kyangonde",
+   "nome_vernacolare": "Kyangonde",
+   "iso": "  ",
+   "pubblicazioni": 262
+  },
+  {
+   "id": 909,
+   "simbolo": "MNO",
+   "nome": "Mano",
+   "nome_vernacolare": "Maa",
+   "iso": "  ",
+   "pubblicazioni": 175
+  },
+  {
+   "id": 910,
+   "simbolo": "KRK",
+   "nome": "Karakalpak",
+   "nome_vernacolare": "Қарақалпақ",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 911,
+   "simbolo": "RMR",
+   "nome": "Romany (Romania)",
+   "nome_vernacolare": "Rromani (România)",
+   "iso": "  ",
+   "pubblicazioni": 205
+  },
+  {
+   "id": 912,
+   "simbolo": "UBM",
+   "nome": "Uab Meto",
+   "nome_vernacolare": "Timor Dawan",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 913,
+   "simbolo": "SAL",
+   "nome": "Saluan",
+   "nome_vernacolare": "Saluan",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 914,
+   "simbolo": "AMA",
+   "nome": "Mamasa",
+   "nome_vernacolare": "Mamasa",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 915,
+   "simbolo": "KRY",
+   "nome": "Kryashen",
+   "nome_vernacolare": "керәшен татар",
+   "iso": "tt",
+   "pubblicazioni": 6
+  },
+  {
+   "id": 916,
+   "simbolo": "SPL",
+   "nome": "Sepulana",
+   "nome_vernacolare": "Sepulana",
+   "iso": "  ",
+   "pubblicazioni": 313
+  },
+  {
+   "id": 918,
+   "simbolo": "CKE",
+   "nome": "Cherokee",
+   "nome_vernacolare": "ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 919,
+   "simbolo": "GCR",
+   "nome": "Guadeloupean Creole",
+   "nome_vernacolare": "Kréyòl Gwadloup",
+   "iso": "  ",
+   "pubblicazioni": 252
+  },
+  {
+   "id": 920,
+   "simbolo": "GNC",
+   "nome": "Guianese Creole",
+   "nome_vernacolare": "Kréyòl gwiyanè",
+   "iso": "  ",
+   "pubblicazioni": 207
+  },
+  {
+   "id": 921,
+   "simbolo": "YU",
+   "nome": "Central Alaskan Yupik",
+   "nome_vernacolare": "Central Alaskan Yupik",
+   "iso": "  ",
+   "pubblicazioni": 21
+  },
+  {
+   "id": 922,
+   "simbolo": "QNJ",
+   "nome": "Q'anjob'al",
+   "nome_vernacolare": "Q'anjob'al",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 928,
+   "simbolo": "HPI",
+   "nome": "Hopi",
+   "nome_vernacolare": "Hopi",
+   "iso": "  ",
+   "pubblicazioni": 54
+  },
+  {
+   "id": 929,
+   "simbolo": "MBA",
+   "nome": "Moba",
+   "nome_vernacolare": "Muaba",
+   "iso": "  ",
+   "pubblicazioni": 101
+  },
+  {
+   "id": 930,
+   "simbolo": "NGP",
+   "nome": "Nigerian Pidgin",
+   "nome_vernacolare": "Nigerian Pidgin",
+   "iso": "  ",
+   "pubblicazioni": 76
+  },
+  {
+   "id": 931,
+   "simbolo": "OBL",
+   "nome": "Obolo",
+   "nome_vernacolare": "Obolo",
+   "iso": "  ",
+   "pubblicazioni": 118
+  },
+  {
+   "id": 935,
+   "simbolo": "KSH",
+   "nome": "Kashubian",
+   "nome_vernacolare": "kaszëbsczi",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 936,
+   "simbolo": "SSN",
+   "nome": "Silesian",
+   "nome_vernacolare": "jynzyk Ślónska Cieszyńskigo",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 940,
+   "simbolo": "MHM",
+   "nome": "Makhuwa-Marrevone",
+   "nome_vernacolare": "Makhuwa-Marrevone",
+   "iso": "  ",
+   "pubblicazioni": 76
+  },
+  {
+   "id": 941,
+   "simbolo": "MHS",
+   "nome": "Makhuwa-Shirima",
+   "nome_vernacolare": "Makhuwa-Shirima",
+   "iso": "  ",
+   "pubblicazioni": 168
+  },
+  {
+   "id": 947,
+   "simbolo": "RMT",
+   "nome": "Romany (Poland)",
+   "nome_vernacolare": "romani (Polska Roma)",
+   "iso": "  ",
+   "pubblicazioni": 96
+  },
+  {
+   "id": 949,
+   "simbolo": "PLK",
+   "nome": "Palikúr",
+   "nome_vernacolare": "Palikur",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 953,
+   "simbolo": "AJG",
+   "nome": "Aja",
+   "nome_vernacolare": "Aja",
+   "iso": "  ",
+   "pubblicazioni": 281
+  },
+  {
+   "id": 954,
+   "simbolo": "AWA",
+   "nome": "Awapit",
+   "nome_vernacolare": "Awapit",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 956,
+   "simbolo": "CRE",
+   "nome": "San Andrés Creole",
+   "nome_vernacolare": "San Andrés Creole",
+   "iso": "  ",
+   "pubblicazioni": 48
+  },
+  {
+   "id": 957,
+   "simbolo": "EMC",
+   "nome": "Emberá (Chamí)",
+   "nome_vernacolare": "Ẽbẽra beɗea chamí",
+   "iso": "  ",
+   "pubblicazioni": 228
+  },
+  {
+   "id": 958,
+   "simbolo": "EMP",
+   "nome": "Emberá (Northern)",
+   "nome_vernacolare": "Emberá dóbida",
+   "iso": "  ",
+   "pubblicazioni": 85
+  },
+  {
+   "id": 960,
+   "simbolo": "GBM",
+   "nome": "Guambiano",
+   "nome_vernacolare": "Namtrik",
+   "iso": "  ",
+   "pubblicazioni": 171
+  },
+  {
+   "id": 961,
+   "simbolo": "GG",
+   "nome": "Gogo",
+   "nome_vernacolare": "Cigogo",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 963,
+   "simbolo": "HH",
+   "nome": "Hehe",
+   "nome_vernacolare": "Kihehe",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 964,
+   "simbolo": "INB",
+   "nome": "Inga",
+   "nome_vernacolare": "Inga",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 965,
+   "simbolo": "KBV",
+   "nome": "Kabuverdianu",
+   "nome_vernacolare": "Kabuverdianu",
+   "iso": "  ",
+   "pubblicazioni": 433
+  },
+  {
+   "id": 967,
+   "simbolo": "NDL",
+   "nome": "Ndali",
+   "nome_vernacolare": "Ichindali",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 969,
+   "simbolo": "PCM",
+   "nome": "Pidgin (Cameroon)",
+   "nome_vernacolare": "Pidgin for Cameroon",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 971,
+   "simbolo": "TUO",
+   "nome": "Tucano",
+   "nome_vernacolare": "Dahse ye",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 974,
+   "simbolo": "HMN",
+   "nome": "Hmong (Green)",
+   "nome_vernacolare": "Moob Ntsuab",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 975,
+   "simbolo": "KMB",
+   "nome": "Kambera",
+   "nome_vernacolare": "Kambera (Sumba Timur)",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 979,
+   "simbolo": "MHL",
+   "nome": "Maithili",
+   "nome_vernacolare": "मैथिली",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 981,
+   "simbolo": "PHN",
+   "nome": "Pehuenche",
+   "nome_vernacolare": "Chedungun (pewenche)",
+   "iso": "  ",
+   "pubblicazioni": 147
+  },
+  {
+   "id": 982,
+   "simbolo": "SRG",
+   "nome": "Surigaonon",
+   "nome_vernacolare": "Surigaonon",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 983,
+   "simbolo": "XSW",
+   "nome": "Swiss German",
+   "nome_vernacolare": "Schweizerdeutsch",
+   "iso": "  ",
+   "pubblicazioni": 63
+  },
+  {
+   "id": 984,
+   "simbolo": "TBW",
+   "nome": "Taabwa",
+   "nome_vernacolare": "Taabwa",
+   "iso": "  ",
+   "pubblicazioni": 180
+  },
+  {
+   "id": 985,
+   "simbolo": "TJU",
+   "nome": "Tajiki (Samarkand)",
+   "nome_vernacolare": "Тоҷикӣ (Самарқанд)",
+   "iso": "tg",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 986,
+   "simbolo": "TLR",
+   "nome": "Tamil (Roman)",
+   "nome_vernacolare": "Thamil (Rōman)",
+   "iso": "ta",
+   "pubblicazioni": 285
+  },
+  {
+   "id": 987,
+   "simbolo": "WJW",
+   "nome": "Wejewa",
+   "nome_vernacolare": "Wejewa (Sumba Barat)",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 988,
+   "simbolo": "HWU",
+   "nome": "Hawu",
+   "nome_vernacolare": "Sabu",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 989,
+   "simbolo": "KNM",
+   "nome": "Kunama",
+   "nome_vernacolare": "Kunama",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 991,
+   "simbolo": "AEY",
+   "nome": "Arabic (Egypt)",
+   "nome_vernacolare": "العربية (اللهجة المصرية)",
+   "iso": "  ",
+   "pubblicazioni": 88
+  },
+  {
+   "id": 996,
+   "simbolo": "CGM",
+   "nome": "Changana (Mozambique)",
+   "nome_vernacolare": "xiChangana (Moçambique)",
+   "iso": "ts",
+   "pubblicazioni": 339
+  },
+  {
+   "id": 997,
+   "simbolo": "FGN",
+   "nome": "Fang",
+   "nome_vernacolare": "Fang",
+   "iso": "  ",
+   "pubblicazioni": 234
+  },
+  {
+   "id": 999,
+   "simbolo": "MTC",
+   "nome": "Martiniquan Creole",
+   "nome_vernacolare": "Kréyol Matinik",
+   "iso": "  ",
+   "pubblicazioni": 175
+  },
+  {
+   "id": 1001,
+   "simbolo": "RME",
+   "nome": "Romany (Serbia)",
+   "nome_vernacolare": "Romane (Srbija)",
+   "iso": "  ",
+   "pubblicazioni": 277
+  },
+  {
+   "id": 1007,
+   "simbolo": "HRV",
+   "nome": "Haryanvi",
+   "nome_vernacolare": "Haryanvi",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 1009,
+   "simbolo": "CHG",
+   "nome": "Chinese (Shanghainese)",
+   "nome_vernacolare": "中文（上海话）",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 1012,
+   "simbolo": "AYI",
+   "nome": "Anyin (Indenie)",
+   "nome_vernacolare": "Anyin (Indenie)",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 1013,
+   "simbolo": "GHM",
+   "nome": "Ghomálá'",
+   "nome_vernacolare": "Bandjoun-Baham",
+   "iso": "  ",
+   "pubblicazioni": 100
+  },
+  {
+   "id": 1014,
+   "simbolo": "FFE",
+   "nome": "Fe'fe'",
+   "nome_vernacolare": "Bafang",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1016,
+   "simbolo": "SSA",
+   "nome": "Sesotho (South Africa)",
+   "nome_vernacolare": "Sesotho (South Africa)",
+   "iso": "st",
+   "pubblicazioni": 357
+  },
+  {
+   "id": 1020,
+   "simbolo": "SHD",
+   "nome": "Santhali (Devanagari)",
+   "nome_vernacolare": "Santhali (Devanagari)",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1021,
+   "simbolo": "SHR",
+   "nome": "Santhali (Roman)",
+   "nome_vernacolare": "Santhali (Roman)",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1022,
+   "simbolo": "TBT",
+   "nome": "Tibetan",
+   "nome_vernacolare": "བོད་སྐད།",
+   "iso": "bo",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1023,
+   "simbolo": "NMB",
+   "nome": "Ngiemboon",
+   "nome_vernacolare": "Ngiemboon",
+   "iso": "  ",
+   "pubblicazioni": 127
+  },
+  {
+   "id": 1024,
+   "simbolo": "RMK",
+   "nome": "Romany (Kalderash, Russia)",
+   "nome_vernacolare": "Хомани (котлярско, Хусыя)",
+   "iso": "  ",
+   "pubblicazioni": 124
+  },
+  {
+   "id": 1025,
+   "simbolo": "RMV",
+   "nome": "Romany (Vlax, Russia)",
+   "nome_vernacolare": "Романи (влахитско, Россия)",
+   "iso": "  ",
+   "pubblicazioni": 321
+  },
+  {
+   "id": 1026,
+   "simbolo": "BDG",
+   "nome": "Badaga",
+   "nome_vernacolare": "படகா",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1031,
+   "simbolo": "BRW",
+   "nome": "Barwe",
+   "nome_vernacolare": "Barwe",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1032,
+   "simbolo": "RMX",
+   "nome": "Romany (Germany)",
+   "nome_vernacolare": "Romanes (Sinti)",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 1033,
+   "simbolo": "TTB",
+   "nome": "Tetun Belu",
+   "nome_vernacolare": "Tetun Belu",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 1034,
+   "simbolo": "PMO",
+   "nome": "Pamona",
+   "nome_vernacolare": "Pamona",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1035,
+   "simbolo": "KEI",
+   "nome": "Kei",
+   "nome_vernacolare": "Kei",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1036,
+   "simbolo": "TII",
+   "nome": "Tii",
+   "nome_vernacolare": "Rote Tii",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1039,
+   "simbolo": "QCC",
+   "nome": "Quichua (Cañar)",
+   "nome_vernacolare": "Quichua (Cañar)",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 1040,
+   "simbolo": "QCS",
+   "nome": "Quichua (Salasaca)",
+   "nome_vernacolare": "Quichua (Salasaca)",
+   "iso": "  ",
+   "pubblicazioni": 52
+  },
+  {
+   "id": 1041,
+   "simbolo": "NML",
+   "nome": "Ngombale",
+   "nome_vernacolare": "Babadjou",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 1049,
+   "simbolo": "KDA",
+   "nome": "Kunda",
+   "nome_vernacolare": "Kunda",
+   "iso": "  ",
+   "pubblicazioni": 28
+  },
+  {
+   "id": 1058,
+   "simbolo": "MNC",
+   "nome": "Mnong (Central)",
+   "nome_vernacolare": "Bunong",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 1059,
+   "simbolo": "JVN",
+   "nome": "Javanese (Eastern)",
+   "nome_vernacolare": "Jawa Timur",
+   "iso": "jv",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 1060,
+   "simbolo": "MNK",
+   "nome": "Mandinka",
+   "nome_vernacolare": "Mandinka",
+   "iso": "  ",
+   "pubblicazioni": 15
+  },
+  {
+   "id": 1062,
+   "simbolo": "ZZN",
+   "nome": "Zazaki (Northern)",
+   "nome_vernacolare": "Zazaca (Kuzey)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1063,
+   "simbolo": "TLS",
+   "nome": "Tamil (Spoken)",
+   "nome_vernacolare": "Tamil (Spoken)",
+   "iso": "ta",
+   "pubblicazioni": 72
+  },
+  {
+   "id": 1065,
+   "simbolo": "RMU",
+   "nome": "Romany (Ukraine)",
+   "nome_vernacolare": "Романі (ромунгри, Україна)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1066,
+   "simbolo": "HKI",
+   "nome": "Hakka (Indonesia)",
+   "nome_vernacolare": "Cina Khek (Indonesia)",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 1068,
+   "simbolo": "ITW",
+   "nome": "Itawit",
+   "nome_vernacolare": "Itawit",
+   "iso": "  ",
+   "pubblicazioni": 58
+  },
+  {
+   "id": 1071,
+   "simbolo": "CHC",
+   "nome": "Chinese Cantonese (Traditional)",
+   "nome_vernacolare": "中文繁體（廣東話）",
+   "iso": "  ",
+   "pubblicazioni": 3047
+  },
+  {
+   "id": 1072,
+   "simbolo": "CNS",
+   "nome": "Chinese Cantonese (Simplified)",
+   "nome_vernacolare": "中文简体（广东话）",
+   "iso": "  ",
+   "pubblicazioni": 3047
+  },
+  {
+   "id": 1073,
+   "simbolo": "LMB",
+   "nome": "Lambya",
+   "nome_vernacolare": "Chilambya",
+   "iso": "  ",
+   "pubblicazioni": 124
+  },
+  {
+   "id": 1074,
+   "simbolo": "BFI",
+   "nome": "Bafia",
+   "nome_vernacolare": "bafia (rikpag)",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 1076,
+   "simbolo": "ETN",
+   "nome": "Eton",
+   "nome_vernacolare": "Iton",
+   "iso": "  ",
+   "pubblicazioni": 22
+  },
+  {
+   "id": 1077,
+   "simbolo": "EWN",
+   "nome": "Ewondo",
+   "nome_vernacolare": "Ewondo",
+   "iso": "  ",
+   "pubblicazioni": 134
+  },
+  {
+   "id": 1078,
+   "simbolo": "MKA",
+   "nome": "Makaa",
+   "nome_vernacolare": "Makaa",
+   "iso": "  ",
+   "pubblicazioni": 92
+  },
+  {
+   "id": 1081,
+   "simbolo": "NJB",
+   "nome": "Njebi",
+   "nome_vernacolare": "Njebi",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1082,
+   "simbolo": "PUN",
+   "nome": "Punu",
+   "nome_vernacolare": "Punu",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1088,
+   "simbolo": "NNT",
+   "nome": "Nenets",
+   "nome_vernacolare": "Ненэцяʼ",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 1090,
+   "simbolo": "HMS",
+   "nome": "Hamshen (Cyrillic)",
+   "nome_vernacolare": "Һамшенерен (кирилица)",
+   "iso": "  ",
+   "pubblicazioni": 237
+  },
+  {
+   "id": 1093,
+   "simbolo": "CSN",
+   "nome": "Chinese (Sichuanese)",
+   "nome_vernacolare": "中文（四川话）",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1094,
+   "simbolo": "DYT",
+   "nome": "Dayak Tomun",
+   "nome_vernacolare": "Dayak Tomun",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1095,
+   "simbolo": "BNJ",
+   "nome": "Banjar",
+   "nome_vernacolare": "Banjar",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 1096,
+   "simbolo": "BKK",
+   "nome": "Bakoko",
+   "nome_vernacolare": "Bakoko",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 1097,
+   "simbolo": "TNN",
+   "nome": "Tunen",
+   "nome_vernacolare": "Banen",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1098,
+   "simbolo": "AWN",
+   "nome": "Awing",
+   "nome_vernacolare": "Awing",
+   "iso": "  ",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 1099,
+   "simbolo": "HMA",
+   "nome": "Hamshen (Armenian)",
+   "nome_vernacolare": "Համշեներեն (հայերեն)",
+   "iso": "  ",
+   "pubblicazioni": 236
+  },
+  {
+   "id": 1100,
+   "simbolo": "LBM",
+   "nome": "Limbum",
+   "nome_vernacolare": "Limbum",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 1102,
+   "simbolo": "MNT",
+   "nome": "Montenegrin",
+   "nome_vernacolare": "crnogorski",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1105,
+   "simbolo": "RMH",
+   "nome": "Romany (Chile)",
+   "nome_vernacolare": "Romane Jorajane",
+   "iso": "  ",
+   "pubblicazioni": 62
+  },
+  {
+   "id": 1110,
+   "simbolo": "IUR",
+   "nome": "Inuktitut (Roman)",
+   "nome_vernacolare": "Inuktitut",
+   "iso": "iu",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 1111,
+   "simbolo": "MTN",
+   "nome": "Matengo",
+   "nome_vernacolare": "Kimatengo",
+   "iso": "  ",
+   "pubblicazioni": 52
+  },
+  {
+   "id": 1112,
+   "simbolo": "FCA",
+   "nome": "French (Canada)",
+   "nome_vernacolare": "Français (Canada)",
+   "iso": "fr",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1113,
+   "simbolo": "MBO",
+   "nome": "Mbo",
+   "nome_vernacolare": "Mbo",
+   "iso": "  ",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 1114,
+   "simbolo": "NNF",
+   "nome": "Nenets (Forest)",
+   "nome_vernacolare": "Нешаӈ",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1115,
+   "simbolo": "MRH",
+   "nome": "Mari (Hill)",
+   "nome_vernacolare": "Кырык мары",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 1119,
+   "simbolo": "MTA",
+   "nome": "Meta'",
+   "nome_vernacolare": "Meta'",
+   "iso": "  ",
+   "pubblicazioni": 24
+  },
+  {
+   "id": 1121,
+   "simbolo": "OMB",
+   "nome": "Ombamba",
+   "nome_vernacolare": "Ombamba",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1122,
+   "simbolo": "KGG",
+   "nome": "Kaingang",
+   "nome_vernacolare": "Kaingang",
+   "iso": "  ",
+   "pubblicazioni": 147
+  },
+  {
+   "id": 1123,
+   "simbolo": "NGU",
+   "nome": "Nhengatu",
+   "nome_vernacolare": "Nheengatu",
+   "iso": "  ",
+   "pubblicazioni": 77
+  },
+  {
+   "id": 1124,
+   "simbolo": "STM",
+   "nome": "Sateré-Mawé",
+   "nome_vernacolare": "Satere Mawe",
+   "iso": "  ",
+   "pubblicazioni": 155
+  },
+  {
+   "id": 1125,
+   "simbolo": "WPH",
+   "nome": "Wapishana",
+   "nome_vernacolare": "Wapichana",
+   "iso": "  ",
+   "pubblicazioni": 67
+  },
+  {
+   "id": 1126,
+   "simbolo": "MNM",
+   "nome": "Manado Malay",
+   "nome_vernacolare": "Manado",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1127,
+   "simbolo": "NVC",
+   "nome": "Nivaclé",
+   "nome_vernacolare": "Nivaĉle",
+   "iso": "  ",
+   "pubblicazioni": 11
+  },
+  {
+   "id": 1128,
+   "simbolo": "MDH",
+   "nome": "Medan Hokkien",
+   "nome_vernacolare": "Hokkien Medan",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 1130,
+   "simbolo": "KOC",
+   "nome": "Korean (China)",
+   "nome_vernacolare": "조선어",
+   "iso": "ko",
+   "pubblicazioni": 15
+  },
+  {
+   "id": 1132,
+   "simbolo": "PGW",
+   "nome": "Pidgin (West Africa)",
+   "nome_vernacolare": "Pidgin (West Africa)",
+   "iso": "  ",
+   "pubblicazioni": 276
+  },
+  {
+   "id": 1133,
+   "simbolo": "RMF",
+   "nome": "Romany (France)",
+   "nome_vernacolare": "Romanes (Manouche)",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1134,
+   "simbolo": "BRM",
+   "nome": "Berom",
+   "nome_vernacolare": "Berom",
+   "iso": "  ",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 1135,
+   "simbolo": "BUR",
+   "nome": "Bura",
+   "nome_vernacolare": "Bura",
+   "iso": "  ",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 1136,
+   "simbolo": "EBA",
+   "nome": "Ebira",
+   "nome_vernacolare": "Ebira",
+   "iso": "  ",
+   "pubblicazioni": 46
+  },
+  {
+   "id": 1138,
+   "simbolo": "EJH",
+   "nome": "Ejagham",
+   "nome_vernacolare": "Ejagham",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 1139,
+   "simbolo": "FLN",
+   "nome": "Fulfulde (Nigerian)",
+   "nome_vernacolare": "Fulfulde (Nigerian)",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1141,
+   "simbolo": "KMW",
+   "nome": "Kamwe",
+   "nome_vernacolare": "Kamwe",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1147,
+   "simbolo": "TRW",
+   "nome": "Tarahumara (Western)",
+   "nome_vernacolare": "Tarahumara occidental",
+   "iso": "  ",
+   "pubblicazioni": 43
+  },
+  {
+   "id": 1156,
+   "simbolo": "CGG",
+   "nome": "Chiga",
+   "nome_vernacolare": "Orukiga",
+   "iso": "  ",
+   "pubblicazioni": 135
+  },
+  {
+   "id": 1157,
+   "simbolo": "HVU",
+   "nome": "Havu",
+   "nome_vernacolare": "Ekihavu",
+   "iso": "  ",
+   "pubblicazioni": 168
+  },
+  {
+   "id": 1159,
+   "simbolo": "MNI",
+   "nome": "Mansi",
+   "nome_vernacolare": "Маньси",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1160,
+   "simbolo": "DND",
+   "nome": "Dendi",
+   "nome_vernacolare": "Dendi",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 1162,
+   "simbolo": "CTI",
+   "nome": "Chorote (Iyojwa'ja)",
+   "nome_vernacolare": "Chorote (Iyojwa'ja)",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1166,
+   "simbolo": "GNB",
+   "nome": "Gun (Benin)",
+   "nome_vernacolare": "Gun (Benin)",
+   "iso": "  ",
+   "pubblicazioni": 29
+  },
+  {
+   "id": 1168,
+   "simbolo": "TWD",
+   "nome": "Teochew (Indonesia)",
+   "nome_vernacolare": "Teochew (Indonesia)",
+   "iso": "  ",
+   "pubblicazioni": 12
+  },
+  {
+   "id": 1171,
+   "simbolo": "CQC",
+   "nome": "Cakchiquel (Central)",
+   "nome_vernacolare": "Kaqchikel central",
+   "iso": "  ",
+   "pubblicazioni": 26
+  },
+  {
+   "id": 1172,
+   "simbolo": "CQE",
+   "nome": "Cakchiquel (Eastern)",
+   "nome_vernacolare": "Kaqchikel oriental",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 1183,
+   "simbolo": "PHM",
+   "nome": "Phimbi",
+   "nome_vernacolare": "Chiphimbi",
+   "iso": "  ",
+   "pubblicazioni": 213
+  },
+  {
+   "id": 1185,
+   "simbolo": "KKL",
+   "nome": "Kokola",
+   "nome_vernacolare": "Kokola",
+   "iso": "  ",
+   "pubblicazioni": 132
+  },
+  {
+   "id": 1189,
+   "simbolo": "BMN",
+   "nome": "Bamun",
+   "nome_vernacolare": "Shü Pamom",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1190,
+   "simbolo": "DTM",
+   "nome": "Ditammari",
+   "nome_vernacolare": "Ditammari",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1194,
+   "simbolo": "CBE",
+   "nome": "Cubeo",
+   "nome_vernacolare": "Cubeo",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 1195,
+   "simbolo": "GBR",
+   "nome": "Jiw",
+   "nome_vernacolare": "Jiw",
+   "iso": "  ",
+   "pubblicazioni": 37
+  },
+  {
+   "id": 1197,
+   "simbolo": "MLY",
+   "nome": "Malayo",
+   "nome_vernacolare": "Wiwa Dumuna",
+   "iso": "  ",
+   "pubblicazioni": 57
+  },
+  {
+   "id": 1216,
+   "simbolo": "MIR",
+   "nome": "Manipuri (Roman)",
+   "nome_vernacolare": "Manipuri (Roman)",
+   "iso": "  ",
+   "pubblicazioni": 107
+  },
+  {
+   "id": 1217,
+   "simbolo": "CTW",
+   "nome": "Choctaw",
+   "nome_vernacolare": "Choctaw",
+   "iso": "  ",
+   "pubblicazioni": 3
+  },
+  {
+   "id": 1218,
+   "simbolo": "RNN",
+   "nome": "Romanian (Vlach)",
+   "nome_vernacolare": "rumunski (vlaški)",
+   "iso": "ro",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1221,
+   "simbolo": "LGD",
+   "nome": "Longuda",
+   "nome_vernacolare": "Longuda",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1223,
+   "simbolo": "CMK",
+   "nome": "Como Karim",
+   "nome_vernacolare": "Como Karim",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1226,
+   "simbolo": "HWI",
+   "nome": "Shawi",
+   "nome_vernacolare": "Shawi",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 1228,
+   "simbolo": "QUM",
+   "nome": "Quechua (Lambayeque)",
+   "nome_vernacolare": "Quechua (Lambayeque)",
+   "iso": "  ",
+   "pubblicazioni": 80
+  },
+  {
+   "id": 1236,
+   "simbolo": "ZPS",
+   "nome": "Zapotec (Santiago Xanica)",
+   "nome_vernacolare": "Zapotec (Santiago Xanica)",
+   "iso": "  ",
+   "pubblicazioni": 13
+  },
+  {
+   "id": 1237,
+   "simbolo": "BNW",
+   "nome": "Baniwa",
+   "nome_vernacolare": "Baniua",
+   "iso": "  ",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 1238,
+   "simbolo": "NSM",
+   "nome": "Nsenga (Mozambique)",
+   "nome_vernacolare": "Chinsenga (Mozambique)",
+   "iso": "  ",
+   "pubblicazioni": 189
+  },
+  {
+   "id": 1240,
+   "simbolo": "TEM",
+   "nome": "Tem",
+   "nome_vernacolare": "Kotokoli",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1241,
+   "simbolo": "RVC",
+   "nome": "Romany (Moldova) Cyrillic",
+   "nome_vernacolare": "Романи (Молдова) кирилик",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1245,
+   "simbolo": "CPL",
+   "nome": "Cha'palaa",
+   "nome_vernacolare": "Cha'palaa",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1246,
+   "simbolo": "HWP",
+   "nome": "Hawai'i Pidgin",
+   "nome_vernacolare": "Hawai’i Pidgin",
+   "iso": "  ",
+   "pubblicazioni": 190
+  },
+  {
+   "id": 1249,
+   "simbolo": "MSS",
+   "nome": "Matses",
+   "nome_vernacolare": "Matses",
+   "iso": "  ",
+   "pubblicazioni": 20
+  },
+  {
+   "id": 1250,
+   "simbolo": "BHJ",
+   "nome": "Bhojpuri",
+   "nome_vernacolare": "भोजपुरी",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1253,
+   "simbolo": "QIX",
+   "nome": "Quichua (Cotopaxi)",
+   "nome_vernacolare": "Quichua (Cotopaxi)",
+   "iso": "  ",
+   "pubblicazioni": 78
+  },
+  {
+   "id": 1257,
+   "simbolo": "CDG",
+   "nome": "Chedungun (Coast)",
+   "nome_vernacolare": "Chedungun labquenche",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1258,
+   "simbolo": "STN",
+   "nome": "Sãotomense",
+   "nome_vernacolare": "Santome",
+   "iso": "  ",
+   "pubblicazioni": 45
+  },
+  {
+   "id": 1269,
+   "simbolo": "CSR",
+   "nome": "Cree Southern East (Roman)",
+   "nome_vernacolare": "Iinuuayimuwin",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1273,
+   "simbolo": "RCK",
+   "nome": "Romany (Meçkar)",
+   "nome_vernacolare": "Romany (Meçkar)",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1279,
+   "simbolo": "RSC",
+   "nome": "Rusyn (Carpathian)",
+   "nome_vernacolare": "Закарпатська русинська",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1283,
+   "simbolo": "KVM",
+   "nome": "Kuvale (Mucubal)",
+   "nome_vernacolare": "Kuvale (Mucubal)",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 1284,
+   "simbolo": "SGO",
+   "nome": "Songo",
+   "nome_vernacolare": "Songo",
+   "iso": "  ",
+   "pubblicazioni": 53
+  },
+  {
+   "id": 1285,
+   "simbolo": "MKQ",
+   "nome": "Mi'kmaq",
+   "nome_vernacolare": "Mi'kmaw",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1287,
+   "simbolo": "AHW",
+   "nome": "Achuar-Shiwiar",
+   "nome_vernacolare": "Achuar-Shiwiar",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1290,
+   "simbolo": "KAA",
+   "nome": "Kaiwá",
+   "nome_vernacolare": "Guarani (Kaiowá)",
+   "iso": "  ",
+   "pubblicazioni": 51
+  },
+  {
+   "id": 1291,
+   "simbolo": "GIM",
+   "nome": "Guaraní (Mbyá)",
+   "nome_vernacolare": "Guaraní (Mbyá)",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 1294,
+   "simbolo": "BNS",
+   "nome": "Blaan (Sarangani)",
+   "nome_vernacolare": "Blaan (Sarangani)",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1309,
+   "simbolo": "BHM",
+   "nome": "Bhojpuri (Mauritius)",
+   "nome_vernacolare": "Bhojpuri (Mauritius)",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1310,
+   "simbolo": "GDE",
+   "nome": "Gedeufa",
+   "nome_vernacolare": "Gede'uffa",
+   "iso": "  ",
+   "pubblicazioni": 73
+  },
+  {
+   "id": 1316,
+   "simbolo": "ANM",
+   "nome": "Anal",
+   "nome_vernacolare": "Anal",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1317,
+   "simbolo": "AWD",
+   "nome": "Awadhi",
+   "nome_vernacolare": "Awadhi",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1318,
+   "simbolo": "CGD",
+   "nome": "Chhattisgarhi (Devanagari)",
+   "nome_vernacolare": "छत्तीसगढ़ी (देवनागरी)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1322,
+   "simbolo": "DZ",
+   "nome": "Dzongkha (Tibetan)",
+   "nome_vernacolare": "Dzongkha (Tibetan)",
+   "iso": "dz",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1323,
+   "simbolo": "GRW",
+   "nome": "Garhwali",
+   "nome_vernacolare": "गढ़वाली",
+   "iso": "  ",
+   "pubblicazioni": 4
+  },
+  {
+   "id": 1324,
+   "simbolo": "KCC",
+   "nome": "Kutchi",
+   "nome_vernacolare": "કચ્છી",
+   "iso": "  ",
+   "pubblicazioni": 5
+  },
+  {
+   "id": 1325,
+   "simbolo": "KGH",
+   "nome": "Kangri (Hamirpuri)",
+   "nome_vernacolare": "कंगड़ी (हमीरपुरी)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1327,
+   "simbolo": "NGR",
+   "nome": "Naga (Rongmei)",
+   "nome_vernacolare": "Naga (Rongmei)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1328,
+   "simbolo": "NGD",
+   "nome": "Nagamese",
+   "nome_vernacolare": "Nagamese",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1332,
+   "simbolo": "SDD",
+   "nome": "Sadri (Devanagari)",
+   "nome_vernacolare": "सादरी (देवनागरी)",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1339,
+   "simbolo": "NDW",
+   "nome": "Ndau (Western)",
+   "nome_vernacolare": "Ndau (Western)",
+   "iso": "  ",
+   "pubblicazioni": 71
+  },
+  {
+   "id": 1340,
+   "simbolo": "RNK",
+   "nome": "Romanian (Vlach, Bačka)",
+   "nome_vernacolare": "rumunski (vlaški, Bačka)",
+   "iso": "ro",
+   "pubblicazioni": 7
+  },
+  {
+   "id": 1350,
+   "simbolo": "NDV",
+   "nome": "Sindhi (Devanagari)",
+   "nome_vernacolare": "Sindhi (Devanagari)",
+   "iso": "sd",
+   "pubblicazioni": 31
+  },
+  {
+   "id": 1355,
+   "simbolo": "KBL",
+   "nome": "Kibala",
+   "nome_vernacolare": "Kibala",
+   "iso": "  ",
+   "pubblicazioni": 15
+  },
+  {
+   "id": 1356,
+   "simbolo": "MBN",
+   "nome": "Mbangala",
+   "nome_vernacolare": "Mbangala",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1358,
+   "simbolo": "HDY",
+   "nome": "Hadiyya",
+   "nome_vernacolare": "Hadiyya",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1362,
+   "simbolo": "BNM",
+   "nome": "Banda (Mid-Southern)",
+   "nome_vernacolare": "Banda (Mid-Southern)",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 1363,
+   "simbolo": "MNJ",
+   "nome": "Mandja",
+   "nome_vernacolare": "Mandja",
+   "iso": "  ",
+   "pubblicazioni": 19
+  },
+  {
+   "id": 1364,
+   "simbolo": "YKM",
+   "nome": "Yakoma",
+   "nome_vernacolare": "Yakoma",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 1370,
+   "simbolo": "ACC",
+   "nome": "Achi (Cubulco)",
+   "nome_vernacolare": "Achí de Cubulco",
+   "iso": "  ",
+   "pubblicazioni": 46
+  },
+  {
+   "id": 1371,
+   "simbolo": "ACR",
+   "nome": "Achi (Rabinal)",
+   "nome_vernacolare": "Achí de Rabinal",
+   "iso": "  ",
+   "pubblicazioni": 48
+  },
+  {
+   "id": 1375,
+   "simbolo": "ASN",
+   "nome": "Arabic (Sudanese)",
+   "nome_vernacolare": "العربية (اللهجة السودانية)",
+   "iso": "  ",
+   "pubblicazioni": 48
+  },
+  {
+   "id": 1378,
+   "simbolo": "TME",
+   "nome": "Tamang (Eastern)",
+   "nome_vernacolare": "Tamang (Eastern)",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1380,
+   "simbolo": "HRM",
+   "nome": "Hindi (Roman)",
+   "nome_vernacolare": "Hindi (Roman)",
+   "iso": "hi",
+   "pubblicazioni": 33
+  },
+  {
+   "id": 1381,
+   "simbolo": "PJR",
+   "nome": "Punjabi (Roman)",
+   "nome_vernacolare": "Punjabi (Roman)",
+   "iso": "pa",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 1383,
+   "simbolo": "TNG",
+   "nome": "Portuguese (Angola)",
+   "nome_vernacolare": "Português (Angola)",
+   "iso": "pt",
+   "pubblicazioni": 67
+  },
+  {
+   "id": 1385,
+   "simbolo": "LKA",
+   "nome": "Lokaa",
+   "nome_vernacolare": "Lokaa",
+   "iso": "  ",
+   "pubblicazioni": 16
+  },
+  {
+   "id": 1390,
+   "simbolo": "KBB",
+   "nome": "Kannada (Baraha Bhaashe)",
+   "nome_vernacolare": "ಕನ್ನಡ (ಬರಹ ಭಾಷೆ)",
+   "iso": "kn",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1392,
+   "simbolo": "KBK",
+   "nome": "Kokborok",
+   "nome_vernacolare": "Kokborok",
+   "iso": "  ",
+   "pubblicazioni": 1
+  },
+  {
+   "id": 1395,
+   "simbolo": "GRM",
+   "nome": "Gujarati (Roman)",
+   "nome_vernacolare": "Gujarati (Roman)",
+   "iso": "",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1396,
+   "simbolo": "BCM",
+   "nome": "Bacama",
+   "nome_vernacolare": "Bacama",
+   "iso": "  ",
+   "pubblicazioni": 2
+  },
+  {
+   "id": 1397,
+   "simbolo": "GRB",
+   "nome": "Grebo",
+   "nome_vernacolare": "Grebo",
+   "iso": "  ",
+   "pubblicazioni": 41
+  },
+  {
+   "id": 1404,
+   "simbolo": "BHL",
+   "nome": "Bushilele",
+   "nome_vernacolare": "Bushilele",
+   "iso": "  ",
+   "pubblicazioni": 18
+  },
+  {
+   "id": 1405,
+   "simbolo": "KHB",
+   "nome": "Kihemba",
+   "nome_vernacolare": "Kihemba",
+   "iso": "  ",
+   "pubblicazioni": 25
+  },
+  {
+   "id": 1417,
+   "simbolo": "KFL",
+   "nome": "Kifulero",
+   "nome_vernacolare": "Kifuliiru",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1418,
+   "simbolo": "MAF",
+   "nome": "Mafa",
+   "nome_vernacolare": "Mafa",
+   "iso": "  ",
+   "pubblicazioni": 17
+  },
+  {
+   "id": 1421,
+   "simbolo": "MMU",
+   "nome": "Mbum",
+   "nome_vernacolare": "Mbum",
+   "iso": "  ",
+   "pubblicazioni": 8
+  },
+  {
+   "id": 1422,
+   "simbolo": "SWK",
+   "nome": "Swahili (Katanga)",
+   "nome_vernacolare": "Swahili (Katanga)",
+   "iso": "  ",
+   "pubblicazioni": 51
+  },
+  {
+   "id": 1424,
+   "simbolo": "RMY",
+   "nome": "Romany (Central Bulgaria)",
+   "nome_vernacolare": "Ромски (централна България)",
+   "iso": "  ",
+   "pubblicazioni": 38
+  },
+  {
+   "id": 1425,
+   "simbolo": "BTO",
+   "nome": "Betsileo",
+   "nome_vernacolare": "Betsileo",
+   "iso": "  ",
+   "pubblicazioni": 14
+  },
+  {
+   "id": 1426,
+   "simbolo": "KBT",
+   "nome": "Kabuverdianu (Barlaventu)",
+   "nome_vernacolare": "Kabuverdianu (Barlaventu)",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1428,
+   "simbolo": "PJS",
+   "nome": "Punjabi (Shahmukhi) Roman",
+   "nome_vernacolare": "Punjabi (Shahmukhi) Roman",
+   "iso": "  ",
+   "pubblicazioni": 10
+  },
+  {
+   "id": 1436,
+   "simbolo": "HTX",
+   "nome": "Hutterite German",
+   "nome_vernacolare": "Hutterite German",
+   "iso": "  ",
+   "pubblicazioni": 9
+  },
+  {
+   "id": 1437,
+   "simbolo": "TMH",
+   "nome": "Tsimihety",
+   "nome_vernacolare": "Tsimihety",
+   "iso": "  ",
+   "pubblicazioni": 10
+  }
+ ]
+}
