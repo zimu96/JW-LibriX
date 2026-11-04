@@ -57,8 +57,46 @@ sudo dnf install python3-pyqt6 python3-qt6webengine           # Fedora
 ./installa.sh        # facoltativo: icona e voce nel menu
 ```
 
-Oppure, quando disponibile, scarica l'**AppImage** dalla pagina delle
+## AppImage (la via più semplice)
+
+Un solo file, senza installare Python né PyQt6: va bene su qualunque distribuzione
+Linux a 64 bit. Si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases).
+
+**1. Mettila in una cartella fissa.** Consigliata, valida su ogni distro:
+
+```bash
+mkdir -p ~/Applications
+mv ~/Scaricati/JW-LibriX-V1-x86_64.AppImage ~/Applications/
+chmod +x ~/Applications/JW-LibriX-V1-x86_64.AppImage
+```
+
+**2. Avviala** con doppio clic o dal terminale:
+
+```bash
+~/Applications/JW-LibriX-V1-x86_64.AppImage
+```
+
+**Il menu delle applicazioni e l'icona.** Al primo avvio l'AppImage crea da sola
+la voce **JW LibriX** nell'elenco delle applicazioni, con la sua icona viola
+(`~/.local/share/applications/JWLibriX.desktop` e le icone in
+`~/.local/share/icons/hicolor/`). Non c'è nient'altro da installare.
+
+- La voce nel menu **è solo un collegamento al file AppImage**, con il suo percorso
+  scritto dentro. Per questo conviene metterla subito nel posto definitivo.
+- Se **sposti** l'AppImage, avviala una volta dalla nuova posizione: il
+  collegamento si aggiorna da solo. Finché non lo fai, la voce nel menu punta al
+  vecchio percorso e non parte.
+- Se la **cancelli**, togli anche la voce:
+  `rm ~/.local/share/applications/JWLibriX.desktop`
+- Per non creare mai la voce nel menu: `JWL_NO_INTEGRAZIONE=1 ./JW-LibriX-V1-x86_64.AppImage`
+
+**I tuoi dati restano fuori dall'AppImage**, nella cartella dati (di solito
+`~/.local/share/JW-LibriX`, o quella che scegli al primo avvio): database,
+pubblicazioni, video, immagini e il plugin timer. Sostituire o aggiornare
+l'AppImage non li tocca.
+
+Se invece preferisci i sorgenti, vedi «Avviare» qui sopra.
 
 I dettagli di come è fatta l'app stanno in [`LEGGIMI.md`](LEGGIMI.md).
 
