@@ -460,6 +460,33 @@ QMainWindow, #riga, #colonna, #contenitore {{
     background-color: {c['sfondo']};
 }}
 
+/* ---------- le caselle da spuntare ----------
+   La regola generica rende trasparente anche il quadratino della casella:
+   da spenta non aveva sfondo ne' bordo e sul fondo scuro non si vedeva.
+   Qui ha un bordo ben visibile, e da accesa e' piena di viola. */
+QCheckBox::indicator {{
+    width: 16px;
+    height: 16px;
+    border: 2px solid {c['grigio']};
+    border-radius: 4px;
+    background-color: {c['sfondo']};
+}}
+QCheckBox::indicator:hover {{
+    border-color: {c['testo']};
+}}
+QCheckBox::indicator:checked {{
+    background-color: {ACCENTO};
+    border-color: {ACCENTO};
+}}
+QCheckBox::indicator:disabled {{
+    border-color: {c['spento']};
+    background-color: transparent;
+}}
+QCheckBox::indicator:checked:disabled {{
+    background-color: {c['spento']};
+    border-color: {c['spento']};
+}}
+
 /* ---------- la fascia e la rail: viola in entrambi i temi ---------- */
 /* Il tema non le tocca.  Sono un pezzo dell'app, non qualcosa che si
    adatta al fondo: e' la regola che evita il lilla' slavato in scuro. */
