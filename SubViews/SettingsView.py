@@ -185,6 +185,8 @@ class SettingsView(QWidget):
 
     #: Un plugin e' stato acceso o spento: la finestra mostra o toglie il tasto.
     pluginCambiati = Signal()
+    _appControllata = Signal(str, str)
+    _appAggiornata = Signal(str)
     _installFinita = Signal(str)   # '' = ok, altrimenti l'errore (arriva dal thread)
 
 
@@ -1455,11 +1457,55 @@ class SettingsView(QWidget):
         return scheda
 
     def _informazioni(self) -> _Scheda:
-        from Utility import Versione
+        from Utility import AggiornaApp, Versione
         scheda = _Scheda("Informazioni", self)
         scheda.nota(f"JW-LibriX {Versione.ETICHETTA_APP} (versione {Versione.VERSIONE_APP})")
+
+        pulsante = QPushButton("Controlla aggiornamenti", self)
+        stato = {"ultima": ""}
+
+        def risultato(ultima: str, errore: str) -> None:
+            pulsante.setEnabled(True)
+            if errore:
+                pulsante.setText("Controlla aggiornamenti")
+                self.messaggio.emit(errore)
+            elif AggiornaApp.e_piu_nuova(ultima):
+                stato["ultima"] = ultima
+                pulsante.setText(f"Aggiorna alla {ultima}")
+                self.messaggio.emit(f"Versione {ultima} disponibile")
+            else:
+                pulsante.setText("Controlla aggiornamenti")
+                self.messaggio.emit("Hai gia' l'ultima versione")
+
+        def fatto(errore: str) -> None:
+            pulsante.setEnabled(True)
+            if errore:
+                self.messaggio.emit(errore)
+                return
+            pulsante.setText("Aggiornata: riavvia l'app")
+            pulsante.setEnabled(False)
+            self.messaggio.emit("App aggiornata: chiudi e riapri il programma")
+
+        self._appControllata.connect(risultato)
+        self._appAggiornata.connect(fatto)
+
+        def clic() -> None:
+            import threading
+            pulsante.setEnabled(False)
+            if stato["ultima"]:
+                pulsante.setText("Scarico…")
+                v = stato["ultima"]
+                threading.Thread(target=lambda: self._appAggiornata.emit(AggiornaApp.aggiorna(v)),
+                                 daemon=True).start()
+            else:
+                pulsante.setText("Controllo…")
+                threading.Thread(target=lambda: self._appControllata.emit(*AggiornaApp.ultima_versione()),
+                                 daemon=True).start()
+
+        pulsante.clicked.connect(clic)
+        scheda.aggiungi(_Riga("Aggiornamenti dell'app", pulsante, self))
         if Versione.url_app():
-            scheda.nota(f"Codice e aggiornamenti: {Versione.url_app()}")
+            scheda.nota(f"Codice e versioni: {Versione.url_app()}")
         return scheda
 
     # ------------------------------------------------------------------
