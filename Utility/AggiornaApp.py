@@ -21,6 +21,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 import urllib.parse
 import urllib.request
@@ -141,7 +142,16 @@ def _aggiorna_voce_menu(appimage: Path) -> None:
     if nuovo != testo:
         voce.write_text(nuovo, encoding="utf-8")
         voce.chmod(0o755)
-        os.system("update-desktop-database >/dev/null 2>&1")  # facoltativo
+        # Le cache dei menu (generale e di KDE) ricordano il vecchio percorso:
+        # senza rinfrescarle l'icona da' «file non trovato».  Tutto facoltativo.
+        for comando in (["update-desktop-database", str(voce.parent)],
+                        ["kbuildsycoca6"], ["kbuildsycoca5"]):
+            if shutil.which(comando[0]):
+                try:
+                    subprocess.run(comando, stdout=subprocess.DEVNULL,
+                                   stderr=subprocess.DEVNULL, timeout=30)
+                except (OSError, subprocess.SubprocessError):
+                    pass
 
 
 def aggiorna_appimage(asset: dict, avanzamento=None) -> str:
