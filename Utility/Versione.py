@@ -23,8 +23,8 @@ def url_app() -> str:
     return f"https://github.com/{REPO_APP}" if REPO_APP else ""
 
 
-def url_zip_timer() -> str:
-    """Da dove si scarica il timer.
+def url_zip_timer(versione: str = "") -> str:
+    """Da dove si scarica il timer (la `versione` e' senza «v»; vuota = quella fissata sopra).
 
     `JWL_TIMER_ZIP` (variabile d'ambiente) vince su tutto: serve per provare
     l'installazione con un file locale (`file:///...`) senza GitHub.
@@ -34,4 +34,4 @@ def url_zip_timer() -> str:
         return forzato
     if not REPO_TIMER:
         return ""
-    return f"https://github.com/{REPO_TIMER}/archive/refs/tags/v{VERSIONE_TIMER}.zip"
+    return f"https://github.com/{REPO_TIMER}/archive/refs/tags/v{versione or VERSIONE_TIMER}.zip"

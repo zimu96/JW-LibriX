@@ -57,13 +57,31 @@ def installato(nome: str) -> bool:
     return (cartella(nome) / str(dati.get("entrata") or "plugin.py")).is_file()
 
 
-def indirizzo(nome: str) -> str:
+def indirizzo(nome: str, versione: str = "") -> str:
     """Da dove si scarica il plugin (vuoto se non e' configurato)."""
     from Utility import Versione
-    return Versione.url_zip_timer() if nome == "timer" else ""
+    return Versione.url_zip_timer(versione) if nome == "timer" else ""
 
 
-def installa(nome: str, su_progresso=None) -> str:
+def ultima_versione(nome: str) -> tuple[str, str]:
+    """(versione_ultima, errore) dell'ultima release del plugin su GitHub, senza «v»."""
+    import json as _json
+    import urllib.request
+    from Utility import Versione
+    repo = Versione.REPO_TIMER if nome == "timer" else ""
+    if not repo:
+        return "", "Indirizzo del plugin non configurato."
+    try:
+        richiesta = urllib.request.Request(
+            f"https://api.github.com/repos/{repo}/releases/latest",
+            headers={"User-Agent": "JW-LibriX"})
+        with urllib.request.urlopen(richiesta, timeout=20) as r:
+            return str(_json.load(r).get("tag_name", "")).lstrip("vV"), ""
+    except Exception as errore:  # noqa: BLE001 - rete assente, nessuna release, limite
+        return "", f"Non riesco a controllare ({type(errore).__name__})"
+
+
+def installa(nome: str, su_progresso=None, versione: str = "") -> str:
     """Scarica il plugin da GitHub e lo mette nella cartella dati.
 
     Va chiamata **da un thread**, non dal main thread: scarica e scompatta.
@@ -80,7 +98,7 @@ def installa(nome: str, su_progresso=None) -> str:
     import urllib.request
     import zipfile
 
-    url = indirizzo(nome)
+    url = indirizzo(nome, versione)
     if not url:
         return "L'indirizzo del plugin non e' ancora configurato."
     try:
@@ -115,8 +133,16 @@ def installa(nome: str, su_progresso=None) -> str:
             sorgente = min(trovati, key=lambda p: len(p.parts))
             destinazione = cartella(nome)
             destinazione.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copytree(sorgente, destinazione, dirs_exist_ok=True,
+            nuovo = destinazione.with_name(destinazione.name + ".nuovo")
+            vecchio = destinazione.with_name(destinazione.name + ".vecchio")
+            for avanzo in (nuovo, vecchio):
+                shutil.rmtree(avanzo, ignore_errors=True)
+            shutil.copytree(sorgente, nuovo,
                             ignore=shutil.ignore_patterns("__pycache__", "*.pyc", ".git"))
+            if destinazione.exists():
+                destinazione.rename(vecchio)
+            nuovo.rename(destinazione)
+            shutil.rmtree(vecchio, ignore_errors=True)
     except (OSError, zipfile.BadZipFile) as errore:
         return f"{type(errore).__name__}: {errore}"
     return "" if installato(nome) else "Installazione incompleta: manca plugin.json o plugin.py."

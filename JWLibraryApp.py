@@ -1068,6 +1068,12 @@ def main() -> int:
         # Mantieni riferimento per non far garbage-collectare l'animazione
         finestra._fade_anim = anim
         QTimer.singleShot(900, finestra.prepara_in_anticipo)
+        # Controllo aggiornamenti (app e, se installato, timer): in background,
+        # il popup compare solo se c'e' qualcosa di nuovo.  Non sulla domanda
+        # «Dove salvo i dati?» del primo avvio.
+        if not SceltaCartellaDati.serve() and not os.environ.get("JWL_NO_CONTROLLO"):
+            from SubViews import AggiornamentoAvvio
+            QTimer.singleShot(1500, lambda: AggiornamentoAvvio.avvia(finestra))
 
     def _splash_finita(ok: bool, errori: list) -> None:
         stato["splash"] = (ok, errori)

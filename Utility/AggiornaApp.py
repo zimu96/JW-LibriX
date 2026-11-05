@@ -200,3 +200,34 @@ def aggiorna_appimage(asset: dict, avanzamento=None) -> str:
         parte.unlink(missing_ok=True)
         return f"Non riesco ad aggiornare ({type(errore).__name__}: {errore})"
     return ""
+
+
+# ---------------------------------------------------------------------------
+# Controllo all'avvio
+# ---------------------------------------------------------------------------
+
+def controlla_avvio() -> dict:
+    """Cosa c'e' da aggiornare, per il popup dell'avvio.  Da un thread.
+
+    {"app": asset (AppImage) | versione (sorgenti) | None,
+     "timer": versione nuova | None}
+    Il timer si controlla SOLO se e' installato.  Niente rete = tutto None.
+    """
+    from Utility import Plugin
+    risultato: dict = {"app": None, "timer": None}
+    if e_appimage():
+        asset, errore = appimage_nuova()
+        if asset and not errore:
+            risultato["app"] = asset
+    else:
+        ultima, errore = ultima_versione()
+        if ultima and not errore and e_piu_nuova(ultima):
+            risultato["app"] = ultima
+    if Plugin.installato("timer"):
+        ultima, errore = Plugin.ultima_versione("timer")
+        try:
+            if ultima and not errore and _numeri(ultima) > _numeri(Plugin.versione("timer") or "0"):
+                risultato["timer"] = ultima
+        except ValueError:
+            pass
+    return risultato
