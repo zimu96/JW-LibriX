@@ -148,9 +148,8 @@ def aggiorna_appimage(asset: dict, avanzamento=None) -> str:
     """Scarica l'AppImage nuova e sostituisce quella in uso.  '' = fatto.
 
     Il nome del file puo' cambiare con la versione (V1 -> V1.0.1): il file nuovo
-    prende il nome che ha su GitHub, il vecchio viene tolto e al suo posto resta
-    un collegamento al nuovo, cosi' anche le icone gia' fissate nella barra o nel
-    menu continuano ad aprire l'app.  La voce di menu viene riscritta subito e
+    prende il nome che ha su GitHub e il vecchio viene tolto: resta un solo file.
+    La voce di menu (e con lei l'icona nella barra) viene riscritta subito e
     `APPIMAGE` punta al file nuovo (il riavvio parte da li').
 
     `avanzamento(percentuale)` (opzionale) viene chiamata dal thread di download.
@@ -185,12 +184,6 @@ def aggiorna_appimage(asset: dict, avanzamento=None) -> str:
         os.replace(parte, nuova)        # un solo passaggio: o vecchio o nuovo
         if nuova != attuale:
             attuale.unlink(missing_ok=True)
-        for vecchio_percorso in {vecchia, attuale} - {nuova}:
-            try:                          # il nome vecchio resta valido (icone fissate)
-                vecchio_percorso.unlink(missing_ok=True)
-                vecchio_percorso.symlink_to(nuova.name)
-            except OSError:
-                pass
         os.environ["APPIMAGE"] = str(nuova)
         _aggiorna_voce_menu(nuova)
     except Exception as errore:  # noqa: BLE001
