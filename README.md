@@ -35,7 +35,7 @@ Tutto quello che ti aspetti da JW Library:
 - Nella **Home**: il testo del giorno, l'**argomento della settimana o del giorno** preso dal sito, e **tutte le notizie** (anche quelle dell'organizzazione), novità e aggiornamenti con «Scarica».
 - Barra di avanzamento viola per ogni scaricamento, e pulsante **Annulla scaricamento** ovunque.
 - Il **Timer adunanze** come plugin facoltativo (vedi sotto).
-- Controllo degli **aggiornamenti dell'app** dalle Impostazioni.
+- Controllo degli **aggiornamenti** all'avvio (app e, se installato, timer): un popup con una barra scarica tutto in un clic. Si può fare anche a mano dalle Impostazioni.
 - I dati stanno in una cartella a parte: un aggiornamento dell'app non li tocca.
 
 ## Il Timer (plugin facoltativo)
