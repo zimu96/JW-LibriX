@@ -188,6 +188,8 @@ class SettingsView(QWidget):
     pluginCambiati = Signal()
     _appControllata = Signal(str, str)
     _appAggiornata = Signal(str)
+    _appImageControllata = Signal(object, str)
+    _appAvanzamento = Signal(int)
     _installFinita = Signal(str)   # '' = ok, altrimenti l'errore (arriva dal thread)
 
 
@@ -1463,7 +1465,7 @@ class SettingsView(QWidget):
         scheda.nota(f"JW-LibriX {Versione.ETICHETTA_APP} (versione {Versione.VERSIONE_APP})")
 
         pulsante = QPushButton("Controlla aggiornamenti", self)
-        stato = {"ultima": ""}
+        stato = {"ultima": "", "asset": None}
 
         def risultato(ultima: str, errore: str) -> None:
             pulsante.setEnabled(True)
@@ -1482,18 +1484,56 @@ class SettingsView(QWidget):
             pulsante.setEnabled(True)
             if errore:
                 self.messaggio.emit(errore)
+                pulsante.setText("Controlla aggiornamenti")
+                stato["asset"] = None
+                return
+            if AggiornaApp.e_appimage():
+                pulsante.setText("Riavvio…")
+                pulsante.setEnabled(False)
+                self.messaggio.emit("App aggiornata: riavvio")
+                riavvia_app()
                 return
             pulsante.setText("Aggiornata: riavvia l'app")
             pulsante.setEnabled(False)
             self.messaggio.emit("App aggiornata: chiudi e riapri il programma")
 
+        def risultato_appimage(asset, errore: str) -> None:
+            pulsante.setEnabled(True)
+            if errore:
+                pulsante.setText("Controlla aggiornamenti")
+                self.messaggio.emit(errore)
+            elif asset:
+                stato["asset"] = asset
+                pulsante.setText("Aggiorna l'app")
+                self.messaggio.emit("Aggiornamento disponibile")
+            else:
+                pulsante.setText("Controlla aggiornamenti")
+                self.messaggio.emit("Hai gia' l'ultima versione")
+
+        def avanza(percento: int) -> None:
+            self._appAvanzamento.emit(percento)
+
         self._appControllata.connect(risultato)
         self._appAggiornata.connect(fatto)
+        self._appImageControllata.connect(risultato_appimage)
+        self._appAvanzamento.connect(lambda p: pulsante.setText(f"Scarico… {p}%"))
 
         def clic() -> None:
             import threading
             pulsante.setEnabled(False)
-            if stato["ultima"]:
+            if AggiornaApp.e_appimage():
+                if stato["asset"]:
+                    pulsante.setText("Scarico…")
+                    a = stato["asset"]
+                    threading.Thread(
+                        target=lambda: self._appAggiornata.emit(AggiornaApp.aggiorna_appimage(a, avanza)),
+                        daemon=True).start()
+                else:
+                    pulsante.setText("Controllo…")
+                    threading.Thread(
+                        target=lambda: self._appImageControllata.emit(*AggiornaApp.appimage_nuova()),
+                        daemon=True).start()
+            elif stato["ultima"]:
                 pulsante.setText("Scarico…")
                 v = stato["ultima"]
                 threading.Thread(target=lambda: self._appAggiornata.emit(AggiornaApp.aggiorna(v)),
