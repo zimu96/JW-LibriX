@@ -147,14 +147,39 @@ class _Controllo(QObject):
     trovato = Signal(object)
 
 
+def popup_aperto() -> bool:
+    """True se c'e' gia' un pop-up aperto (dell'app o del timer).
+
+    Quelli del timer stanno DENTRO la sua sezione (proprieta' «incorporato»):
+    non sono finestre e, se l'utente e' in un'altra sezione, non si vedono,
+    ma sono ancora aperti.
+    """
+    from PyQt6.QtWidgets import QApplication
+    app = QApplication.instance()
+    if app is None:
+        return False
+    if app.activeModalWidget() is not None:
+        return True
+    return any(isinstance(w, QDialog) and (
+                   w.isVisible() or (w.property("incorporato") and not w.isHidden()))
+               for w in app.allWidgets())
+
+
 def avvia(finestra) -> None:
     """Controlla in background e, se serve, mostra il popup sopra `finestra`."""
     controllo = _Controllo(finestra)
     finestra._controllo_aggiornamenti = controllo      # tiene vivo l'oggetto
 
     def mostra(trovato: dict) -> None:
-        if trovato.get("app") or trovato.get("timer"):
-            _Avviso(finestra, trovato).exec()
+        if not (trovato.get("app") or trovato.get("timer")):
+            return
+        # Un pop-up alla volta: se ce n'e' gia' uno aperto (ad esempio la
+        # domanda del timer sui cantici) si aspetta che sia chiuso.  Due uno
+        # sopra l'altro potevano lasciare l'app bloccata.
+        if popup_aperto():
+            QTimer.singleShot(700, lambda: mostra(trovato))
+            return
+        _Avviso(finestra, trovato).exec()
 
     controllo.trovato.connect(mostra)
 

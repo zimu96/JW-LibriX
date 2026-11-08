@@ -114,6 +114,15 @@ def appimage_nuova() -> tuple[dict | None, str]:
         richiesta = urllib.request.Request(url, headers={"User-Agent": "JW-LibriX"})
         with urllib.request.urlopen(richiesta, timeout=20) as r:
             dati = json.load(r)
+        # Mai tornare indietro: un'AppImage piu' nuova di quella su GitHub (ad
+        # esempio una di prova, non ancora pubblicata) non va «aggiornata» a
+        # quella vecchia.  A parita' di numero decide l'impronta (vedi sopra).
+        ultima = str(dati.get("tag_name", "")).lstrip("vV")
+        try:
+            if ultima and _numeri(ultima) < _numeri(Versione.VERSIONE_APP):
+                return None, ""
+        except ValueError:
+            pass
         asset = next((a for a in dati.get("assets", [])
                       if str(a.get("name", "")).lower().endswith(".appimage")), None)
         if not asset:

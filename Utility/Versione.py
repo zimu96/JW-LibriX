@@ -8,15 +8,16 @@ from __future__ import annotations
 import os
 
 #: La versione dell'app, come la vede l'utente («V1») e come numero.
-ETICHETTA_APP = "V1.0.1"
-VERSIONE_APP = "1.0.1"
+ETICHETTA_APP = "V1.0.2"
+VERSIONE_APP = "1.0.2"
 
 #: I repository su GitHub, nella forma «utente/nome».  Vuoto = non ancora creato.
 REPO_APP = "zimu96/JW-LibriX"
 REPO_TIMER = "zimu96/JW-LibriX-timer"
 
-#: La versione del plugin timer che l'app sa installare (tag su GitHub: v1.0.0).
-VERSIONE_TIMER = "1.0.0"
+#: Il timer si installa dall'ULTIMA release su GitHub; questa versione serve
+#: solo se GitHub non risponde alla domanda «qual e' l'ultima?».
+VERSIONE_TIMER = "1.0.5"
 
 
 def url_app() -> str:
