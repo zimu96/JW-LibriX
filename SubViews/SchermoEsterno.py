@@ -1040,7 +1040,15 @@ class SchermoEsterno(QWidget):
         if maniglia is not None:
             maniglia.setScreen(schermo)
         self.setGeometry(schermo.geometry())
-        self.showFullScreen()
+        # Come `showFullScreen()` ma senza la sua ultima riga, che chiede il
+        # fuoco: questa finestra non lo prende (`WindowDoesNotAcceptFocus`) e
+        # Qt scriveva «requestActivate() called for ...».  Arrivato mentre la
+        # schermata di avvio lavora ancora, la fermava su «messaggi con
+        # problemi» finche' non si premeva «Ignora e parti».
+        stato = self.windowState() & ~(Qt.WindowState.WindowMinimized
+                                       | Qt.WindowState.WindowMaximized)
+        self.setWindowState(stato | Qt.WindowState.WindowFullScreen)
+        self.setVisible(True)
         self._comandi_in_fronte()
         # I tasti in alto a destra: si rimettono **dopo** che la finestra e'
         # a schermo intero, perche' e' solo adesso che la finestra ha una
