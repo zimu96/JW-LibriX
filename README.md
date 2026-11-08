@@ -18,6 +18,10 @@ Versione **V1** (1.0.0).
 |---|---|
 | ![Bibbia](docs/immagini/bibbia.png) | ![Adunanze](docs/immagini/adunanze.png) |
 
+| Schermo esterno (monitor o TV della sala: video, immagini e scritture) |
+|---|
+| ![Schermo esterno](docs/immagini/schermo-esterno.png) |
+
 ## Cosa fa
 
 Tutto quello che ti aspetti da JW Library:
