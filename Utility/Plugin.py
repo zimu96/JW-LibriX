@@ -98,6 +98,11 @@ def installa(nome: str, su_progresso=None, versione: str = "") -> str:
     import urllib.request
     import zipfile
 
+    # Senza una versione precisa si prende l'ULTIMA release su GitHub: cosi' una
+    # correzione del timer non obbliga a pubblicare anche una nuova app.  Se la
+    # rete non risponde si ripiega sulla versione fissata in Versione.py.
+    if not versione:
+        versione = ultima_versione(nome)[0]
     url = indirizzo(nome, versione)
     if not url:
         return "L'indirizzo del plugin non e' ancora configurato."
