@@ -71,18 +71,30 @@ LARGHEZZA_COLONNA = 620
 def riavvia_app() -> None:
     """Chiude l'app e la riapre.  Dentro un'AppImage riparte l'AppImage.
 
-    La nuova parte quando questa e' GIA' uscita (`atexit`), non prima: al
-    riavvio si possono spostare o copiare i database, e la vecchia non deve
-    stare ancora scrivendoci dentro.
+    La nuova parte quando questa e' GIA' uscita, non prima: al riavvio si
+    possono spostare o copiare i database, e la vecchia non deve stare ancora
+    scrivendoci dentro.
+
+    Prima si usava `atexit`, ma Python aspetta i thread ancora vivi PRIMA di
+    chiamarlo: se qualcosa non si chiudeva (un thread, una finestra) la nuova
+    app non partiva mai e la vecchia restava bloccata.  Ora un piccolo
+    processo a parte aspetta che questa sia uscita e poi lancia la nuova; e se
+    la chiusura non finisce entro pochi secondi, l'app esce a forza.
     """
-    import atexit
     import os
     import subprocess
     import sys
+    import threading
     from PyQt6.QtWidgets import QApplication
     appimage = os.environ.get("APPIMAGE")
     comando = [appimage, *sys.argv[1:]] if appimage else [sys.executable, *sys.argv]
-    atexit.register(lambda: subprocess.Popen(comando, start_new_session=True))
+    attesa = 'while kill -0 "$1" 2>/dev/null; do sleep 0.3; done; shift; exec "$@"'
+    subprocess.Popen(["sh", "-c", attesa, "sh", str(os.getpid()), *comando],
+                     start_new_session=True, stdin=subprocess.DEVNULL,
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    guardia = threading.Timer(6.0, lambda: os._exit(0))
+    guardia.daemon = True
+    guardia.start()
     QApplication.quit()
 
 

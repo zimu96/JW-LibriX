@@ -129,8 +129,13 @@ class _Avviso(QDialog):
         self.barra.setRange(0, 100)
         self.barra.setValue(100)
         self.stato.setText("Fatto: riavvio l'app…")
+        QTimer.singleShot(600, self._riavvia)
+
+    def _riavvia(self) -> None:
+        """Prima si chiude il popup (altrimenti l'app esce da dentro la sua finestra), poi si riavvia."""
         from SubViews.SettingsView import riavvia_app
-        QTimer.singleShot(600, riavvia_app)
+        QDialog.done(self, 0)
+        QTimer.singleShot(0, riavvia_app)
 
     def done(self, risultato: int) -> None:
         if not self.si.isEnabled() and not self.no.isEnabled():
