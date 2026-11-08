@@ -8,7 +8,8 @@ l'app originale e in più alcune cose che l'originale non ha.
 > da jw.org. I contenuti (Bibbia, pubblicazioni, video, audio) vengono
 > scaricati dai server pubblici di jw.org e wol.jw.org, e restano loro.
 
-Versione **V1** (1.0.0).
+Versione **1.0.2** (l'ultima: si scarica dalla pagina delle
+[versioni](https://github.com/zimu96/JW-LibriX/releases/latest)).
 
 ## Com'è
 
@@ -67,19 +68,26 @@ Un solo file, senza installare Python né PyQt6: va bene su qualunque distribuzi
 Linux a 64 bit. Si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases).
 
+Il nome del file contiene il numero della versione (oggi
+`JW-LibriX-V1.0.2-x86_64.AppImage`); nei comandi qui sotto l'asterisco va bene
+per qualunque versione.
+
 **1. Mettila in una cartella fissa.** Consigliata, valida su ogni distro:
 
 ```bash
 mkdir -p ~/Applications
-mv ~/Scaricati/JW-LibriX-V1-x86_64.AppImage ~/Applications/
-chmod +x ~/Applications/JW-LibriX-V1-x86_64.AppImage
+mv ~/Scaricati/JW-LibriX-*-x86_64.AppImage ~/Applications/
+chmod +x ~/Applications/JW-LibriX-*-x86_64.AppImage
 ```
 
 **2. Avviala** con doppio clic o dal terminale:
 
 ```bash
-~/Applications/JW-LibriX-V1-x86_64.AppImage
+~/Applications/JW-LibriX-*-x86_64.AppImage
 ```
+
+Poi si aggiorna da sola: all'avvio controlla se c'è una versione nuova, la
+scarica al posto di quella vecchia e si riavvia.
 
 **Il menu delle applicazioni e l'icona.** Al primo avvio l'AppImage crea da sola
 la voce **JW LibriX** nell'elenco delle applicazioni, con la sua icona viola
@@ -93,7 +101,7 @@ la voce **JW LibriX** nell'elenco delle applicazioni, con la sua icona viola
   vecchio percorso e non parte.
 - Se la **cancelli**, togli anche la voce:
   `rm ~/.local/share/applications/JWLibriX.desktop`
-- Per non creare mai la voce nel menu: `JWL_NO_INTEGRAZIONE=1 ./JW-LibriX-V1-x86_64.AppImage`
+- Per non creare mai la voce nel menu: `JWL_NO_INTEGRAZIONE=1 ./JW-LibriX-*-x86_64.AppImage`
 
 **I tuoi dati restano fuori dall'AppImage**, nella cartella dati (di solito
 `~/.local/share/JW-LibriX`, o quella che scegli al primo avvio): database,
