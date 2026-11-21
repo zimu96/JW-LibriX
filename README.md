@@ -8,7 +8,7 @@ l'app originale e in più alcune cose che l'originale non ha.
 > da jw.org. I contenuti (Bibbia, pubblicazioni, video, audio) vengono
 > scaricati dai server pubblici di jw.org e wol.jw.org, e restano loro.
 
-Versione **1.0.2** (l'ultima: si scarica dalla pagina delle
+Versione **1.1.0** (l'ultima: si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases/latest)).
 
 ## Com'è
@@ -38,6 +38,8 @@ Tutto quello che ti aspetti da JW Library:
 ## Cosa c'è in più rispetto all'app originale
 
 - Nella **Home**: il testo del giorno, l'**argomento della settimana o del giorno** preso dal sito, e **tutte le notizie** (anche quelle dell'organizzazione), novità e aggiornamenti con «Scarica».
+- **Cerca** (scheda di Biblioteca Digitale): una ricerca su jw.org e sul testo scaricato, con suggerimenti, pagina dei risultati come sul sito (Tutto, Pubblicazioni, Video, Audio, Bibbia), ordine e pagine; online e offline in due sezioni.
+- **Apri senza scaricare**: ogni pubblicazione, e la Bibbia, si legge online dentro l'app, con il tasto per scaricarla; video e audio dai risultati partono in streaming; scarica da qualunque risultato (con scelta della risoluzione per i video) e metti nei Preferiti.
 - Barra di avanzamento viola per ogni scaricamento, e pulsante **Annulla scaricamento** ovunque.
 - Il **Timer adunanze** come plugin facoltativo (vedi sotto).
 - Controllo degli **aggiornamenti** all'avvio (app e, se installato, timer): un popup con una barra scarica tutto in un clic. Si può fare anche a mano dalle Impostazioni.
@@ -69,7 +71,7 @@ Linux a 64 bit. Si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases).
 
 Il nome del file contiene il numero della versione (oggi
-`JW-LibriX-V1.0.2-x86_64.AppImage`); nei comandi qui sotto l'asterisco va bene
+`JW-LibriX-V1.1.0-x86_64.AppImage`); nei comandi qui sotto l'asterisco va bene
 per qualunque versione.
 
 **1. Mettila in una cartella fissa.** Consigliata, valida su ogni distro:

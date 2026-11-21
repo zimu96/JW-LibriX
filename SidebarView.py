@@ -2546,6 +2546,9 @@ class SidebarView(QMainWindow):
             # capitoli, che ha la sua.  Senza questa riga la barra resterebbe
             # quella di dove si sta venendo, e nomerebbe il pezzo sbagliato.
             self._metti_la_barra(self._schermo_corrente)
+            # Il titolo della schermata lasciata non deve restare nella fascia viola.
+            self.set_titolo("" if self._se_permanente(sotto)
+                            else (getattr(sotto, "titolo", "") or ""))
             self._applica_dimensione_testo(self._schermo_corrente)
             self._aggiorna_strumenti_per_schermata()
         self._aggiorna_frecce()
@@ -2647,8 +2650,8 @@ class SidebarView(QMainWindow):
         self._avanti_btn.setEnabled(bool(self._avanti))
 
     def set_titolo(self, titolo: str) -> None:
-        """Il nome dello schermo, nella fascia viola."""
-        self.nome.setText(titolo or "")
+        """La fascia viola non porta MAI scritte (solo frecce e pulsanti)."""
+        self.nome.setText("")
 
     # ------------------------------------------------------------------
     # LE SEZIONI
@@ -2794,6 +2797,18 @@ class SidebarView(QMainWindow):
             schermata = MediaView()
             schermata.messaggio.connect(self._mostra_messaggio)
             schermata.testoScelto.connect(self._apri_risultato_ricerca)
+            schermata.azioneWebRichiesta.connect(self._azione_risultato_web)
+            schermata.ricercaCompleta.connect(self._apri_ricerca_completa)
+            schermata.apriOnline.connect(self._apri_pub_dal_sito)
+            schermata._pagina_cerca.verifica = self._risultato_e_scaricato
+            schermata._pagina_cerca.verifica_preferito = self._risultato_e_preferito
+            schermata._pagina_cerca.pub_da_contesto = self._pub_da_contesto
+            schermata._pagina_cerca.nel_catalogo = lambda r: self._cerca_pubblicazione(
+                r.get("sigla") or "", Lingua.corrente_id(), r.get("edizione") or "") is not None
+            schermata.documentoAperto.connect(
+                lambda d: self._mostra_pdf(
+                    __import__("Utility.DocumentiSito", fromlist=["x"]).percorso(d),
+                    d["titolo"]))
             # Il lettore si chiude (o il brano finisce): se il media era stato
             # avviato da un'altra sezione, si riporta l'utente li'.  E' la
             # stessa cosa che `_apre_una_card_media` e gli Scaricati
@@ -3425,6 +3440,11 @@ class SidebarView(QMainWindow):
                 voce.setChecked(corrente.spartito_attivo() == spartito)
                 voce.triggered.connect(
                     lambda _=False, a=corrente, s=spartito: a.mostra_spartito(s))
+        if getattr(corrente, "pub_web", None) is not None:
+            menu.addSeparator()
+            scarica = menu.addAction("Scarica la pubblicazione")
+            scarica.triggered.connect(
+                lambda _=False, a=corrente: a.chiedi_scarico())
         if hasattr(corrente, "ha_contenuti") and corrente.ha_contenuti():
             menu.addSeparator()
             galleria = menu.addAction("Contenuti multimediali…")
@@ -4026,6 +4046,8 @@ class SidebarView(QMainWindow):
             self.sezioni["Pubblicazioni"] = catalogo
             self.pila.addWidget(catalogo)
             self._collega(catalogo)
+            # Pubblicazione non scaricata scelta: si legge dal sito.
+            catalogo.apriDalSito.connect(self._apri_pub_dal_sito)
             # Non viene distrutto tornando indietro ne' cambiando sezione:
             # e' l'unica schermata che si riusa, perche' rileggere il
             # catalogo a ogni categoria premuta si sente.  Vedi
@@ -4119,6 +4141,7 @@ class SidebarView(QMainWindow):
             if hasattr(card, "_scarica"):
                 card._scarica.setVisible(False)
         self._pub_in_scarico = None
+        self._scarico_web_finito()
 
     def _nome_categoria(self, chiave: str) -> str:
         """Il nome leggibile di una categoria, o la stringa vuota se non c'e'.
@@ -4139,7 +4162,7 @@ class SidebarView(QMainWindow):
         for chiave_categoria, nome, _icona in CATEGORIE_PUB:
             if chiave_categoria == chiave:
                 return nome
-        return ""
+        return "Altri formati (PDF)" if chiave == "altri_formati" else ""
 
     def _vai_a_multimedia(self, navigare: bool = False) -> None:
         """Apre la sezione Multimedia ricordando da dove si e' entrati.
@@ -4530,7 +4553,7 @@ class SidebarView(QMainWindow):
             print(f"Preferiti: non riesco ad aprire {sigla} ⚠️")
             traceback.print_exc()
 
-    def _aperta_notizia(self, indirizzo: str) -> None:
+    def _aperta_notizia(self, indirizzo: str, pub=None, titolo_dato: str = "") -> None:
         """Una card delle notizie e' stata premuta: la pagina si apre qui.
 
         DENTRO L'APP, NON NEL BROWSER
@@ -4556,8 +4579,14 @@ class SidebarView(QMainWindow):
         delle due sia giusto.
         """
         try:
-            titolo = self._titolo_notizia(indirizzo)
+            titolo = titolo_dato or (getattr(pub, "displayTitle", "")
+                                     if pub is not None else "") \
+                or self._titolo_notizia(indirizzo)
             schermata = NotiziaView(indirizzo, titolo)
+            if pub is not None:
+                # Pubblicazione letta dal sito: avviso in alto + tasto Scarica.
+                schermata.segna_pubblicazione_web(pub)
+                schermata.scaricaRichiesta.connect(self._scarica_pub_aperta_dal_sito)
             # I link e l'audio restano nell'app, non nel sito.  I collegamenti
             # si fanno **prima** di `carica`: una pagina puo' finire di
             # caricarsi mentre la finestra sta ancora sistemando la schermata,
@@ -4578,6 +4607,58 @@ class SidebarView(QMainWindow):
             print("Notizie: non riesco ad aprire la pagina ⚠️")
             traceback.print_exc()
             self._mostra_messaggio("Non riesco ad aprire la notizia.")
+
+    def _apri_pub_dal_sito(self, pub) -> None:
+        """Apre una pubblicazione NON scaricata leggendola dal sito, nell'app.
+
+        Regola: se il pacchetto e' sul disco si apre da li' e non da internet.
+        Senza internet non si puo': lo si dice, e si ricorda di scaricarla.
+        """
+        from Utility import PubWeb, Rete
+        if PubWeb.e_scaricata(pub):
+            self._apri_pubblicazione_scelta(pub)
+            return
+        indirizzo = PubWeb.url_pub(pub)
+        if not indirizzo:
+            self._mostra_messaggio("Non riesco a trovare questa pubblicazione sul sito.")
+            return
+        if not Rete.noto():
+            self._mostra_messaggio(
+                "Non c'è internet e la pubblicazione non è scaricata: "
+                "scaricala quando sei in linea per poterla aprire senza connessione.")
+            return
+        self._aperta_notizia(indirizzo, pub, getattr(pub, "title", "") or "")
+
+    def _scarica_pub_aperta_dal_sito(self, pub) -> None:
+        """Il tasto Scarica di una pubblicazione letta dal sito: si scarica, senza aprirla."""
+        if isinstance(pub, dict):           # un PDF aperto online
+            self._scarica_pdf_sito(pub)
+            return
+        from Utility import PubWeb
+        if PubWeb.e_scaricata(pub):         # gia' sul disco: non si scarica due volte
+            self._scarico_web_finito()
+            return
+        sezione = self._catalogo()
+        if sezione is None or not hasattr(sezione, "scarica"):
+            return
+        self._pub_in_scarico = pub
+        self._pub_web_in_scarico = pub
+        sezione.scarica(pub, apri=False)
+
+    def _scarico_web_finito(self) -> None:
+        """Un download e' finito: ogni pagina aperta dal sito controlla se ora e' sul disco.
+
+        Non conta chi ha fatto partire lo scaricamento (avviso, CERCA, card): conta
+        che la pubblicazione sia scaricata, e in quel caso l'avviso «non scaricata»
+        sparisce.
+        """
+        from Utility import PubWeb
+        self._pub_web_in_scarico = None
+        for i in range(self.pila.count()):
+            w = self.pila.widget(i)
+            pub = getattr(w, "pub_web", None) if isinstance(w, NotiziaView) else None
+            if pub is not None and not isinstance(pub, dict) and PubWeb.e_scaricata(pub):
+                w.scarico_finito(True)
 
     def _link_notizia_premuto(self, href: str) -> None:
         """Un link dentro la notizia e' stato premuto.
@@ -4716,6 +4797,8 @@ class SidebarView(QMainWindow):
             if trovato:
                 return trovato
         pezzo = indirizzo.rstrip("/").rsplit("/", 1)[-1]
+        if "?" in pezzo or "=" in pezzo:      # un indirizzo con parametri non e' un titolo
+            return ""
         return pezzo.replace("-", " ").replace("%20", " ").strip()
 
     def _aperta_da_scaricati(self, pub, apri: str) -> None:
@@ -5521,6 +5604,9 @@ class SidebarView(QMainWindow):
     def _apri_risultato_ricerca(self, r: dict) -> None:
         """Un risultato della ricerca nel testo: un versetto o un documento."""
         from types import SimpleNamespace
+        if r.get("tipo") == "web":
+            self._apri_risultato_web(r)
+            return
         if r.get("tipo") == "b":
             self._apri_posizione_bibbia(
                 SimpleNamespace(mepsLanguageId=Lingua.corrente_id(),
@@ -5530,6 +5616,329 @@ class SidebarView(QMainWindow):
                                              r.get("sigla") or "", r.get("titolo") or "",
                                              r.get("titolo") or ""):
             self._mostra_messaggio("Questo testo non e' piu' scaricato.")
+
+    def _apri_ricerca_completa(self, domanda: str) -> None:
+        """Invio nella barra: la pagina dei risultati, come sul sito, in stile app."""
+        from SubViews.RisultatiRicerca import RisultatiRicerca
+        vista = RisultatiRicerca(domanda)
+        vista.apri.connect(self._apri_risultato_ricerca)
+        vista.azione.connect(self._azione_risultato_web)
+        vista.messaggio.connect(self._mostra_messaggio)
+        self.navigate(vista)
+        self.set_titolo("Ricerca")
+
+    def _suona_risultato_web(self, r: dict) -> None:
+        """Un video o un audio trovato in CERCA: lo suona il lettore dell'app.
+
+        Stessa strada del catalogo (`MediaView.suona_traccia`): il lettore
+        integrato mostra l'immagine e, chiuso, l'utente resta dove era (la
+        scheda CERCA con la sua ricerca).  Se non si capisce la traccia dal
+        «lank» si ripiega sul file diretto.
+        """
+        import re
+        sezione = self.sezioni.get("Biblioteca Digitale")
+        m = re.match(r"pub-(.+?)_(\d+)_(VIDEO|AUDIO)$", r.get("lank", ""))
+        if sezione is None or not m or not hasattr(sezione, "suona_traccia"):
+            self._mostra_messaggio("Non riesco ad aprire questo contenuto.")
+            return
+        sigla, traccia, tipo = m.group(1), int(m.group(2)), m.group(3)
+        scheda = 1 if tipo == "VIDEO" else 0
+        self._attendi_il_video()
+        sezione.suona_traccia(
+            sigla, Lingua.corrente_simbolo(), traccia, scheda,
+            lambda: self._mostra_messaggio("Non riesco a trovare il file di questo contenuto."))
+
+    # ---- il catalogo online e quello offline sono la stessa cosa ----------
+
+    def _identita_risultato(self, r: dict):
+        """(sigla, traccia, formato) di un risultato online, o None."""
+        import re
+        m = re.match(r"pub-(.+?)_(\d+)_(VIDEO|AUDIO)$", r.get("lank", ""))
+        if m:
+            return m.group(1), int(m.group(2)), m.group(3)
+        if r.get("sottotipo") in ("publication", "periodical") and r.get("sigla"):
+            return r["sigla"], None, ""
+        return None
+
+    def _risultato_e_scaricato(self, r: dict) -> bool:
+        """Questo risultato del sito e' gia' sul disco (quindi gia' negli altri elenchi)?"""
+        ident = self._identita_risultato(r)
+        if ident is None:
+            return False
+        sigla, traccia, formato = ident
+        lingua = Lingua.corrente_simbolo()
+        if traccia is not None:
+            from Utility import MediaScaricati
+            return MediaScaricati.file_di(sigla, lingua, traccia) is not None
+        from Utility import DocumentiSito, PubWeb
+        if DocumentiSito.trova(sigla, lingua):
+            return True
+        pub = self._cerca_pubblicazione(sigla, Lingua.corrente_id(), r.get("edizione") or "")
+        return bool(pub is not None and PubWeb.e_scaricata(pub))
+
+    def _pub_del_risultato(self, r: dict):
+        """La Publication del catalogo, o una costruita se non c'e'."""
+        ident = self._identita_risultato(r)
+        if ident is None:
+            return None
+        sigla = ident[0]
+        pub = self._cerca_pubblicazione(sigla, Lingua.corrente_id(), r.get("edizione") or "")
+        if pub is None:
+            from types import SimpleNamespace
+            pub = SimpleNamespace(keySymbol=sigla, symbol=sigla, title=r.get("titolo", ""),
+                                  mepsLanguageId=Lingua.corrente_id(), issueTagNumber=0)
+        return pub
+
+    _titoli_catalogo: dict | None = None
+
+    def _pub_da_contesto(self, contesto: str):
+        """La pubblicazione del catalogo il cui titolo e' il «contesto» di un articolo
+        (es. «Perspicacia nello studio delle Scritture»), o None.  Serve per dare
+        scarica / tre puntini anche agli articoli trovati in «Tutto»."""
+        import re
+        def norma(t: str) -> str:
+            return re.sub(r"\W+", " ", (t or "").casefold()).strip()
+        if self._titoli_catalogo is None:
+            sezione = self._catalogo()
+            tab: dict = {}
+            for pub in getattr(sezione, "_tutto", []) or []:
+                if getattr(pub, "issueTagNumber", 0):
+                    continue            # le riviste hanno un titolo per numero
+                if getattr(pub, "mepsLanguageId", 0) not in (Lingua.corrente_id(), 0):
+                    continue
+                for nome in (getattr(pub, "title", ""), getattr(pub, "displayTitle", "")):
+                    if nome:
+                        tab.setdefault(norma(nome), pub)
+            if tab:
+                self._titoli_catalogo = tab
+        return (self._titoli_catalogo or {}).get(norma(contesto))
+
+    def _risultato_e_preferito(self, r: dict) -> bool:
+        from Utility import Preferiti
+        ident = self._identita_risultato(r)
+        if ident is None:
+            return False
+        return Preferiti.c_e_(ident[0], Lingua.corrente_simbolo(), ident[1])
+
+    def _preferito_del_risultato(self, r: dict) -> None:
+        from Utility import Preferiti
+        ident = self._identita_risultato(r)
+        pub = self._pub_del_risultato(r)
+        if ident is None or pub is None:
+            return
+        sigla, traccia, formato = ident
+        lingua = Lingua.corrente_simbolo()
+        if Preferiti.c_e_(sigla, lingua, traccia):
+            Preferiti.togli(sigla, lingua, traccia)
+            self._mostra_messaggio("Tolto dai Preferiti")
+        else:
+            Preferiti.aggiungi(pub, traccia, formato, r.get("titolo", ""))
+            self._mostra_messaggio("Messo fra i Preferiti")
+        sezione = self.sezioni.get("Biblioteca Digitale")
+        if sezione is not None:
+            sezione.preferitiCambiati.emit()
+
+    def _azione_risultato_web(self, azione: str, r: dict) -> None:
+        """I tre puntini di un risultato online: «Apri subito» o «Scarica»."""
+        if azione == "apri":
+            self._apri_risultato_web(r)
+            return
+        if azione == "preferito":
+            self._preferito_del_risultato(r)
+            return
+        from Utility import PubWeb
+        import re
+        mm = re.match(r"pub-(.+?)_(\d+)_(VIDEO|AUDIO)$", r.get("lank", ""))
+        if mm and (r.get("sottotipo") in ("video", "audio")):
+            sezione = self.sezioni.get("Biblioteca Digitale")
+            if sezione is not None and hasattr(sezione, "scarica_traccia"):
+                sezione.scarica_traccia(
+                    mm.group(1), Lingua.corrente_simbolo(), int(mm.group(2)),
+                    1 if mm.group(3) == "VIDEO" else 0,
+                    lambda: (self._cerca_scarico_fallito(r),
+                             self._mostra_messaggio("Non riesco a trovare il file da scaricare.")))
+            return
+        pub = self._cerca_pubblicazione(r.get("sigla") or "", Lingua.corrente_id(),
+                                        r.get("edizione") or "")
+        if pub is None:
+            # Non e' nel catalogo (nessun JWPUB): ultima risorsa, il PDF del sito.
+            self._scarica_solo_dal_sito(r)
+        elif PubWeb.e_scaricata(pub):
+            self._mostra_messaggio("È già scaricata.")
+        else:
+            self._scarica_pub_aperta_dal_sito(pub)
+
+    def _cerca_scarico_fallito(self, r: dict) -> None:
+        try:
+            self.sezioni["Biblioteca Digitale"]._pagina_cerca.scarico_fallito(r)
+        except Exception:  # noqa: BLE001
+            pass
+
+    def _scarica_solo_dal_sito(self, r: dict) -> None:
+        """Pubblicazione fuori catalogo: se il sito ha il PDF lo si scarica (finisce in Scaricati)."""
+        from Utility import FormatiSito
+        from Utility.Extensions.Ext_DispatchQueue import background
+        sigla, lingua = r.get("sigla") or "", Lingua.corrente_simbolo()
+        esito: dict = {}
+
+        def lavoro() -> None:
+            trovati = FormatiSito.formati(sigla, lingua)
+            if "PDF" in trovati:
+                esito["url"] = trovati["PDF"]
+
+        def fatto() -> None:
+            if esito.get("url"):
+                self._scarica_pdf_sito({"sigla": sigla, "lingua": lingua,
+                                        "titolo": r.get("titolo", ""),
+                                        "contesto": r.get("contesto", ""),
+                                        "url": esito["url"]})
+            else:
+                self._cerca_scarico_fallito(r)
+                self._mostra_messaggio("Per questa pubblicazione non c'è un file da scaricare.")
+
+        background(lavoro, completion=fatto)
+
+    def _apri_solo_sito(self, sigla: str, titolo: str, pagina: str,
+                        contesto: str = "") -> None:
+        """Materiale che non e' nel catalogo (quindi senza JWPUB da scaricare).
+
+        Ultima risorsa: se e' gia' scaricato (PDF) si apre dal disco; se il sito
+        ha solo il PDF lo si apre ONLINE, senza scaricarlo, con l'avviso e il
+        tasto Scarica; in ogni altro caso si apre la pagina del sito.
+        """
+        from Utility import DocumentiSito, FormatiSito
+        from Utility.Extensions.Ext_DispatchQueue import background
+        lingua = Lingua.corrente_simbolo()
+        esito: dict = {}
+        gia = DocumentiSito.trova(sigla, lingua)
+        if gia:
+            self._mostra_pdf(DocumentiSito.percorso(gia), gia["titolo"])
+            return
+
+        def lavoro() -> None:
+            import tempfile
+            from pathlib import Path
+            trovati = FormatiSito.formati(sigla, lingua)
+            if FormatiSito.scegli(trovati) == "PDF" and "JWPUB" not in trovati:
+                esito["url"] = trovati["PDF"]
+                # Il sito manda il PDF come «da scaricare» e il browser interno lo
+                # scaricherebbe invece di mostrarlo: lo si tiene in una cartella
+                # TEMPORANEA (non registrata: negli Scaricati non compare).
+                temp = Path(tempfile.gettempdir()) / "jwlibrix-online" \
+                    / DocumentiSito.nome_file(sigla, lingua)
+                if not temp.is_file() and FormatiSito.scarica_pdf(esito["url"], temp):
+                    esito.pop("url")
+                else:
+                    esito["temp"] = str(temp)
+
+        def fatto() -> None:
+            if esito.get("url"):
+                self._mostra_pdf(esito["temp"], titolo, {
+                    "sigla": sigla, "lingua": lingua, "titolo": titolo,
+                    "contesto": contesto, "url": esito["url"], "temp": esito["temp"]})
+            elif pagina:
+                self._aperta_notizia(pagina, titolo_dato=titolo)
+            else:
+                self._mostra_messaggio("Non riesco ad aprire questo risultato.")
+
+        self._mostra_messaggio("Apro…")
+        background(lavoro, completion=fatto)
+
+    def _mostra_pdf(self, sorgente: str, titolo: str, online: dict | None = None) -> None:
+        """Apre un PDF nell'app (file sul disco o indirizzo online).
+
+        Se e' online compare l'avviso «aperto online» col tasto Scarica.
+        I link verso il sito si aprono come le notizie.
+        """
+        from SubViews.PdfView import PdfView
+        schermata = PdfView(sorgente, titolo)
+        schermata.linkPremuto.connect(self._link_notizia_premuto)
+        if online is not None:
+            schermata.segna_pubblicazione_web(
+                online, nome=titolo,
+                testo=(f"<b>«{titolo}»</b> è aperto online, in formato PDF.<br>"
+                       "Puoi scaricarlo per leggerlo anche senza connessione a internet."))
+            schermata.scaricaRichiesta.connect(self._scarica_pub_aperta_dal_sito)
+        schermata.carica()
+        self.navigate(schermata)
+        self.set_titolo(titolo)
+
+    def _scarica_pdf_sito(self, d: dict) -> None:
+        """Scarica un PDF aperto online: finisce negli Scaricati e nella categoria giusta."""
+        from Utility import DocumentiSito, FormatiSito
+        from Utility.Extensions.Ext_DispatchQueue import background
+        file = DocumentiSito.cartella() / DocumentiSito.nome_file(d["sigla"], d["lingua"])
+        esito: dict = {}
+
+        def lavoro() -> None:
+            import shutil
+            from pathlib import Path
+            temp = Path(d.get("temp") or "")
+            if temp.is_file():              # gia' qui: si sposta, senza riscaricare
+                file.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(temp, file)
+                esito["errore"] = ""
+            else:
+                esito["errore"] = FormatiSito.scarica_pdf(d["url"], file)
+            if not esito["errore"]:
+                DocumentiSito.aggiungi(d["sigla"], d["lingua"], d["titolo"],
+                                       d.get("contesto", ""))
+
+        def fatto() -> None:
+            riuscito = not esito.get("errore")
+            for i in range(self.pila.count()):
+                w = self.pila.widget(i)
+                if getattr(w, "pub_web", None) is d:
+                    w.scarico_finito(riuscito)
+            self._mostra_messaggio("Scaricato: lo trovi in Scaricati." if riuscito
+                                   else esito.get("errore", "Scarico non riuscito."))
+            media = self.sezioni.get("Biblioteca Digitale")
+            if riuscito and media is not None and hasattr(media, "_ricostruisci"):
+                media._ricostruisci()
+
+        background(lavoro, completion=fatto)
+
+    def _apri_risultato_web(self, r: dict) -> None:
+        """Un risultato di jw.org nella ricerca: se e' gia' scaricato si apre dal disco.
+
+        Solo se non e' sul disco si apre da internet (e per una pubblicazione
+        compare l'avviso con il tasto Scarica).
+        """
+        from Utility import PubWeb
+        sottotipo = r.get("sottotipo") or ""
+        if sottotipo in ("video", "audio"):
+            self._suona_risultato_web(r)
+            return
+        if sottotipo == "verse":                  # «bible=42001001» = libro 42, cap. 1, v. 1
+            import re
+            from types import SimpleNamespace
+            m = re.search(r"bible=(\d{2})(\d{3})(\d{3})", r.get("jw", ""))
+            if m:
+                self._apri_posizione_bibbia(
+                    SimpleNamespace(mepsLanguageId=Lingua.corrente_id(),
+                                    identifier=int(m.group(3))),
+                    int(m.group(1)), int(m.group(2)))
+                return
+        docid = int(r.get("docid") or 0)
+        sigla = r.get("sigla") or ""
+        titolo = r.get("titolo") or ""
+        if docid and self._apri_documento_locale(docid, sigla, titolo, titolo):
+            return
+        if sigla and not docid:
+            pub = self._cerca_pubblicazione(sigla, Lingua.corrente_id(), "")
+            if pub is not None:
+                self._apri_pub_dal_sito(pub)
+                return
+            # Non e' nel catalogo: materiale che sta solo sul sito.
+            self._apri_solo_sito(sigla, titolo, r.get("jw") or r.get("wol") or "",
+                                 r.get("contesto") or "")
+            return
+        indirizzo = (PubWeb.url_documento(docid, Lingua.corrente_simbolo())
+                     if docid else (r.get("jw") or r.get("wol") or ""))
+        if indirizzo:
+            self._aperta_notizia(indirizzo, titolo_dato=titolo)
+        else:
+            self._mostra_messaggio("Non riesco ad aprire questo risultato.")
 
     def _apri_riferimento_completo(self, voce) -> None:
         """La barra del riquadro dei riferimenti: apre la pubblicazione intera.
@@ -5566,12 +5975,8 @@ class SidebarView(QMainWindow):
             self._apri_pubblicazione_scelta(trovata)
             return
 
-        ConfermaApp.chiedi(
-            self, "Pubblicazione non scaricata",
-            f"«{nome}» non è scaricata.\n\nVuoi scaricarla adesso?", "Scarica",
-            lambda: self._scarica_una_pubblicazione({
-                "sigla": sigla, "lingua": Lingua.corrente_simbolo(),
-                "numero": "", "titolo": nome, "apri": True}))
+        # Non scaricata: si apre dal sito (con l'avviso e il tasto Scarica).
+        self._apri_pub_dal_sito(trovata)
 
     def _apri_pubblicazione_scelta(self, pub) -> None:
         """Apre l'elenco dei capitoli di una pubblicazione gia' scaricata."""
@@ -6364,6 +6769,10 @@ class SidebarView(QMainWindow):
         basta la riga: con venti video in striscia, una riga in fondo dice
         «qualcosa sta scendendo» ma non quale.
         """
+        try:    # la riga di CERCA mostra la barra di scaricamento
+            self.sezioni["Biblioteca Digitale"]._pagina_cerca.scarico_avviato(str(titolo))
+        except Exception:  # noqa: BLE001
+            pass
         from Utility.Extensions.Ext_DispatchQueue import on_main
         from Utility.FileDownloader import FileDownloader
         from Utility import AvanzamentoMedia

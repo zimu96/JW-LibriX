@@ -123,6 +123,9 @@ class PubView(QWidget):
     #: Per questo il segnale parte **dopo** `download_documents`, che e'
     #: quando tutto e' scritto, e non prima.
     scaricata = Signal()
+    #: Una pubblicazione NON scaricata e' stata scelta: si legge dal sito
+    #: (la finestra costruisce la pagina e mostra l'avviso).  Passa la pub.
+    apriDalSito = Signal(object)
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -593,7 +596,15 @@ class PubView(QWidget):
         self._pub_scelta(pub)
 
     def _pub_scelta(self, pub) -> None:
-        """Una pubblicazione e' stata scelta: si aprono i suoi capitoli."""
+        """Una pubblicazione e' stata scelta: si aprono i suoi capitoli.
+
+        Se il pacchetto non e' scaricato si apre dal sito (regola: quello che
+        e' sul disco si apre dal disco, solo il resto da internet).
+        """
+        from SubViews.PubListView import esiste_il_pacchetto
+        if not esiste_il_pacchetto(pub):
+            self.apriDalSito.emit(pub)
+            return
         self.pub = pub
         # Si dice anche quale e'.  E' quello che mette in moto la sezione
         # Media: senza, non c'e' modo di sapere di cosa chiedere i media

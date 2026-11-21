@@ -603,15 +603,14 @@ class DelegatoPubblicazione(QStyledItemDelegate):
         # Se non lo facesse, l'utente preme l'immagine e non succede
         # niente, e l'immagine sembra non essere un pulsante.
         if indice.column() == ModelloPubblicazioni.COPERTINA:
-            if (pub := indice.data(ModelloPubblicazioni.RUOLO_PUB)) and \
-                    indice.data(ModelloPubblicazioni.RUOLO_ESISTE):
+            # Anche se non e' scaricata: si apre dal sito (decide PubView).
+            if pub := indice.data(ModelloPubblicazioni.RUOLO_PUB):
                 self.scelto.emit(pub)
             return True
         if pub := indice.data(ModelloPubblicazioni.RUOLO_PUB):
             colonna = indice.column()
             if colonna == ModelloPubblicazioni.TITOLO:
-                if indice.data(ModelloPubblicazioni.RUOLO_ESISTE):
-                    self.scelto.emit(pub)
+                self.scelto.emit(pub)       # non scaricata: si apre dal sito
                 return True
             if colonna == ModelloPubblicazioni.SCARICA:
                 self.scarica.emit(pub)
@@ -900,10 +899,10 @@ class PubListView(QWidget):
             azione.triggered.connect(lambda: self._metti_preferito(pub))
         _ = (sigla, chiave)
 
-        if esiste_il_pacchetto(pub):
-            menu.addSeparator()
-            apri = menu.addAction("Apri")
-            apri.triggered.connect(lambda: self.publicationChosen.emit(pub))
+        menu.addSeparator()
+        apri = menu.addAction("Apri" if esiste_il_pacchetto(pub)
+                              else "Apri senza scaricare")
+        apri.triggered.connect(lambda: self.publicationChosen.emit(pub))
         scarica = menu.addAction("Scarica il pacchetto")
         scarica.triggered.connect(lambda: self.downloadRequested.emit(pub))
         if esiste_il_pacchetto(pub):

@@ -154,6 +154,9 @@ class BibleView(QWidget):
 
         disposizione = QVBoxLayout(self)
         disposizione.setContentsMargins(0, 0, 0, 0)
+        disposizione.setSpacing(0)
+        self._disposizione = disposizione
+        self._avviso_online = None
         disposizione.addWidget(self.pila)
 
         self._selettore = None
@@ -197,19 +200,10 @@ class BibleView(QWidget):
             self._bibbia_non_disponibile()
             return
 
-        if Lingua.bibbia_simbolo() != "I":
-            self._apri_online()
-            return
-
-        from Utility.JWPubManager import bible_package_di_qualunque_lingua
-        if bible_package_di_qualunque_lingua() is not None:
-            self._chiedi_la_bibbia()
-            return
-
-        # Nessuna Bibbia sul disco: non si scarica da sola.  Se l'hai appena
-        # eliminata, entrare qui per sbaglio non deve rimettersi a scaricare:
-        # c'e' il tasto «Scaricala adesso».
-        self._chiedi_la_bibbia()
+        # SENZA PACCHETTO SI LEGGE ONLINE (in qualunque lingua, italiano compreso):
+        # niente download da 122 MB se l'utente non lo chiede.  In alto compare
+        # l'avviso «online» col tasto Scarica (vedi `_mostra_avviso_online`).
+        self._apri_online()
 
     def _bibbia_non_disponibile(self) -> None:
         """Questa Bibbia non si puo' scaricare: si offre l'italiano, che si puo'.
@@ -764,6 +758,8 @@ class BibleView(QWidget):
 
         self.pacchettoScaricato.emit()
         completa = BibbiaOnline.capitoli_su_disco(simbolo) >= Traduzioni.TOTALE
+        if completa:
+            self._mostra_avviso_online()        # ora e' scaricata: l'avviso sparisce
         self.messaggio.emit(
             f"Bibbia in {_nome_lingua(simbolo)} scaricata" if completa
             else f"Scaricamento della Bibbia in {_nome_lingua(simbolo)} interrotto")
@@ -792,11 +788,50 @@ class BibleView(QWidget):
         if Lingua.bibbia_simbolo() == simbolo:
             self._ricomincia()
 
+    def _mostra_avviso_online(self) -> None:
+        """Avviso in alto: la Bibbia si legge online; per l'uso senza internet va scaricata."""
+        from Utility import BibbiaOnline, Lingua, Traduzioni
+        from Utility import tema
+        simbolo = Lingua.bibbia_simbolo()
+        if self._avviso_online is not None:
+            self._avviso_online.deleteLater()
+            self._avviso_online = None
+        if _bible_dir() is not None or \
+                BibbiaOnline.capitoli_su_disco(simbolo) >= Traduzioni.TOTALE:
+            return                  # scaricata: niente avviso
+        from PyQt6.QtWidgets import QFrame, QHBoxLayout, QSizePolicy
+        c = tema.colori(tema.tema_attivo())
+        riquadro = QFrame(self)
+        riquadro.setObjectName("avvisoOnline")
+        riquadro.setStyleSheet(
+            f"QFrame#avvisoOnline {{ background: {c.get('sfondo2', '#e8e6e4')};"
+            " border-bottom: 2px solid #64398b; }}"
+            f" QFrame#avvisoOnline QLabel {{ color: {c.get('testo', '#1a1a1a')}; }}")
+        riquadro.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        riga = QHBoxLayout(riquadro)
+        riga.setContentsMargins(16, 10, 16, 10)
+        testo = QLabel(
+            f"<b>La Bibbia in {_nome_lingua(simbolo)} si legge online.</b><br>"
+            "Ricordati di scaricarla se vuoi usarla anche senza connessione a internet.",
+            riquadro)
+        testo.setTextFormat(Qt.TextFormat.RichText)
+        testo.setWordWrap(True)
+        riga.addWidget(testo, 1)
+        scarica = QPushButton("Scarica", riquadro)
+        scarica.clicked.connect(lambda: self._chiedi_scarica_lingua(simbolo))
+        riga.addWidget(scarica)
+        chiudi = QPushButton("Ho capito", riquadro)
+        chiudi.clicked.connect(riquadro.hide)
+        riga.addWidget(chiudi)
+        self._disposizione.insertWidget(0, riquadro)
+        self._avviso_online = riquadro
+
     def _finito(self) -> None:
         """Il testo e' pronto: compare la lista dei libri."""
         if self._scaricato or not self.bible_books:
             return
         self._scaricato = True
+        self._mostra_avviso_online()
         from Utility.JWPubManager import JWPubManager
         from Utility import BibbiaOnline, Lingua
         libri = BibleBooksView(self.bible_books, self,

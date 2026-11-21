@@ -18,9 +18,10 @@ import threading
 
 from PyQt6.QtCore import QObject, Qt, QTimer, pyqtSignal as Signal
 from PyQt6.QtWidgets import (
-    QDialog, QHBoxLayout, QLabel, QProgressBar, QPushButton, QVBoxLayout)
+    QDialog, QHBoxLayout, QLabel, QProgressBar, QPushButton, QTextBrowser,
+    QVBoxLayout)
 
-from Utility import AggiornaApp, Plugin
+from Utility import AggiornaApp, Plugin, Versione
 
 
 class _Avviso(QDialog):
@@ -44,10 +45,32 @@ class _Avviso(QDialog):
             righe.append(f"• Timer adunanze: versione {trovato['timer']} "
                          f"(hai la {Plugin.versione('timer') or '?'})")
         if trovato.get("app"):
-            righe.append("• JW-LibriX: versione nuova disponibile")
-        self.testo = QLabel("\n".join(righe) + "\n\nVuoi scaricarlo adesso?", self)
+            nuova = trovato.get("versione_app") or ""
+            righe.append(f"• JW-LibriX: versione {nuova} disponibile "
+                         f"(hai la {Versione.VERSIONE_APP})" if nuova
+                         else "• JW-LibriX: versione nuova disponibile")
+        self.testo = QLabel("\n".join(righe), self)
         self.testo.setWordWrap(True)
         colonna.addWidget(self.testo)
+
+        # LE NOVITA' (changelog): il testo scritto nella release su GitHub.
+        # Il timer compare solo se e' installato: `trovato["timer"]` e
+        # `note_timer` esistono solo in quel caso.
+        pezzi = []
+        if trovato.get("note_app"):
+            pezzi.append(f"### Novità di JW-LibriX\n\n{trovato['note_app']}")
+        if trovato.get("note_timer"):
+            pezzi.append(f"### Novità del timer\n\n{trovato['note_timer']}")
+        if pezzi:
+            novita = QTextBrowser(self)
+            novita.setObjectName("novitaAggiornamento")
+            novita.setOpenLinks(False)
+            novita.setMarkdown("\n\n".join(pezzi))
+            novita.setMinimumHeight(110)
+            novita.setMaximumHeight(220)
+            colonna.addWidget(novita)
+        domanda = QLabel("Vuoi scaricarlo adesso?", self)
+        colonna.addWidget(domanda)
 
         self.barra = QProgressBar(self)
         self.barra.setRange(0, 100)

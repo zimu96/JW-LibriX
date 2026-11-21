@@ -55,6 +55,26 @@ def ultima_versione() -> tuple[str, str]:
         return "", f"Non riesco a controllare ({type(errore).__name__})"
 
 
+def note_release(repo: str, versione: str = "") -> tuple[str, str]:
+    """(versione, note) dell'ultima release di `repo` su GitHub: il «changelog».
+
+    Le note sono il testo scritto nella release (campo `body`).  Da un thread.
+    Se GitHub non risponde o la release non ha note: ("", "").
+    """
+    if not repo:
+        return "", ""
+    url = (f"https://api.github.com/repos/{repo}/releases/tags/v{versione}"
+           if versione else f"https://api.github.com/repos/{repo}/releases/latest")
+    try:
+        richiesta = urllib.request.Request(url, headers={"User-Agent": "JW-LibriX"})
+        with urllib.request.urlopen(richiesta, timeout=15) as r:
+            dati = json.load(r)
+        return (str(dati.get("tag_name", "")).lstrip("vV"),
+                str(dati.get("body") or "").strip())
+    except Exception:  # noqa: BLE001 - le note sono un di piu': senza, il popup resta com'era
+        return "", ""
+
+
 def e_piu_nuova(ultima: str) -> bool:
     try:
         return _numeri(ultima) > _numeri(Versione.VERSIONE_APP)
@@ -219,11 +239,15 @@ def controlla_avvio() -> dict:
     """Cosa c'e' da aggiornare, per il popup dell'avvio.  Da un thread.
 
     {"app": asset (AppImage) | versione (sorgenti) | None,
-     "timer": versione nuova | None}
-    Il timer si controlla SOLO se e' installato.  Niente rete = tutto None.
+     "timer": versione nuova | None,
+     "versione_app": "1.1.0" | "", "note_app": testo del changelog | "",
+     "note_timer": testo del changelog | ""}
+    Il timer si controlla SOLO se e' installato (e se non lo e', non compare
+    nemmeno nelle note).  Niente rete = tutto None.
     """
     from Utility import Plugin
-    risultato: dict = {"app": None, "timer": None}
+    risultato: dict = {"app": None, "timer": None, "versione_app": "",
+                       "note_app": "", "note_timer": ""}
     if e_appimage():
         asset, errore = appimage_nuova()
         if asset and not errore:
@@ -232,11 +256,16 @@ def controlla_avvio() -> dict:
         ultima, errore = ultima_versione()
         if ultima and not errore and e_piu_nuova(ultima):
             risultato["app"] = ultima
+    if risultato["app"]:
+        # Le novita': dal testo della release su GitHub.  Un errore qui non
+        # blocca l'avviso, che resta quello di sempre senza l'elenco.
+        risultato["versione_app"], risultato["note_app"] = note_release(Versione.REPO_APP)
     if Plugin.installato("timer"):
         ultima, errore = Plugin.ultima_versione("timer")
         try:
             if ultima and not errore and _numeri(ultima) > _numeri(Plugin.versione("timer") or "0"):
                 risultato["timer"] = ultima
+                risultato["note_timer"] = note_release(Versione.REPO_TIMER, ultima)[1]
         except ValueError:
             pass
     return risultato

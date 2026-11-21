@@ -69,7 +69,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from Utility import Copertine, Lingua, MepsAPI, Mediator, tema
+from Utility import Copertine, Lingua, MepsAPI, Mediator, Rete, tema
 from Utility.Stuff import icon, icona_tabler
 from Utility.Extensions import on_main
 
@@ -632,6 +632,7 @@ class _HandleRidimensiona(QWidget):
 #: e credeva che il catalogo fosse sparito dalla Biblioteca: la parola scritta
 #: male sembrava una sezione diversa, quindi non era la sua.
 TABS = [
+    ("Cerca", 4),
     ("Pubblicazioni", 2),
     ("Video", 1),
     ("Audio", 0),
@@ -643,6 +644,8 @@ TAB_PUBBLICAZIONI = 2
 TAB_VIDEO = 1
 TAB_AUDIO = 0
 TAB_SCARICATI = 3
+#: La scheda della ricerca globale (offline + online): e' la prima e quella di apertura.
+TAB_CERCA = 4
 #: Quanti passi di testo si mostrano sotto la barra
 MAX_RISULTATI_TESTO = 6
 
@@ -1640,7 +1643,8 @@ class _Cella(QWidget):
         due errori, perche' nessuno dei due si nota da solo.
         """
         return ((modo == "pub" and (cosa.get("pub") is not None
-                                    or cosa.get("traduzione") is not None))
+                                    or cosa.get("traduzione") is not None
+                                    or cosa.get("documento") is not None))
                 or modo == "media")
 
     def _metti_il_quadro(self, cosa: dict) -> None:
@@ -2262,6 +2266,14 @@ class MediaView(QWidget):
     staPerSuonare = Signal()
     #: Un passo di testo trovato dalla barra di ricerca e' stato premuto
     testoScelto = Signal(dict)
+    #: Tre puntini di un risultato online: ("apri"|"scarica", risultato)
+    azioneWebRichiesta = Signal(str, dict)
+    #: Un documento non-JWPUB scaricato (PDF) e' stato scelto: si apre nell'app.
+    documentoAperto = Signal(dict)
+    #: Invio nella barra: la pagina completa dei risultati (testo cercato)
+    ricercaCompleta = Signal(str)
+    #: Una pubblicazione non scaricata e' stata premuta: si apre online.
+    apriOnline = Signal(object)
     #: L'utente ha premuto la freccia gi' del lettore grande e vuole la
     #: striscia piccola, per poter girare per l'app mentre suona.
     #:
@@ -2359,7 +2371,7 @@ class MediaView(QWidget):
         # una biblioteca.  Suona piu' semplice di quel che e', ma il difetto
         # che c'era — aprire su una lista di suoni quando l'utente e' venuto a
         # cercare un libro — non si vede da nessuna parte nel codice.
-        self._scheda = TAB_PUBBLICAZIONI
+        self._scheda = TAB_CERCA
         # LE PUBBLICAZIONE DEL CATALOGO, DUE POSTE
         # -----------------------------------------
         # `_catalogo` e' l'elenco letto da `catalog.db`, letto **una volta** e
@@ -2498,6 +2510,7 @@ class MediaView(QWidget):
         from SubViews.RisultatiTesto import RisultatiTesto
         self._risultati_testo = RisultatiTesto(self)
         self._risultati_testo.scelto.connect(self.testoScelto.emit)
+        self._risultati_testo.azioneWeb.connect(self.azioneWebRichiesta.emit)
         self._attesa_testo = QTimer(self)
         self._attesa_testo.setSingleShot(True)
         self._attesa_testo.setInterval(300)
@@ -2711,6 +2724,16 @@ class MediaView(QWidget):
         self._colonna.setSpacing(6)
         cornice_lista.addWidget(self._lista)
 
+        # LA SCHEDA CERCA: la ricerca globale, offline e online (vedi RisultatiRicerca)
+        from SubViews.RisultatiRicerca import RisultatiRicerca
+        self._pagina_cerca = RisultatiRicerca("", pagina)
+        self._pagina_cerca.setMinimumHeight(560)
+        self._pagina_cerca.apri.connect(self.testoScelto.emit)
+        self._pagina_cerca.azione.connect(self.azioneWebRichiesta.emit)
+        disposizione.addWidget(self._pagina_cerca)
+        # Si parte dalla scheda CERCA: la barra delle altre schede resta nascosta.
+        self._contenitore_cerca.setVisible(self._scheda != TAB_CERCA)
+
         area.setWidget(pagina)
         # IL LETTORE STA FUORI DALL'AREA CHE SCORRE
         # -------------------------------------------
@@ -2821,11 +2844,23 @@ class MediaView(QWidget):
             pulito = pulito.replace(carattere, "")
         self._testo_cercato = pulito.lower()
         on_main(self._ricostruisci)
-        if len(pulito) >= 3 and self._scheda in (TAB_PUBBLICAZIONI, TAB_SCARICATI):
+        # La barra e' generica: cerca nel testo e su jw.org da QUALUNQUE tab.
+        if len(pulito) >= 3:
             self._attesa_testo.start()
         else:
             self._numero_ricerca += 1
             self._risultati_testo.hide()
+
+    def _invio_nella_ricerca(self) -> None:
+        """Invio: si apre la pagina completa dei risultati (offline + sito)."""
+        testo = self.cerca.text().strip()
+        if len(testo) >= 2:
+            self._numero_ricerca += 1
+            self._risultati_testo.hide()
+            # Invio: la ricerca completa sta nella scheda CERCA.
+            self._scegli_scheda(TAB_CERCA)
+            self._pagina_cerca.campo.setText(testo)
+            self._pagina_cerca._nuova_ricerca()
 
     def _cerca_nel_testo(self) -> None:
         """Cerca le parole nel testo scaricato, in secondo piano, e apre l'elenco."""
@@ -2840,14 +2875,18 @@ class MediaView(QWidget):
         def lavoro() -> None:
             trovati.extend(RicercaTesto.cerca(domanda, MAX_RISULTATI_TESTO))
 
+        def mostra(web: list, stato: str = "") -> None:
+            try:
+                punto = self.cerca.mapTo(self, QPoint(0, self.cerca.height() + 2))
+                self._risultati_testo.mostra(trovati, punto, self.cerca.width(), web, stato)
+            except RuntimeError:
+                pass
+
         def fatto() -> None:
             if numero != self._numero_ricerca or not self.cerca.hasFocus():
                 return
-            try:
-                punto = self.cerca.mapTo(self, QPoint(0, self.cerca.height() + 2))
-                self._risultati_testo.mostra(trovati, punto, self.cerca.width())
-            except RuntimeError:
-                pass
+            # Fuori dalla scheda CERCA la ricerca resta nella sezione: solo offline.
+            mostra([], "")
 
         background(lavoro, completion=fatto)
 
@@ -3212,6 +3251,8 @@ class MediaView(QWidget):
             self._numero_ricerca += 1
             self._risultati_testo.hide()
             self._scheda = indice
+            for tab in self._tabs:
+                tab.attendi(tab._indice == indice)
             on_main(self._ricostruisci)
         except Exception:  # noqa: BLE001
             import traceback
@@ -3311,7 +3352,7 @@ class MediaView(QWidget):
         self.cerca.clear()
         self.cerca.blockSignals(False)
         if not era_media:
-            self._scheda = TAB_PUBBLICAZIONI
+            self._scheda = TAB_CERCA
         for tab in self._tabs:
             tab.attendi(tab._indice == self._scheda)
         self._ricostruisci()
@@ -3594,6 +3635,15 @@ class MediaView(QWidget):
         scaricata: e' una nota sul cosa voglio, non il cosa ho.  «Apri» e
         «Togli il pacchetto» invece ci sono solo se il pacchetto c'e'.
         """
+        if cosa.get("documento"):
+            from PyQt6.QtWidgets import QMenu
+            menu = QMenu(self)
+            menu.addAction("Apri").triggered.connect(
+                lambda: self.documentoAperto.emit(cosa["documento"]))
+            menu.addAction("Elimina").triggered.connect(
+                lambda: self._chiedi_elimina_documento(cosa["documento"]))
+            menu.exec(posizione)
+            return
         if cosa.get("traduzione"):
             from PyQt6.QtWidgets import QMenu
             menu = QMenu(self)
@@ -3920,10 +3970,11 @@ class MediaView(QWidget):
         Se la tab corrente non ha un campo da cercare (le due che non hanno
         una lista), si va sulle Pubblicazioni, che ce l'ha.
         """
-        if not self.cerca.isVisible():
-            self._scegli_scheda(TAB_PUBBLICAZIONI)
-        self.cerca.setFocus()
-        self.cerca.selectAll()
+        # La lente porta alla scheda CERCA (ricerca globale offline + online).
+        if self._scheda != TAB_CERCA:
+            self._scegli_scheda(TAB_CERCA)
+        self._pagina_cerca.campo.setFocus()
+        self._pagina_cerca.campo.selectAll()
 
     # ------------------------------------------------------------------
     # LE QUATTRO TAB: COSA SI VEDE E COSA NO
@@ -3954,6 +4005,16 @@ class MediaView(QWidget):
         # Senza, la tab direbbe che «La Torre di Guardia» ha 2.787 numeri e ne
         # mostrerebbe 300: sembrerebbe che il catalogo sia sbagliato, non che la
         # lista sia lunga.  Un numero che mente e' peggio di nessun numero.
+        # Scheda CERCA: c'e' solo la pagina della ricerca globale, niente altro.
+        cerca_attiva = self._scheda == TAB_CERCA
+        self._pagina_cerca.setVisible(cerca_attiva)
+        if cerca_attiva:
+            for contenitore in (self._contenitore_cerca, self._contenitore_categorie,
+                                self._contenitore_schede, self._contenitore_lista,
+                                self._contenitore_griglia):
+                contenitore.setVisible(False)
+            self.conteggio.setText("")
+            return
         con_ricerca = (self._scheda in (TAB_AUDIO, TAB_VIDEO)
                        or self._scheda == TAB_PUBBLICAZIONI)
         con_lista = self._scheda in (TAB_AUDIO, TAB_VIDEO)
@@ -4002,7 +4063,7 @@ class MediaView(QWidget):
         # cambiasse mentre si scrive, il placeholder che descriveva il campo
         # sparisce sotto le dita e non si sa piu' che cosa si sta cercando.
         if self._scheda == TAB_PUBBLICAZIONI:
-            self.cerca.setPlaceholderText("Cerca fra le pubblicazioni e nel testo")
+            self.cerca.setPlaceholderText("Cerca fra le pubblicazioni e nel testo scaricato")
         else:
             self.cerca.setPlaceholderText("Cerca fra i media")
         # IL FONDO DELLA PAGINA DIPENDE DALLA TAB
@@ -4390,8 +4451,13 @@ class MediaView(QWidget):
                 f"{categorie} categorie — {totale} pubblicazioni")
         else:
             self.conteggio.setText(f"{categorie} categorie")
+        categorie_pub = list(CATEGORIE_PUB)
+        from Utility import DocumentiSito
+        if DocumentiSito.di_categoria(DocumentiSito.ALTRI):
+            categorie_pub.append((DocumentiSito.ALTRI, DocumentiSito.NOME_ALTRI,
+                                  "document-text"))
         return [({"titolo": nome, "icona": icona, "chiave": chiave}, "pub")
-                for chiave, nome, icona in CATEGORIE_PUB]
+                for chiave, nome, icona in categorie_pub]
 
     def _celle_del_catalogo(self, chiave: str) -> list:
         """Le card delle pubblicazioni di una categoria del catalogo.
@@ -4441,8 +4507,13 @@ class MediaView(QWidget):
         # un'istruzione che arriva da fuori (una sezione che chiede una
         # categoria inesistente), e senza questo controllo `filtra(...)` su
         # `None` romperebbe con un errore che non spiega niente.
+        from Utility import DocumentiSito
+        extra = [self._cella_documento(d) for d in DocumentiSito.di_categoria(chiave)]
         filtra = FILTRO_CATEGORIA.get(chiave)
         if filtra is None:
+            if extra:       # «Altri formati»: solo documenti non-JWPUB
+                self.conteggio.setText(f"{DocumentiSito.NOME_ALTRI} — {len(extra)}")
+                return extra
             self.conteggio.setText("")
             return []
         scelte = [p for p in self._catalogo if filtra(p)]
@@ -4491,6 +4562,7 @@ class MediaView(QWidget):
         viste = scelte[:MASSIMO_CARTE]
 
         celle = [self._voce_di_catalogo(pub) for pub in viste]
+        celle.extend(extra)         # i PDF di questa categoria, se ce ne sono
 
         # LE COPERTINE CHE NON CI SONO ANCORA
         # ------------------------------------
@@ -4826,6 +4898,8 @@ class MediaView(QWidget):
         for chiave_categoria, nome, _icona in CATEGORIE_PUB:
             if chiave_categoria == chiave:
                 return nome
+        if chiave == "altri_formati":
+            return "Altri formati (PDF)"
         for chiave_categoria, nome, _descrizione in Mediator.CATEGORIE:
             if chiave_categoria == chiave:
                 return nome
@@ -5064,6 +5138,12 @@ class MediaView(QWidget):
                            "_anteprima": (Copertine.pixmap_da_dati(dati_copertina)
                                           if dati_copertina else None)},
                           "pub"))
+        # I documenti non-JWPUB scaricati (PDF): anche loro stanno negli Scaricati.
+        try:
+            from Utility import DocumentiSito
+            celle.extend(self._cella_documento(d) for d in DocumentiSito.elenco())
+        except Exception as errore:  # noqa: BLE001
+            print(f"Scaricati: non riesco a leggere i documenti ⚠️  {errore}")
         # Le Bibbie scaricate come testo (senza pacchetto): una cella ciascuna,
         # cosi' si vedono qui e si possono eliminare.
         try:
@@ -5078,6 +5158,26 @@ class MediaView(QWidget):
         except Exception as errore:  # noqa: BLE001 - un disco illeggibile non ferma la griglia
             print(f"Scaricati: non riesco a leggere le Bibbie ⚠️  {errore}")
         return celle
+
+    def _cella_documento(self, d: dict) -> tuple:
+        """La cella di un documento non-JWPUB (PDF): stessa card delle pubblicazioni."""
+        return ({"titolo": d["titolo"],
+                 "sotto": f"PDF · {d.get('byte', 0) / (1024 * 1024):.1f} MB",
+                 "icona": ICONA_SEGNAPOSTO, "documento": d}, "pub")
+
+    def _chiedi_elimina_documento(self, d: dict) -> None:
+        from SubViews.Conferma import ConfermaApp
+        from Utility import DocumentiSito
+
+        def elimina() -> None:
+            DocumentiSito.elimina(d)
+            self.messaggio.emit(f"«{d['titolo']}» eliminato")
+            self.pacchettoRimossa.emit(None)
+
+        ConfermaApp.chiedi(
+            self.window(), "Eliminare il documento?",
+            f"Elimino dal disco «{d['titolo']}».\n\nSi puo' riscaricare quando vuoi.",
+            "Elimina", elimina)
 
     def _chiedi_elimina_bibbia(self, voce: dict) -> None:
         from SubViews.Conferma import ConfermaApp
@@ -5132,6 +5232,9 @@ class MediaView(QWidget):
 
     def _cella_premuta(self, cosa: dict) -> None:
         """Una cella della griglia e' stata premuta."""
+        if cosa.get("documento"):
+            self.documentoAperto.emit(cosa["documento"])
+            return
         if cosa.get("traduzione"):
             return          # si elimina solo dal menu «...», mai con un clic
         # UNA CARD-CATEGORIA APRE QUELLA LISTA
@@ -5200,11 +5303,12 @@ class MediaView(QWidget):
             # ----------------------------------------------------
             # Stesso segnale del tasto nuvoletta: e' lo stesso download e non
             # una seconda copia.
-            if self._si_puo_scaricare():
-                self.scaricaRichiesta.emit(pub)
-                return
+            # Non scaricata: si apre ONLINE dal sito (con avviso e tasto Scarica),
+            # senza scaricare al posto dell'utente.
+            self.apriOnline.emit(pub)
+            return
 
-            # MODALITA' OFFLINE: SI DICE PERCHE' NON SUCCEDE NIENTE
+            # MODALITA' OFFLINE: SI DICE PERCHE'' NON SUCCEDE NIENTE
             # -----------------------------------------------------
             # Senza questa riga il programma non farebbe niente e sembrerebbe
             # rotto: l'utente preme una card, non si muove niente, e non sa se
@@ -5283,6 +5387,9 @@ class MediaView(QWidget):
         # riceveva una lista vuota e la griglia restava spoglia, senza dire
         # niente.  Il sintomo e' una sezione vuota con il contatore vuoto — due
         # indizi che puntano lontani l'uno dall'altro.
+        if self._scheda == TAB_CERCA:
+            self._visibilita()
+            return
         if self._scheda in (TAB_PUBBLICAZIONI, TAB_SCARICATI,
                             TAB_VIDEO, TAB_AUDIO):
             self._visibilita()
@@ -6111,6 +6218,39 @@ class MediaView(QWidget):
             import traceback
             print("Media: errore nel far partire un media ⚠️")
             traceback.print_exc()
+
+    def scarica_traccia(self, sigla: str, lingua: str, traccia: int, scheda: int,
+                        ripiego) -> None:
+        """Scarica una traccia (video/audio) trovata da CERCA: stessa strada della nuvoletta."""
+        from PyQt6.QtGui import QCursor
+        from Utility.Extensions.Ext_DispatchQueue import background
+
+        trovate: list = []
+
+        def lavoro() -> None:
+            try:
+                trovate.extend(_raggruppa_tracce(
+                    MepsAPI.media(sigla, lingua, traccia=traccia), sigla))
+            except Exception:  # noqa: BLE001
+                pass
+
+        def pronto() -> None:
+            from PyQt6 import sip
+            if sip.isdeleted(self):
+                return
+            voce = next((v for v in trovate
+                         if MepsAPI.traccia_numero(v) == int(traccia)
+                         and (_e_video(v) if scheda == 1 else _e_audio(v))), None)
+            if voce is None:
+                ripiego()
+                return
+            if scheda == 1:
+                # Senza questo la voce non sembra un video e si scarica la risoluzione
+                # piu' bassa senza chiedere: deve uscire il menu' delle risoluzioni.
+                voce = {**voce, "formato": "VIDEO", "tipo": "video"}
+            self.mediaScaricata.emit(voce, QCursor.pos())
+
+        background(lavoro, completion=pronto)
 
     def suona_traccia(self, sigla: str, lingua: str, traccia: int, scheda: int,
                       ripiego) -> None:

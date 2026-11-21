@@ -71,7 +71,9 @@ from __future__ import annotations
 
 from PyQt6.QtCore import QEvent, QTimer, Qt, QUrl, pyqtSignal as Signal
 from PyQt6.QtGui import QKeySequence
-from PyQt6.QtWidgets import QLabel, QSizePolicy, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QFrame, QHBoxLayout, QLabel, QProgressBar, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 import Utility.tema as _tema
 from SubViews.VeloImmagine import VeloImmagine
@@ -238,6 +240,34 @@ EXTRACT_SCRIPT = """
 
     var copia = corpo.cloneNode(true);
 
+    // L'INDICE DI UNA PUBBLICAZIONE SU WOL
+    // ------------------------------------
+    // Su wol.jw.org l'elenco dei capitoli sta dentro un <nav> (schede
+    // `li.navCard`), e il <nav> si toglie piu' sotto come menu' del sito.
+    // Qui le schede diventano una lista semplice di link, prima della pulizia.
+    var schede = copia.querySelectorAll('ul.directory li.navCard');
+    if (schede.length) {
+      var lista = document.createElement('ul');
+      for (var i = 0; i < schede.length; i++) {
+        var collegamento = schede[i].querySelector('a[href]');
+        if (!collegamento) continue;
+        var riga1 = schede[i].querySelector('.cardLine1');
+        var riga2 = schede[i].querySelector('.cardLine2');
+        var testoScheda = ((riga1 ? riga1.textContent : '') +
+          (riga2 && riga2.textContent.trim() ? ' - ' + riga2.textContent : ''))
+          .replace(/\\s+/g, ' ').trim();
+        if (!testoScheda) continue;
+        var voce = document.createElement('li');
+        var an = document.createElement('a');
+        an.setAttribute('href', collegamento.getAttribute('href'));
+        an.textContent = testoScheda;
+        voce.appendChild(an);
+        lista.appendChild(voce);
+      }
+      while (copia.firstChild) copia.removeChild(copia.firstChild);
+      copia.appendChild(lista);
+    }
+
     // LE FOTO "RESPONSIVE" DEL SITO
     // Il sito non mette subito un <img>: mette uno <span class="jsRespImg">
     // con dentro le varie misure, e il suo JavaScript lo trasforma in
@@ -276,7 +306,7 @@ EXTRACT_SCRIPT = """
       // ("onPageTitle"), che sul sito si vede solo quando si salta a una
       // sezione, e che qui comparirebbe come un titolo ripetuto sotto
       // quello vero.
-      ' .onPageTitle, .hideObj');
+      ' .onPageTitle, .hideObj, .alternatePresentation, .hidden');
     for (var i = daTogliere.length - 1; i >= 0; i--) {
       if (daTogliere[i].parentNode) {
         daTogliere[i].parentNode.removeChild(daTogliere[i]);
@@ -503,6 +533,8 @@ class NotiziaView(QWidget):
     audioAssente = Signal()
     #: Si e' premuto un link: (href)
     linkPremuto = Signal(str)
+    #: Una pubblicazione aperta dal sito: l'utente vuole scaricarla (pub).
+    scaricaRichiesta = Signal(object)
 
     def __init__(self, url: str, titolo: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -530,7 +562,11 @@ class NotiziaView(QWidget):
 
         from WebBrowserView import WebView
 
+        #: La pubblicazione aperta dal sito senza essere scaricata (o None).
+        self.pub_web = None
+        self._avviso = None
         disposizione = QVBoxLayout(self)
+        self._disposizione = disposizione
         disposizione.setContentsMargins(0, 0, 0, 0)
         disposizione.setSpacing(0)
 
@@ -561,6 +597,114 @@ class NotiziaView(QWidget):
         # l'app, e va anche sullo schermo esterno: e' lo stesso velo delle
         # pubblicazioni, e quindi fa le stesse cose.
         self.velo = VeloImmagine(self)
+
+    # ------------------------------------------------------------------
+    # PUBBLICAZIONE APERTA SENZA SCARICARLA
+    # ------------------------------------------------------------------
+
+    def segna_pubblicazione_web(self, pub, nome: str = "", testo: str = "") -> None:
+        """Questa pagina e' una pubblicazione letta dal sito, non scaricata.
+
+        Compare in alto, subito, un avviso nello stile dell'app: dice che si
+        legge da internet e che per usarla senza connessione va scaricata, con
+        il tasto per farlo.  Non blocca niente: la pagina si apre comunque.
+        """
+        # Gia' sul disco: nessun avviso (e' un'informazione sbagliata).
+        try:
+            from Utility import PubWeb
+            if not isinstance(pub, dict) and PubWeb.e_scaricata(pub):
+                self.pub_web = None
+                return
+        except Exception:  # noqa: BLE001
+            pass
+        self.pub_web = pub
+        if self._avviso is not None:
+            return
+        c = _colori_tema()
+        riquadro = QFrame(self)
+        riquadro.setObjectName("avvisoNonScaricata")
+        riquadro.setStyleSheet(
+            f"QFrame#avvisoNonScaricata {{ background: {c['img']};"
+            f" border-bottom: 2px solid {c['accento']}; }}"
+            f" QFrame#avvisoNonScaricata QLabel {{ color: {c['testo']}; }}")
+        riquadro.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        esterno = QVBoxLayout(riquadro)
+        esterno.setContentsMargins(0, 0, 0, 0)
+        esterno.setSpacing(0)
+        contenuto = QWidget(riquadro)
+        riga = QHBoxLayout(contenuto)
+        riga.setContentsMargins(16, 10, 16, 10)
+        riga.setSpacing(10)
+        esterno.addWidget(contenuto)
+        # La barra «sto scaricando» (stessa delle card), nascosta finche' non si scarica.
+        self._avviso_barra = QProgressBar(riquadro)
+        self._avviso_barra.setObjectName("scaricaBarraCard")
+        self._avviso_barra.setTextVisible(False)
+        self._avviso_barra.setRange(0, 0)
+        self._avviso_barra.setFixedHeight(5)
+        self._avviso_barra.hide()
+        esterno.addWidget(self._avviso_barra)
+        self._avviso_scaricando = False
+        self._avviso_testo = QLabel(riquadro)
+        self._avviso_testo.setWordWrap(True)
+        self._avviso_testo.setTextFormat(Qt.TextFormat.RichText)
+        riga.addWidget(self._avviso_testo, 1)
+        self._avviso_scarica = QPushButton("Scarica", riquadro)
+        self._avviso_scarica.setDefault(False)
+        self._avviso_scarica.clicked.connect(self.chiedi_scarico)
+        chiudi = QPushButton("Ho capito", riquadro)
+        chiudi.clicked.connect(riquadro.hide)
+        riga.addWidget(self._avviso_scarica)
+        riga.addWidget(chiudi)
+        nome = _escape(nome or getattr(pub, "displayTitle", "")
+                       or getattr(pub, "keySymbol", "") or "")
+        self._avviso_testo.setText(testo or (
+            f"<b>«{nome}» non è scaricata</b>: la stai leggendo da internet.<br>"
+            "<b>Ricordati di scaricarla</b> se vuoi usarla anche senza connessione "
+            "a internet: senza internet non si potrà aprire."))
+        self._disposizione.insertWidget(0, riquadro)
+        self._avviso = riquadro
+        # L'avviso resta il tempo di leggerlo (6 secondi) e poi sparisce da solo,
+        # a meno che non si stia scaricando.
+        QTimer.singleShot(6000, self._nascondi_avviso_se_libero)
+
+    def _nascondi_avviso_se_libero(self) -> None:
+        try:
+            if self._avviso is not None and not self._avviso_scaricando:
+                self._avviso.hide()
+        except RuntimeError:
+            pass
+
+    def chiedi_scarico(self) -> None:
+        """Il tasto «Scarica» dell'avviso o dei tre puntini."""
+        if self.pub_web is None:
+            return
+        if self._avviso is not None:
+            self._avviso_scarica.setEnabled(False)
+            self._avviso_scarica.setText("Scarico…")
+            self._avviso_scaricando = True
+            self._avviso_barra.show()
+            self._avviso.show()
+        self.scaricaRichiesta.emit(self.pub_web)
+
+    def scarico_finito(self, riuscito: bool = True) -> None:
+        """Il download e' finito: l'avviso lo dice, poi si toglie da solo."""
+        if riuscito:
+            self.pub_web = None
+        if self._avviso is None:
+            return
+        self._avviso_scaricando = False
+        self._avviso_barra.hide()
+        if riuscito:
+            self._avviso_scarica.setVisible(False)
+            self._avviso_testo.setText(
+                "<b>Scaricata.</b> Adesso la pubblicazione si apre anche senza internet.")
+            QTimer.singleShot(4000, self._avviso.hide)
+        else:
+            self._avviso_scarica.setEnabled(True)
+            self._avviso_scarica.setText("Scarica")
+            self._avviso_testo.setText(
+                "<b>Non sono riuscito a scaricarla.</b> Controlla la connessione e riprova.")
 
     def carica(self) -> None:
         """Apre l'indirizzo."""
