@@ -35,11 +35,37 @@ Tutto quello che ti aspetti da JW Library:
 - **Player** video e audio, mini player, e uscita su uno o più monitor esterni.
 - Tema chiaro e scuro, molte lingue, modalità offline.
 
+## Novità della 1.1.0
+
+**Cerca su jw.org, dentro l'app.** In *Biblioteca Digitale* c'è una scheda nuova,
+**Cerca**, la prima e quella che si apre per default. Scrivi una parola (per
+esempio «luca» o «matteo»): mentre scrivi compare una tendina con i suggerimenti,
+presi sia da quello che hai già scaricato sia da jw.org. Premendo **Invio** si apre
+la pagina dei risultati, come quella del sito ma nello stile dell'app:
+
+- due sezioni separate: **Online (jw.org)**, con gli stessi risultati del sito, e **Scaricati (offline)**, con quello che trovi nel testo già sul disco;
+- le schede **Tutto, Pubblicazioni, Video, Audio, Bibbia**, l'ordine (rilevanza, dal più recente, dal meno recente) e le pagine numerate;
+- senza internet resta solo la parte offline.
+
+**Apri senza scaricare.** Ogni pubblicazione, e la Bibbia, si può leggere online dentro l'app:
+in alto compare un avviso («non è scaricata») con il tasto **Scarica**, che sparisce da solo.
+I video e gli audio trovati partono nel lettore dell'app, in streaming.
+
+**Scarica da qualunque risultato.** Accanto a ogni pubblicazione, rivista, video o audio c'è
+la nuvoletta di scaricamento (per i video si sceglie la risoluzione), con la barra di
+avanzamento e una spunta verde quando è già scaricato. Il menu dei tre puntini permette
+di aprire subito, scaricare e mettere nei **Preferiti**, anche per ciò che è solo online.
+Quello che scarichi finisce negli stessi elenchi di Scaricati e delle sezioni normali.
+
+**Solo se non c'è altro:** se una pubblicazione esiste solo in PDF, si apre online e si
+può scaricare; va in Scaricati e nella categoria «Altri formati (PDF)».
+
+**Aggiornamenti.** Il popup di aggiornamento mostra le novità della nuova versione
+(prese dalle note della release); il timer compare solo se è installato.
+
 ## Cosa c'è in più rispetto all'app originale
 
 - Nella **Home**: il testo del giorno, l'**argomento della settimana o del giorno** preso dal sito, e **tutte le notizie** (anche quelle dell'organizzazione), novità e aggiornamenti con «Scarica».
-- **Cerca** (scheda di Biblioteca Digitale): una ricerca su jw.org e sul testo scaricato, con suggerimenti, pagina dei risultati come sul sito (Tutto, Pubblicazioni, Video, Audio, Bibbia), ordine e pagine; online e offline in due sezioni.
-- **Apri senza scaricare**: ogni pubblicazione, e la Bibbia, si legge online dentro l'app, con il tasto per scaricarla; video e audio dai risultati partono in streaming; scarica da qualunque risultato (con scelta della risoluzione per i video) e metti nei Preferiti.
 - Barra di avanzamento viola per ogni scaricamento, e pulsante **Annulla scaricamento** ovunque.
 - Il **Timer adunanze** come plugin facoltativo (vedi sotto).
 - Controllo degli **aggiornamenti** all'avvio (app e, se installato, timer): un popup con una barra scarica tutto in un clic. Si può fare anche a mano dalle Impostazioni.
