@@ -19,6 +19,10 @@ Versione **1.1.0** (l'ultima: si scarica dalla pagina delle
 |---|---|
 | ![Bibbia](docs/immagini/bibbia.png) | ![Adunanze](docs/immagini/adunanze.png) |
 
+| Cerca (sezione nuova: online su jw.org e offline, con scarica su ogni risultato) |
+|---|
+| ![Cerca](docs/immagini/cerca.png) |
+
 | Schermo esterno (monitor o TV della sala: video, immagini e scritture) |
 |---|
 | ![Schermo esterno](docs/immagini/schermo-esterno.png) |
