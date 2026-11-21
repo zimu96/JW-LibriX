@@ -1777,14 +1777,10 @@ class _CardNotizia(QLabel):
         nome.setWordWrap(True)
         disposizione.addWidget(nome)
 
-        if sotto:
-            # La sezione e la data: "NEWS · 30 settembre 2026".  Una riga e
-            # non due, perche' sotto la striscia c'e' la sezione Novita' e
-            # l'altezza e' fissa.
-            sotto_etichetta = QLabel(sotto, contenitore)
-            sotto_etichetta.setObjectName("sottoCard")
-            sotto_etichetta.setWordWrap(True)
-            disposizione.addWidget(sotto_etichetta)
+        # Sotto il titolo delle notizie non si scrive niente (niente «NEWS · data»).
+
+        # Il titolo sta subito sotto la foto: lo spazio che avanza va in fondo.
+        disposizione.addStretch(1)
 
         esterno = QVBoxLayout(self)
         esterno.setContentsMargins(0, 0, 0, 0)
