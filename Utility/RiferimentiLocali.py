@@ -224,12 +224,13 @@ def _pubblicazione_citata(pacchetto, posizione: int):
 
 
 def estratto(citato: int, inizio, fine, titolo: str, breve: str, simbolo: str,
-             lingua: str | None = None):
+             lingua: str | None = None, rete: bool | None = None):
     """I paragrafi ``inizio``-``fine`` del documento ``citato``, o None se non si leggono.
 
     Si legge dal disco; se il documento manca si prova a scaricarlo.
     """
     file = get_documents_directory() / "Documents_I" / f"{citato}.html"
+    scaricato_ora = False
     if not file.is_file():
         # Il capitolo e' rimasto fuori dallo scaricamento: si prende adesso.
         try:
@@ -237,9 +238,10 @@ def estratto(citato: int, inizio, fine, titolo: str, breve: str, simbolo: str,
             from Utility.FileDownloader import FileDownloader
             from Utility.WolLingua import url_documento
             url = url_documento(citato, lingua)
-            if url and Aggiornamenti.automatici():
+            if url and (rete if rete is not None else Aggiornamenti.automatici()):
                 FileDownloader.download_article(
                     url=url, path=f"Documents_I/{citato}.html")
+                scaricato_ora = True
         except Exception:  # noqa: BLE001
             pass
     if not file.is_file():
@@ -252,10 +254,14 @@ def estratto(citato: int, inizio, fine, titolo: str, breve: str, simbolo: str,
             html = "".join(pezzi)
     html = re.sub(r"<img\b[^>]*>", "", html)
 
+    # «online» = la pubblicazione citata non e' scaricata (il pezzo letto e' solo
+    # una pagina presa dal sito).
+    non_scaricata = (scaricato_ora or _pacchetto_del_documento(citato) is None) \
+        and not _wol.e_scaricata(simbolo)
     return _wol.Riferimento(titolo=titolo, voci=[_wol.Voce(
         titolo=titolo, pubblicazione=breve,
         immagine=_copertina_di(citato, simbolo), html=html,
-        simbolo=simbolo, documento=citato)])
+        simbolo=simbolo, documento=citato)], online=non_scaricata)
 
 
 def _copertina_di(citato: int, simbolo: str = "") -> str:

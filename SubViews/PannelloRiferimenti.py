@@ -31,6 +31,8 @@ from PyQt6.QtWidgets import (
     QFrame,
     QHBoxLayout,
     QLabel,
+    QProgressBar,
+    QPushButton,
     QToolButton,
     QVBoxLayout,
     QWidget,
@@ -89,6 +91,8 @@ class PannelloRiferimenti(QWidget):
     aperturaRichiesta = Signal(object)
     #: Un pulsante dentro la pagina del riquadro (``jwl:...``) e' stato premuto
     azioneRichiesta = Signal(str)
+    #: Il tasto «Scarica» dell'avviso «non scaricata»: (sigla, lingua)
+    scaricaRichiesta = Signal(str, str)
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -98,6 +102,11 @@ class PannelloRiferimenti(QWidget):
         self._avanti: list = []
         self._richiesta = 0
         self._loghi: dict[str, QPixmap] = {}
+        #: True nelle schermate che leggono online (pubblicazione o Bibbia non
+        #: scaricata): il sito si usa sempre, anche con i controlli automatici spenti.
+        self.rete_forzata = False
+        self._scaricando = False
+        self._giro_avviso = 0
 
         self.barra = QFrame(self)
         self.barra.setObjectName("barraPannello")
@@ -167,10 +176,36 @@ class PannelloRiferimenti(QWidget):
         self.web = QWebEngineView(self)
         self.web.setPage(self.pagina)
 
+        # L'avviso «non scaricata»: sotto la barra viola, con tasto e barra di avanzamento.
+        self.avviso = QFrame(self)
+        self.avviso.setObjectName("avvisoPannello")
+        esterno = QVBoxLayout(self.avviso)
+        esterno.setContentsMargins(0, 0, 0, 0)
+        esterno.setSpacing(0)
+        riga_avviso = QHBoxLayout()
+        riga_avviso.setContentsMargins(10, 6, 10, 6)
+        riga_avviso.setSpacing(8)
+        self.testo_avviso = QLabel(self.avviso)
+        self.testo_avviso.setWordWrap(True)
+        self.testo_avviso.setTextFormat(Qt.TextFormat.RichText)
+        riga_avviso.addWidget(self.testo_avviso, 1)
+        self.tasto_scarica = QPushButton("Scarica", self.avviso)
+        self.tasto_scarica.clicked.connect(self._chiedi_scarico)
+        riga_avviso.addWidget(self.tasto_scarica)
+        esterno.addLayout(riga_avviso)
+        self.barra_scarico = QProgressBar(self.avviso)
+        self.barra_scarico.setRange(0, 0)
+        self.barra_scarico.setTextVisible(False)
+        self.barra_scarico.setFixedHeight(5)
+        self.barra_scarico.hide()
+        esterno.addWidget(self.barra_scarico)
+        self.avviso.hide()
+
         colonna = QVBoxLayout(self)
         colonna.setContentsMargins(0, 0, 0, 0)
         colonna.setSpacing(0)
         colonna.addWidget(self.barra)
+        colonna.addWidget(self.avviso)
         colonna.addWidget(self.web, 1)
         self._aggiorna_barra()
 
@@ -193,7 +228,7 @@ class PannelloRiferimenti(QWidget):
         self._avanti.clear()
         self._richiesta += 1
         numero = self._richiesta
-        rete = forza_rete or Aggiornamenti.automatici()
+        rete = forza_rete or self.rete_forzata or Aggiornamenti.automatici()
         tenuto: list = [None]
 
         def leggi() -> None:
@@ -278,8 +313,9 @@ class PannelloRiferimenti(QWidget):
         """Apre il brano di una pubblicazione citata (dal disco, o dal sito)."""
         from Utility import RiferimentiLocali
 
+        rete = True if self.rete_forzata else None
         self.carica(f"jwl:doc/{documento}", lambda: RiferimentiLocali.estratto(
-            documento, inizio, fine, titolo, breve, simbolo, lingua))
+            documento, inizio, fine, titolo, breve, simbolo, lingua, rete))
 
     def mostra_html(self, titolo: str, sottotitolo: str, pagina: str) -> None:
         """Mostra una pagina che non e' un riferimento (la gemma)."""
@@ -289,6 +325,7 @@ class PannelloRiferimenti(QWidget):
         self.indietro.setEnabled(False)
         self.avanti.setEnabled(False)
         self.area_titolo.setEnabled(False)
+        self.avviso.hide()
         self.titolo.setText(titolo)
         self.sottotitolo.setText(sottotitolo)
         self.logo.clear()
@@ -305,6 +342,73 @@ class PannelloRiferimenti(QWidget):
     def _leggi_online(self) -> None:
         if self._storia:
             self.apri(self._storia[-1][0], forza_rete=True, sostituisci=True)
+
+    # ------------------------------------------------------------------
+    # AVVISO «NON SCARICATA»
+    # ------------------------------------------------------------------
+
+    def _colora_avviso(self) -> None:
+        c = tema.colori(tema.tema_attivo())
+        sfondo, testo = c["pannello"], c["testo"]
+        self.avviso.setStyleSheet(
+            f"QFrame#avvisoPannello {{ background: {sfondo};"
+            f" border-bottom: 2px solid {tema.ACCENTO}; }}"
+            f" QFrame#avvisoPannello QLabel {{ color: {testo}; background: transparent; }}"
+            f" QFrame#avvisoPannello QPushButton {{ background: {tema.ACCENTO};"
+            " color: #ffffff; border: none; border-radius: 4px; padding: 6px 14px;"
+            " font-weight: 600; }"
+            f" QFrame#avvisoPannello QPushButton:disabled {{ background: {c['bordo']};"
+            f" color: {c['grigio']}; }}")
+
+    def _nascondi_avviso_se_libero(self) -> None:
+        if not self._scaricando:
+            self.avviso.hide()
+
+    def _aggiorna_avviso(self, riferimento) -> None:
+        """L'avviso compare quando il testo viene da internet e non dal disco.
+
+        Resta qualche secondo e poi sparisce da solo (non mentre si scarica).
+        """
+        self._colora_avviso()
+        voce = riferimento.voci[0] if riferimento is not None and riferimento.voci else None
+        if voce is None or not riferimento.online or not voce.simbolo:
+            self.avviso.hide()
+            return
+        nome = voce.pubblicazione or voce.simbolo
+        if self._scaricando:
+            self.testo_avviso.setText(f"<b>Scarico «{nome}»…</b>")
+        else:
+            self.testo_avviso.setText(
+                f"<b>«{nome}» non è scaricata</b>: la leggi da internet. "
+                "Scaricala per usarla anche senza connessione.")
+        self.tasto_scarica.setEnabled(not self._scaricando)
+        self.tasto_scarica.setText("Scarico…" if self._scaricando else "Scarica")
+        self.barra_scarico.setVisible(self._scaricando)
+        self.avviso.show()
+        self._giro_avviso += 1
+        giro = self._giro_avviso
+        QTimer.singleShot(10000, lambda: self._nascondi_avviso_se_libero()
+                          if giro == self._giro_avviso else None)
+
+    def _chiedi_scarico(self) -> None:
+        riferimento = self._storia[-1][1] if self._storia else None
+        if riferimento is None or not riferimento.voci:
+            return
+        from Utility import Lingua
+        self._scaricando = True
+        self._aggiorna_avviso(riferimento)
+        self.scaricaRichiesta.emit(riferimento.voci[0].simbolo, Lingua.bibbia_simbolo()
+                                   if riferimento.voci[0].libro else "I")
+
+    def scarico_finito(self, riuscito: bool = True) -> None:
+        """Il download e' finito: se e' andato bene, si rilegge dal disco."""
+        if not self._scaricando:
+            return
+        self._scaricando = False
+        if riuscito and self._storia:
+            self.apri(self._storia[-1][0], sostituisci=True)
+        else:
+            self._aggiorna_avviso(self._storia[-1][1] if self._storia else None)
 
     def _apri_intera(self) -> None:
         riferimento = self._storia[-1][1] if self._storia else None
@@ -349,6 +453,7 @@ class PannelloRiferimenti(QWidget):
         self.avanti.setEnabled(bool(self._avanti))
         riferimento = self._storia[-1][1] if self._storia else None
         self.area_titolo.setEnabled(riferimento is not None)
+        self._aggiorna_avviso(riferimento)
         if riferimento is None:
             self.titolo.setText("Riferimento non disponibile" if self._storia else "")
             self.sottotitolo.setText("")

@@ -65,6 +65,9 @@ class Voce:
 class Riferimento:
     titolo: str
     voci: list[Voce] = field(default_factory=list)
+    #: True se il testo viene da internet (o dalla cache) e non dal disco:
+    #: il riquadro avvisa e offre di scaricare la pubblicazione.
+    online: bool = False
 
     @property
     def sottotitolo(self) -> str:
@@ -136,6 +139,30 @@ def _da_json(dati: dict) -> Riferimento | None:
     return Riferimento(titolo=voci[0].titolo or dati.get("title") or "", voci=voci)
 
 
+def e_scaricata(simbolo: str) -> bool:
+    """True se la pubblicazione (o la Bibbia) con questa sigla e' gia' sul disco."""
+    simbolo = (simbolo or "").strip()
+    if not simbolo:
+        return False
+    try:
+        if simbolo.startswith("nwt"):
+            from Utility import BibbiaOnline, Lingua, Traduzioni
+            from Utility.JWPubManager import bible_package
+            return (bible_package() is not None or BibbiaOnline.capitoli_su_disco(
+                Lingua.bibbia_simbolo()) >= Traduzioni.TOTALE)
+        from Utility import JWPubManager
+        return any(c.name == simbolo or c.name.startswith(simbolo + "_")
+                   for c in JWPubManager.scaricate())
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _segna_online(letto: "Riferimento") -> "Riferimento":
+    """Il testo viene dal sito: si avvisa solo se la pubblicazione NON e' scaricata."""
+    letto.online = not (letto.voci and e_scaricata(letto.voci[0].simbolo))
+    return letto
+
+
 def carica(href: str, rete: bool = True) -> Riferimento | None:
     """Il riferimento di un link: dal disco, dalla cache, e solo alla fine dal sito.
 
@@ -160,7 +187,7 @@ def carica(href: str, rete: bool = True) -> Riferimento | None:
             dati = json.loads(file.read_text(encoding="utf-8"))
             letto = _da_json(dati)
             if letto is not None:
-                return letto
+                return _segna_online(letto)
         except (OSError, ValueError):
             pass
     if not rete:
@@ -174,6 +201,7 @@ def carica(href: str, rete: bool = True) -> Riferimento | None:
     except (ValueError, UnicodeDecodeError):
         return None
     if letto is not None:
+        _segna_online(letto)
         try:
             file.parent.mkdir(parents=True, exist_ok=True)
             file.write_bytes(grezzo)

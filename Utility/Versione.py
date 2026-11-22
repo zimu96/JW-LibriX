@@ -8,8 +8,8 @@ from __future__ import annotations
 import os
 
 #: La versione dell'app, come la vede l'utente («V1») e come numero.
-ETICHETTA_APP = "V1.1.0"
-VERSIONE_APP = "1.1.0"
+ETICHETTA_APP = "V1.1.1"
+VERSIONE_APP = "1.1.1"
 
 #: I repository su GitHub, nella forma «utente/nome».  Vuoto = non ancora creato.
 REPO_APP = "zimu96/JW-LibriX"

@@ -54,7 +54,10 @@ def _id_versetto(libro: int, capitolo: int, versetto: int) -> int | None:
         altra = bible_package_di_qualunque_lingua()
         percorso = next((altra / "contents").glob("*.db"), None) if altra else None
     if percorso is None:
-        return None
+        # Bibbia non scaricata (lettura online): i numeri sono uguali ovunque.
+        from Utility import VersettiBibbia
+        primo = VersettiBibbia.primo_versetto(libro, capitolo)
+        return None if primo is None else primo + max(versetto, 1) - 1
     connessione = _apri(Path(percorso))
     if connessione is None:
         return None

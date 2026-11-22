@@ -2270,6 +2270,8 @@ class SidebarView(QMainWindow):
             schermata.pacchettoScaricato.connect(self._scaricata_qualcosa)
         if hasattr(schermata, "riferimentoDaAprire"):
             schermata.riferimentoDaAprire.connect(self._apri_riferimento_completo)
+        if hasattr(schermata, "scaricaCitataRichiesta"):
+            schermata.scaricaCitataRichiesta.connect(self._scarica_citata)
         if hasattr(schermata, "videoDaProporre"):
             schermata.videoDaProporre.connect(self._proponi_video)
         if hasattr(schermata, "contenutiDaAprire"):
@@ -4645,6 +4647,45 @@ class SidebarView(QMainWindow):
         self._pub_web_in_scarico = pub
         sezione.scarica(pub, apri=False)
 
+    def _scarica_citata(self, sigla: str, lingua: str) -> None:
+        """Il tasto «Scarica» nel riquadro di destra: scarica la pubblicazione citata."""
+        from PyQt6.QtCore import QTimer
+        from Utility import Copertine, Lingua, Traduzioni
+
+        if sigla.startswith("nwt"):                 # la Bibbia: capitolo per capitolo
+            simbolo = lingua or Lingua.bibbia_simbolo()
+            Traduzioni.avvia_scaricamento(simbolo)
+            timer = QTimer(self)
+
+            def controlla() -> None:
+                if Traduzioni.in_corso(simbolo) is None:
+                    timer.stop()
+                    timer.deleteLater()
+                    self._pannelli_scarico_finito(True)
+
+            timer.timeout.connect(controlla)
+            timer.start(1000)
+            return
+        pub = self._cerca_pubblicazione(sigla, Lingua.corrente_id(), "")
+        sezione = self._catalogo()
+        if pub is None or sezione is None or not hasattr(sezione, "scarica"):
+            self._mostra_messaggio("Questa pubblicazione non si puo' scaricare da qui.")
+            self._pannelli_scarico_finito(False)
+            return
+        if Copertine.pacchetto_locale(pub):
+            self._pannelli_scarico_finito(True)
+            return
+        self._pub_in_scarico = pub
+        self._pub_web_in_scarico = pub
+        sezione.scarica(pub, apri=False)
+
+    def _pannelli_scarico_finito(self, riuscito: bool) -> None:
+        """Dice ai riquadri di destra aperti che il download e' finito."""
+        for i in range(self.pila.count()):
+            pannello = getattr(self.pila.widget(i), "pannello", None)
+            if pannello is not None and hasattr(pannello, "scarico_finito"):
+                pannello.scarico_finito(riuscito)
+
     def _scarico_web_finito(self) -> None:
         """Un download e' finito: ogni pagina aperta dal sito controlla se ora e' sul disco.
 
@@ -4654,6 +4695,7 @@ class SidebarView(QMainWindow):
         """
         from Utility import PubWeb
         self._pub_web_in_scarico = None
+        self._pannelli_scarico_finito(True)
         for i in range(self.pila.count()):
             w = self.pila.widget(i)
             pub = getattr(w, "pub_web", None) if isinstance(w, NotiziaView) else None

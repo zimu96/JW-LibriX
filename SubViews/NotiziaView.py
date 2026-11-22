@@ -72,8 +72,8 @@ from __future__ import annotations
 from PyQt6.QtCore import QEvent, QTimer, Qt, QUrl, pyqtSignal as Signal
 from PyQt6.QtGui import QKeySequence
 from PyQt6.QtWidgets import (
-    QFrame, QHBoxLayout, QLabel, QProgressBar, QPushButton, QSizePolicy, QVBoxLayout,
-    QWidget)
+    QFrame, QHBoxLayout, QLabel, QProgressBar, QPushButton, QSizePolicy, QSplitter,
+    QVBoxLayout, QWidget)
 
 import Utility.tema as _tema
 from SubViews.VeloImmagine import VeloImmagine
@@ -535,6 +535,10 @@ class NotiziaView(QWidget):
     linkPremuto = Signal(str)
     #: Una pubblicazione aperta dal sito: l'utente vuole scaricarla (pub).
     scaricaRichiesta = Signal(object)
+    #: Dal riquadro di destra: si vuole scaricare la pubblicazione citata (sigla, lingua).
+    scaricaCitataRichiesta = Signal(str, str)
+    #: La barra del riquadro e' stata premuta: la ``Voce`` da aprire intera.
+    riferimentoDaAprire = Signal(object)
 
     def __init__(self, url: str, titolo: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -585,7 +589,24 @@ class NotiziaView(QWidget):
         # intercettati qui e diventano il `goBack` della schermata.
         self.web.setContextMenuPolicy(Qt.ContextMenuPolicy.NoContextMenu)
         self.web.installEventFilter(self)
-        disposizione.addWidget(self.web, 1)
+        # Come nella lettura offline: a destra il riquadro dei riferimenti
+        # (versetti, pubblicazioni citate), nascosto finche' non si preme un link.
+        from SubViews.PannelloRiferimenti import PannelloRiferimenti
+        self.pannello = PannelloRiferimenti(self)
+        self.pannello.rete_forzata = True      # si legge online: il sito si usa sempre
+        self.pannello.chiuso.connect(self._chiudi_riquadro)
+        self.pannello.aperturaRichiesta.connect(self.riferimentoDaAprire.emit)
+        self.pannello.scaricaRichiesta.connect(self.scaricaCitataRichiesta.emit)
+        self.splitter = QSplitter(Qt.Orientation.Horizontal, self)
+        self.splitter.addWidget(self.web)
+        self.splitter.addWidget(self.pannello)
+        self.splitter.setStretchFactor(0, 1)
+        self.splitter.setStretchFactor(1, 0)
+        self.splitter.setChildrenCollapsible(False)
+        self._riquadro(False)
+        # Il testo del riquadro segue la misura scelta nell'app (zoom del motore).
+        self._zoom_riquadro()
+        disposizione.addWidget(self.splitter, 1)
         self.web.setVisible(False)
 
         self.web.bridge.message.connect(self._messaggio)
@@ -664,9 +685,54 @@ class NotiziaView(QWidget):
             "a internet: senza internet non si potrà aprire."))
         self._disposizione.insertWidget(0, riquadro)
         self._avviso = riquadro
-        # L'avviso resta il tempo di leggerlo (6 secondi) e poi sparisce da solo,
+        # L'avviso resta il tempo di leggerlo (9 secondi) e poi sparisce da solo,
         # a meno che non si stia scaricando.
-        QTimer.singleShot(6000, self._nascondi_avviso_se_libero)
+        QTimer.singleShot(9000, self._nascondi_avviso_se_libero)
+
+    # ------------------------------------------------------------------
+    # IL RIQUADRO DI DESTRA
+    # ------------------------------------------------------------------
+
+    _LARGHEZZA_RIQUADRO = 420
+
+    def _riquadro(self, aperto: bool) -> None:
+        self.pannello.setMaximumWidth(16777215 if aperto else 0)
+        self.pannello.setMinimumWidth(self._LARGHEZZA_RIQUADRO if aperto else 0)
+        self.splitter.handle(1).setVisible(aperto)
+        totale = max(self.splitter.width(), 2 * self._LARGHEZZA_RIQUADRO)
+        larghezza = self._LARGHEZZA_RIQUADRO if aperto else 0
+        self.splitter.setSizes([totale - larghezza, larghezza])
+
+    def _zoom_riquadro(self) -> None:
+        try:
+            self.pannello.web.setZoomFactor(
+                max(0.5, min(3.0, self._dimensione_testo / 100.0)))
+        except (AttributeError, RuntimeError):
+            pass
+
+    def apri_riferimento(self, href: str) -> None:
+        """Un versetto o una pubblicazione citata: si apre a destra, non in un'altra pagina."""
+        if self.pannello.maximumWidth() == 0:
+            web = self.pannello.web
+            fatto = [False]
+
+            def apri(*_) -> None:
+                if fatto[0]:
+                    return
+                fatto[0] = True
+                try:
+                    web.loadFinished.disconnect(apri)
+                except TypeError:
+                    pass
+                self._riquadro(True)
+
+            web.loadFinished.connect(apri)
+            QTimer.singleShot(1500, apri)
+        self.pannello.apri(href)
+
+    def _chiudi_riquadro(self) -> None:
+        self._riquadro(False)
+        QTimer.singleShot(0, self.pannello.svuota)
 
     def _nascondi_avviso_se_libero(self) -> None:
         try:
@@ -1179,6 +1245,8 @@ class NotiziaView(QWidget):
         except (TypeError, ValueError):
             valore = 100
         self._dimensione_testo = max(50, min(300, valore))
+        if hasattr(self, "pannello"):
+            self._zoom_riquadro()
         if not self._articolo_mostrato:
             return
         dimensione_px = 16.0 * self._dimensione_testo / 100.0
@@ -1230,7 +1298,11 @@ class NotiziaView(QWidget):
         if mode == 99:
             href = messaggio.get("href", "")
             if href:
-                self.linkPremuto.emit(href)
+                from Utility import RiferimentiWol
+                if RiferimentiWol.e_riferimento(href):
+                    QTimer.singleShot(0, lambda: self.apri_riferimento(href))
+                else:
+                    self.linkPremuto.emit(href)
         elif mode == 100:
             # Una foto e' stata premuta: si apre a schermo intero, e va
             # anche sullo schermo esterno.  Come nelle pubblicazioni.

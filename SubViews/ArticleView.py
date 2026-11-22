@@ -403,6 +403,8 @@ class ArticleView(QWidget):
     #: La barra del riquadro dei riferimenti e' stata premuta: la ``Voce``
     #: della pubblicazione da aprire a schermo intero
     riferimentoDaAprire = Signal(object)
+    #: Il tasto «Scarica» dell'avviso del riquadro: (sigla, lingua)
+    scaricaCitataRichiesta = Signal(str, str)
     #: Un video nel testo e' stato premuto: (indirizzo webpubvid, testo del link)
     videoDaProporre = Signal(str, str)
     #: E' stato scaricato un pacchetto: la sezione Scaricati si rilegge
@@ -466,6 +468,10 @@ class ArticleView(QWidget):
         self.pannello = PannelloRiferimenti(self)
         self.pannello.chiuso.connect(self._chiudi_riferimento)
         self.pannello.aperturaRichiesta.connect(self.riferimentoDaAprire.emit)
+        self.pannello.scaricaRichiesta.connect(self.scaricaCitataRichiesta.emit)
+        # Pubblicazione o Bibbia NON scaricata (letta online): il riquadro usa il
+        # sito per i riferimenti anche con i controlli automatici spenti.
+        self.pannello.rete_forzata = self._letto_online()
 
         # LA BARRA DI SCORRIMENTO: QUELLA DEL PROGRAMMA
         # ------------------------------------------------
@@ -854,6 +860,17 @@ class ArticleView(QWidget):
         totale = max(self.splitter.width(), 2 * PANNELLO_LARGHEZZA)
         larghezza = PANNELLO_LARGHEZZA if aperto else 0
         self.splitter.setSizes([totale - larghezza, larghezza])
+
+    def _letto_online(self) -> bool:
+        """True se questa pagina viene dal sito perche' il pacchetto manca."""
+        try:
+            from Utility.JWPubManager import bible_package
+            from Utility import Lingua
+            if getattr(self.pub, "keySymbol", "") in ("nwtsty", "nwt", "nwtsv"):
+                return bible_package(Lingua.bibbia_simbolo()) is None
+        except Exception:  # noqa: BLE001
+            pass
+        return False
 
     def _apri_riferimento(self, href: str) -> None:
         """Un riferimento e' stato premuto: il riquadro compare e lo mostra."""
