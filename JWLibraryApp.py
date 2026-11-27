@@ -42,6 +42,38 @@ if str(RADICE) not in sys.path:
     sys.path.insert(0, str(RADICE))
 
 
+def _certificati_validi() -> None:
+    """``SSL_CERT_FILE`` deve puntare a un file che C'E'.
+
+    Nell'AppImage lo mette AppRun (i certificati di certifi, dentro l'AppImage).
+    Ma dopo un aggiornamento l'app vecchia rilancia la nuova passandole il suo
+    ambiente, e il percorso dei certificati punta dentro l'AppImage VECCHIA, che
+    con la sua chiusura sparisce: ogni HTTPS (GitHub, jw.org) fallisce con
+    CERTIFICATE_VERIFY_FAILED finche' non si chiude e riapre l'app.  Qui si
+    controlla e, se il file non c'e', si prende quello giusto: certifi, se c'e',
+    altrimenti quello del sistema.
+    """
+    attuale = os.environ.get("SSL_CERT_FILE", "")
+    if attuale and os.path.isfile(attuale):
+        return
+    candidati = []
+    try:
+        import certifi
+        candidati.append(certifi.where())
+    except Exception:  # noqa: BLE001 - certifi c'e' solo nell'AppImage
+        pass
+    candidati += ["/etc/ssl/certs/ca-certificates.crt", "/etc/pki/tls/certs/ca-bundle.crt",
+                  "/etc/ssl/ca-bundle.pem", "/etc/ssl/cert.pem"]
+    for file in candidati:
+        if file and os.path.isfile(file):
+            os.environ["SSL_CERT_FILE"] = file
+            return
+    os.environ.pop("SSL_CERT_FILE", None)     # meglio niente che un file sparito
+
+
+_certificati_validi()
+
+
 def _opzioni(argv: list[str]) -> bool:
     """Le opzioni da riga di comando.  Ritorna False se si e' aperta la finestra."""
     if "--dati" in argv:

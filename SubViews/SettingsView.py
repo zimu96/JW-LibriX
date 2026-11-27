@@ -89,9 +89,22 @@ def riavvia_app() -> None:
     appimage = os.environ.get("APPIMAGE")
     comando = [appimage, *sys.argv[1:]] if appimage else [sys.executable, *sys.argv]
     attesa = 'while kill -0 "$1" 2>/dev/null; do sleep 0.3; done; shift; exec "$@"'
+    ambiente = dict(os.environ)
+    cartella = None
+    if appimage:
+        # La nuova AppImage deve partire PULITA, come dal menu: niente percorsi
+        # che puntano dentro questa AppImage (i certificati, la cartella), che
+        # sparisce quando questa si chiude.  E il processo che aspetta non sta
+        # in una cartella dell'AppImage, se no la tiene occupata.
+        for chiave in ("SSL_CERT_FILE", "SSL_CERT_DIR", "APPDIR", "ARGV0", "OWD"):
+            ambiente.pop(chiave, None)
+        cartella = os.environ.get("OWD") or os.path.expanduser("~")
+        if not os.path.isdir(cartella):
+            cartella = os.path.expanduser("~")
     subprocess.Popen(["sh", "-c", attesa, "sh", str(os.getpid()), *comando],
                      start_new_session=True, stdin=subprocess.DEVNULL,
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     env=ambiente, cwd=cartella)
     guardia = threading.Timer(6.0, lambda: os._exit(0))
     guardia.daemon = True
     guardia.start()

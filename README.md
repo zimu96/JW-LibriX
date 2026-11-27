@@ -62,6 +62,9 @@ ufficiale JW Library ha e che in JW-LibriX ancora mancavano. Insieme esce il tim
 - **Le caselle «La tua risposta»**: quello che scrivi ora si salva da solo e lo ritrovi sia
   online sia offline (ed entra nel backup `.jwlibrary`). Anche il titolo e la scritta sopra il
   titolo si possono segnare online come offline.
+- **Dopo l'aggiornamento automatico**: l'app appena riavviata non riusciva ad andare su internet
+  («Controlla aggiornamenti» e «Aggiorna» del timer davano un errore di certificati) finché non
+  la si chiudeva e riapriva. Ora il riavvio parte pulito e i certificati si controllano all'avvio.
 - **Catalogo all'avvio**: se la schermata iniziale scaricava un catalogo nuovo, la Home restava
   quella vecchia finché non si premeva il tasto di aggiornamento. Ora si apre già aggiornata; e
   se all'accensione del PC la rete non è ancora pronta, il controllo riprova.
@@ -199,6 +202,13 @@ pubblicazioni, video, immagini e il plugin timer. Sostituire o aggiornare
 l'AppImage non li tocca.
 
 Se invece preferisci i sorgenti, vedi «Avviare» qui sopra.
+
+**Costruirla da sé.** Chi modifica il codice può rifarsi l'AppImage con lo script del
+repository (serve internet, qualche minuto; il file esce nella stessa cartella):
+
+```bash
+./crea-appimage.sh
+```
 
 I dettagli di come è fatta l'app stanno in [`LEGGIMI.md`](LEGGIMI.md).
 

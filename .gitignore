@@ -5,3 +5,5 @@ __pycache__/
 dati/
 *.log
 plugin/
+*.AppImage
+*.part
