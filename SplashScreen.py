@@ -81,6 +81,11 @@ class _SplashScreen(QWidget):
         self._errori_log: list[str] = []
         self._auto_update_attivo = False
         self._cataloghi_in_corso = 0
+        #: E' arrivato almeno un catalogo nuovo (pubblicazioni o media).  La
+        #: finestra si costruisce MENTRE la schermata scarica, quindi la Home
+        #: e' fatta con il catalogo di prima: con questo la finestra sa che
+        #: deve rifarla prima di comparire.  Vedi `JWLibraryApp._apri_ora`.
+        self.cataloghi_nuovi = False
         self._annullato = False
         #: Un errore ha fermato il programma: la schermata e' quella degli
         #: errori e la finestra principale non parte.  Vedi `_riga_di_log`.
@@ -679,7 +684,9 @@ class _SplashScreen(QWidget):
             from Utility import Aggiornamenti, CatalogoMedia, Lingua
             lingua = Lingua.corrente_simbolo()
             try:
-                catalogo = Aggiornamenti.catalogo_vecchio()
+                # Tre tentativi: all'avvio del computer la rete puo' non
+                # essere ancora pronta (vedi `catalogo_vecchio`).
+                catalogo = Aggiornamenti.catalogo_vecchio(tentativi=3)
                 media = CatalogoMedia.da_aggiornare(lingua)
             except Exception as errore:  # noqa: BLE001
                 # Una domanda al server che va storta non e' un motivo per
@@ -780,6 +787,8 @@ class _SplashScreen(QWidget):
         self._cataloghi_in_corso = max(0, self._cataloghi_in_corso - 1)
         if errore:
             self._avviso(f"{cosa}: {errore}")
+        else:
+            self.cataloghi_nuovi = True
         if self._cataloghi_in_corso > 0:
             return
         self.stato.setVisible(False)

@@ -3832,6 +3832,22 @@ class MediaView(QWidget):
         sigla = voce.get("sigla", "")
         lingua = voce.get("lingua") or Lingua.corrente_simbolo()
 
+        # METTI NEI PREFERITI (anche per audio e video, come per le pubblicazioni)
+        # La traccia si ricorda: il Preferito e' quel video, non la serie intera.
+        from Utility import Preferiti
+        numeri = _tracce_di(voce)
+        traccia = numeri[0] if len(numeri) == 1 else (numeri[-1] if numeri else None)
+        if sigla:
+            if Preferiti.c_e_(sigla, lingua, traccia):
+                togli = menu.addAction("Togli dai Preferiti")
+                togli.triggered.connect(
+                    lambda: self._togli_preferito_media(sigla, lingua, traccia))
+            else:
+                metti = menu.addAction("Metti nei Preferiti")
+                metti.triggered.connect(
+                    lambda: self._metti_preferito_media(voce, sigla, lingua, traccia))
+            menu.addSeparator()
+
         voce_url = menu.addAction("Condividi link")
         # `url_traccia` e' gia' scritta per le voci dei media: rimanda a None
         # quando non c'e' un `DocumentId`, e un indirizzo che porta alla pagina
@@ -3910,6 +3926,42 @@ class MediaView(QWidget):
             return
         self.messaggio.emit("File tolto dal disco")
         self._ricostruisci()
+
+    def _metti_preferito_media(self, voce: dict, sigla: str, lingua: str, traccia) -> None:
+        """Un video o un audio fra i Preferiti, con la sua traccia."""
+        from types import SimpleNamespace
+
+        from Utility import Lingua, Preferiti
+        pub = SimpleNamespace(keySymbol=sigla, title=voce.get("title") or sigla,
+                              mepsLanguageId=Lingua.da_simbolo(lingua)
+                              if hasattr(Lingua, "da_simbolo") else Lingua.corrente_id())
+        titolo = voce.get("title") or voce.get("label") or sigla
+        formato = "AUDIO" if _e_audio(voce) else "VIDEO"
+        # `aggiungi` vuole la lingua della pubblicazione: si scrive a mano se
+        # quella del numero non coincide con quella della voce.
+        if Preferiti._lingua(pub) != lingua:
+            voci = Preferiti.leggi()
+            if not Preferiti.c_e_(sigla, lingua, traccia):
+                nuova = {"pubblicazione": sigla, "lingua": lingua, "titolo": titolo}
+                if traccia:
+                    nuova["traccia"] = int(traccia)
+                    nuova["formato"] = formato
+                voci.append(nuova)
+                Preferiti.scrivi(voci)
+                fatto = True
+            else:
+                fatto = False
+        else:
+            fatto = Preferiti.aggiungi(pub, traccia, formato, titolo)
+        self.messaggio.emit(f"«{titolo}» fra i Preferiti" if fatto
+                            else "C'era gia' fra i Preferiti")
+        self.preferitiCambiati.emit()
+
+    def _togli_preferito_media(self, sigla: str, lingua: str, traccia) -> None:
+        from Utility import Preferiti
+        Preferiti.togli(sigla, lingua, traccia)
+        self.messaggio.emit("Tolto dai Preferiti")
+        self.preferitiCambiati.emit()
 
     def _metti_preferito(self, pub) -> None:
         """Mette una pubblicazione fra i Preferiti e avvisa la Home.

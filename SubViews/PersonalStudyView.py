@@ -163,6 +163,22 @@ class PersonalStudyView(QWidget):
     # LA COSTRUZIONE
     # ------------------------------------------------------------------
 
+    def showEvent(self, evento) -> None:  # noqa: N802 - nome di Qt
+        """Ogni volta che si torna nelle Ricerche l'elenco si rilegge.
+
+        La sezione si costruisce una volta sola e poi resta viva: senza questo
+        un segnalibro o una sottolineatura messi leggendo (online o offline)
+        non comparivano qui finche' non si riavviava il programma.
+        La prima volta l'ha gia' costruita `__init__`; e un `show` che arriva
+        dal sistema (la finestra rimessa su dalla barra) non e' un ritorno.
+        """
+        super().showEvent(evento)
+        if not getattr(self, "_mostrata", False):
+            self._mostrata = True
+            return
+        if not evento.spontaneous():
+            self.aggiorna()
+
     def aggiorna(self) -> None:
         """Rilegge tutto e rifa' i tre gruppi, tenendo la posizione di scorrimento.
 
@@ -274,9 +290,41 @@ class PersonalStudyView(QWidget):
                   "\u2601 Non scaricata \u2014 premi per scaricarla</span>")
         scheda.setText(f"<b>{escape(elemento.title)}</b>{sotto}<br>{testo}{avviso}")
         scheda.setCursor(Qt.CursorShape.PointingHandCursor)
-        scheda.mousePressEvent = (
-            lambda _evento, segno=elemento: self.posizioneScelta.emit(segno))
+
+        def premuta(evento, segno=elemento) -> None:
+            # Tasto destro su un segnalibro: cambia colore o toglilo.
+            if (evento.button() == Qt.MouseButton.RightButton
+                    and segno.kind == "segnalibro"):
+                self._menu_segnalibro(segno)
+                return
+            self.posizioneScelta.emit(segno)
+
+        scheda.mousePressEvent = premuta
+        if elemento.kind == "segnalibro":
+            scheda.setToolTip("Tasto destro: cambia colore o togli il segnalibro")
         return scheda
+
+    def _menu_segnalibro(self, segno: SavedItem) -> None:
+        """Il menu' di un segnalibro: il colore (gli stessi delle sottolineature) e togli."""
+        from PyQt6.QtGui import QCursor
+        from PyQt6.QtWidgets import QMenu
+        from Utility.UserData.SegniDocumento import icona_colore, riempi_menu_colori
+
+        menu = QMenu(self)
+        cambia = menu.addMenu(icona_colore(segno.color), "Cambia colore")
+
+        def ricolora(colore: int) -> None:
+            if BookmarkManager.set_color(segno.ID, colore):
+                self.aggiorna()
+
+        def togli() -> None:
+            BookmarkManager.remove_bookmark(segno.ID)
+            self.aggiorna()
+
+        riempi_menu_colori(cambia, ricolora, attuale=segno.color)
+        menu.addSeparator()
+        menu.addAction("Togli il segnalibro").triggered.connect(lambda _=False: togli())
+        menu.exec(QCursor.pos())
 
     def _gruppo_appunti(self, contenuto: QVBoxLayout, padre: QWidget) -> None:
         note = self.notes

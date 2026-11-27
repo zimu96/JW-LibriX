@@ -371,7 +371,7 @@ def _data_sul_server(versione: str) -> float:
         return 0.0
 
 
-def catalogo_vecchio() -> bool:
+def catalogo_vecchio(tentativi: int = 1) -> bool:
     """Sul server c'e' un catalogo piu' nuovo di quello che ho?
 
     **Blocca**: fa due richieste al server.  Va chiamata da un thread
@@ -405,6 +405,16 @@ def catalogo_vecchio() -> bool:
     from Utility.Stuff import Stuff
 
     versione = Stuff.get_manifest()
+    # ALL'AVVIO LA RETE PUO' NON ESSERE ANCORA PRONTA
+    # Il programma che parte con il computer chiede il manifest prima che la
+    # rete sia su: la risposta non arriva, e il catalogo restava vecchio per
+    # tutta la sessione finche' non si premeva il tasto.  La schermata di
+    # avvio chiede quindi qualche tentativo, a due secondi l'uno dall'altro.
+    for _ in range(max(0, int(tentativi) - 1)):
+        if versione:
+            break
+        time.sleep(2)
+        versione = Stuff.get_manifest()
     if not versione:
         # La rete non risponde.  Non si dice "da aggiornare": si direbbe
         # una cosa che non si sa, e resterebbe li' anche se non ci fosse
@@ -1246,6 +1256,82 @@ def periodici(lingua: str = "I") -> list:
     for voce in trovati:
         _TITOLI_NUMERI[(voce["sigla"], lingua)] = voce["titolo"]
     return trovati
+
+
+#: Le riviste che si offrono nel ministero: l'edizione per il pubblico della
+#: Torre di Guardia e Svegliatevi!.  L'edizione per lo studio (``w``) no: e'
+#: quella dell'adunanza, non quella che si lascia alle persone.
+RIVISTE_PER_IL_PUBBLICO = ("wp", "g")
+
+
+def riviste_in_corso(lingua: str = "I") -> list:
+    """La rivista per il pubblico in corso: l'ULTIMO numero uscito, uno solo.
+
+    Le due riviste non escono insieme: prima una, poi l'altra.  Come nell'app
+    ufficiale si mostra solo quella uscita per ultima (il 27 novembre 2026
+    «Svegliatevi! n. 1 2026»; la Torre di Guardia n. 1 2026 e' uscita prima e
+    non c'e' piu').  Quando esce il numero dell'altra, prende il suo posto.
+    Se un giorno uscissero insieme (stesso numero), ci sono tutte e due.
+
+    L'ORDINE (dal catalogo, uguale alla pagina «Riviste» di jw.org)
+    Si alternano sempre: prima la Torre di Guardia, poi Svegliatevi!.  Dal
+    2023 ne esce una di ciascuna all'anno: Torre di Guardia n. 1 a febbraio
+    2023, maggio 2024, maggio 2025, giugno 2026; Svegliatevi! n. 1 ad agosto
+    2023, settembre 2024, luglio 2025, agosto 2026.  Il numero del catalogo
+    (``IssueTagNumber``) cresce con l'uscita, quindi «il numero piu' alto» e'
+    sempre «l'ultima uscita»: la prossima sara' la Torre di Guardia n. 1 2027.
+
+    :return: lista di dizionari ``sigla``, ``numero`` (``202611``, la forma del
+        server e delle cartelle), ``numero_catalogo`` (``20261100``) e
+        ``titolo`` (quello del catalogo: «Svegliatevi!, n. 1 2026»).
+
+    PERCHE' DAL CATALOGO
+    --------------------
+    Il numero «in corso» cambia ogni pochi mesi, e il nome con lui.  Il
+    catalogo e' quello che usa anche JW Library e si aggiorna da solo: quando
+    esce il numero nuovo compare qui senza toccare niente.  Il 27 novembre
+    2026 dava «Svegliatevi! n. 1 2026» e «La Torre di Guardia n. 1 2026», gli
+    stessi che jw.org mostra in cima alla pagina delle riviste.
+    """
+    percorso = _catalogo()
+    if percorso is None:
+        return []
+    try:
+        import sqlite3
+        connessione = sqlite3.connect(f"file:{percorso}?mode=ro", uri=True)
+    except (ImportError, sqlite3.Error, OSError) as errore:
+        print(f"Riviste in corso: il catalogo non si apre ⚠️  {errore}")
+        return []
+    segnaposti = ",".join("?" for _ in RIVISTE_PER_IL_PUBBLICO)
+    try:
+        righe = connessione.execute(
+            f"""SELECT KeySymbol, MAX(IssueTagNumber), IssueTitle, Title
+                  FROM Publication
+                 WHERE MepsLanguageId = ?
+                   AND KeySymbol IN ({segnaposti})
+                 GROUP BY KeySymbol
+                 ORDER BY 2 DESC""",
+            (int_lingua(lingua), *RIVISTE_PER_IL_PUBBLICO)).fetchall()
+    except sqlite3.Error as errore:
+        print(f"Riviste in corso: il catalogo non si legge ⚠️  {errore}")
+        righe = []
+    finally:
+        connessione.close()
+    trovate = []
+    for sigla, numero, titolo_numero, titolo in righe:
+        testo = str(numero or "")
+        if not testo.isdigit():
+            continue
+        trovate.append({
+            "sigla": sigla,
+            "numero": testo[:6] if len(testo) == 8 else testo,
+            "numero_catalogo": testo,
+            "titolo": titolo_numero or titolo or sigla,
+        })
+    if not trovate:
+        return []
+    ultima = max(int(r["numero_catalogo"]) for r in trovate)
+    return [r for r in trovate if int(r["numero_catalogo"]) == ultima]
 
 
 def int_lingua(lingua: str = "I") -> int:

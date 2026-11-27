@@ -701,10 +701,13 @@ def _colori_del_tema(chiaro: bool) -> str:
     testo = colori["testo"]
     grigio = colori["grigio"]
     sfondo = colori["sfondo"]
-    # Il fondo chiaro delle caselle: quello del sito (#f1f1f1) sta bene
-    # anche in scuro, perche' e' il colore di un foglio stampato.
-    chiaro_casella = "#f1f1f1"
-    scuro_casella = "#292929"
+    # LE CASELLE («Vai piu' a fondo», riquadri, tabelle ombreggiate)
+    # In chiaro restano grigio chiaro con il testo scuro, come sul sito.
+    # In scuro NON restano bianche: come nell'app ufficiale diventano un
+    # grigio scuro appena piu' chiaro della pagina, con il testo chiaro.
+    # Prima restavano bianche anche in scuro e sembravano fogli incollati.
+    chiaro_casella = "#f1f1f1" if chiaro else colori["img"]
+    scuro_casella = "#292929" if chiaro else testo
     return f"""
 /* ---- i colori del tema dell'app ( Utility/Stuff.py ) ---- */
 :root {{
@@ -719,8 +722,16 @@ p.qu, figcaption, .contextTtl, .featureTtl,
 .blockTxt, .bodyTxtAlt.rule, .stdCaption, .stdPullQuote, blockquote.rule {{
   color: {grigio};
 }}
-/* le caselle con fondo chiaro: testo scuro, perche' il fondo e' chiaro */
-.blockTeach, .boxSupplement, .du-bgColor--warmGray-50, .du-bgColor--warmGray-100 {{
+/* l'edizione stampata (pagine SVG del libro di carta) non si mostra:
+   si legge la versione digitale, come nell'app ufficiale */
+.alternatePresentation {{
+  display: none !important;
+}}
+/* le caselle: in chiaro fondo chiaro e testo scuro, in scuro il contrario */
+.blockTeach, .boxSupplement, .du-bgColor--warmGray-50, .du-bgColor--warmGray-100,
+.du-bgColor--bgSecondary, .du-bgColor--Gray-50, .du-bgColor--gray-50,
+.du-bgColor--coolGray-100, .du-bgColor--teal-50, .du-bgColor--cyan-50,
+tr.shaded td {{
   background-color: {chiaro_casella};
   color: {scuro_casella};
 }}

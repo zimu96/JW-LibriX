@@ -53,6 +53,57 @@ from Utility.UserData.HighlightManager import HighlightManager
 from Utility.UserData.LocationManager import LocationManager
 from WebBrowserView import WebView
 
+# L'EDIZIONE STAMPATA NON SI METTE NEL TESTO
+# ------------------------------------------
+# Il capitolo ha due versioni: quella DIGITALE (il testo vero, che si legge,
+# si sottolinea e segue la dimensione del testo e il tema) e l'EDIZIONE
+# STAMPATA (le pagine del libro di carta, in SVG: testo disegnato, nero su
+# bianco, che non si sottolinea e non si ingrandisce).
+# Come nell'app ufficiale si legge solo la versione digitale: le pagine
+# stampate non si vedono, e non c'e' nessun tasto al loro posto.
+# Le nasconde gia' il CSS del tema (Utility/Stuff.py); questo e' per sicurezza.
+# Le <img> restano nella pagina (nascoste): gli indici delle figure non cambiano.
+_NASCONDI_STAMPATA_JS = """
+(function () {
+  var blocchi = document.querySelectorAll('.alternatePresentation');
+  for (var i = 0; i < blocchi.length; i++) { blocchi[i].style.display = 'none'; }
+})();
+"""
+
+
+def _svg_su_fondo_bianco(grezzi: bytes, larghezza: int = 2400) -> bytes:
+    """Una pagina stampata (SVG senza fondo) come PNG su foglio bianco.
+
+    Serve alla vista a schermo intero: il velo e' scuro, e il testo nero di
+    un SVG trasparente li' sopra non si leggerebbe.
+    """
+    from PyQt6.QtCore import QBuffer, QByteArray, QIODevice, Qt as _Qt
+    from PyQt6.QtGui import QImage, QPainter
+    from PyQt6.QtSvg import QSvgRenderer
+    disegno = QSvgRenderer(QByteArray(grezzi))
+    if not disegno.isValid():
+        return grezzi
+    misura = disegno.defaultSize()
+    if misura.width() <= 0 or misura.height() <= 0:
+        vista = disegno.viewBoxF()
+        larga, alta = vista.width() or 1008, vista.height() or 648
+    else:
+        larga, alta = misura.width(), misura.height()
+    altezza = max(1, int(larghezza * alta / larga))
+    immagine = QImage(larghezza, altezza, QImage.Format.Format_RGB32)
+    immagine.fill(_Qt.GlobalColor.white)
+    pittore = QPainter(immagine)
+    pittore.setRenderHint(QPainter.RenderHint.Antialiasing)
+    disegno.render(pittore)
+    pittore.end()
+    dati = QByteArray()
+    buffer = QBuffer(dati)
+    buffer.open(QIODevice.OpenModeFlag.WriteOnly)
+    immagine.save(buffer, "PNG")
+    buffer.close()
+    return bytes(dati)
+
+
 class WebBrowserArticleView(QObject):
     """Il motore che mostra l'articolo di una pubblicazione o della Bibbia.
 
@@ -426,6 +477,11 @@ class WebBrowserArticleView(QObject):
                 }})();
                 """.format(i=indice, mime=mime, dati=codificato, fondo=fondo)
             )
+        # Dopo aver messo TUTTE le figure: le pagine stampate non si vedono.
+        self.web.run(_NASCONDI_STAMPATA_JS)
+        # Le figure con piu' immagini si sfogliano con le frecce.
+        from Utility.Sfogliatore import JS_SFOGLIATORE
+        self.web.run(JS_SFOGLIATORE)
 
     def _abbina_le_figure(self, media: list[dict]) -> list:
         """Quale figura del pacchetto sta in ogni ``<img>`` del capitolo.
@@ -539,6 +595,15 @@ class WebBrowserArticleView(QObject):
                         evidenziazione.userMark.color,
                         "true" if self.pub.isBible else "false")
                 )
+            # I segnalibri di questo documento: un segno colorato accanto al
+            # paragrafo, cosi' si vede dove sono.
+            self.mostra_segnalibri()
+            # Le risposte scritte nelle caselle «La tua risposta».
+            self.mostra_risposte()
+            # Lo sfogliatore delle figure (se la pagina e' stata ricostruita
+            # prima che fosse pronto); se c'e' gia' non fa niente.
+            from Utility.Sfogliatore import JS_SFOGLIATORE
+            self.web.run(JS_SFOGLIATORE)
             # Dopo aver rimesso le sottolineature si torna all'ancora: la
             # pagina e' stata ricostruita e le immagini possono aver cambiato
             # l'altezza, quindi lo scroll fatto all'apertura non basta piu'.
@@ -549,6 +614,24 @@ class WebBrowserArticleView(QObject):
             " && typeof makeSelectable === 'function') {"
             " cleanBodyHighlight(); makeSelectable(); }",
             ridisegna)
+
+    def mostra_risposte(self) -> None:
+        """Rimette nelle caselle «La tua risposta» il testo salvato."""
+        if not self._vivo():
+            return
+        from Utility.UserData.RisposteDocumento import js_ripristina
+        document_id = self.document.documentId if self.document else 0
+        codice = js_ripristina(self.pub, document_id)
+        if codice:
+            self.web.run(codice)
+
+    def mostra_segnalibri(self) -> None:
+        """Mette nella pagina i segni dei segnalibri (e toglie quelli tolti)."""
+        if not self._vivo():
+            return
+        from Utility.UserData.SegniDocumento import js_segna
+        document_id = self.document.documentId if self.document else 0
+        self.web.run(js_segna(self.pub, document_id))
 
     def evidenzia(self, colore: int) -> None:
         """Colorare la selezione, o toglierla con ``-1``."""
@@ -576,7 +659,16 @@ class WebBrowserArticleView(QObject):
             indice = messaggio.get("imgIndex", -1)
             print(f"Apro immagine {indice}...")
             if 0 <= indice < len(self.images) and self.images[indice]:
-                self.imageToShow.emit(self.images[indice])
+                grezzi = self.images[indice]
+                # Un disegno SVG (senza fondo) a schermo intero si vede su
+                # un foglio bianco: sul velo scuro il nero non si leggerebbe.
+                # Si converte solo qui, al clic, per non rallentare la pagina.
+                if grezzi and b"<svg" in grezzi[:1000]:
+                    try:
+                        grezzi = _svg_su_fondo_bianco(grezzi)
+                    except Exception:  # noqa: BLE001 - meglio l'originale che niente
+                        pass
+                self.imageToShow.emit(grezzi)
 
         elif modo == 4:
             self.riferimentoRichiesto.emit(str(messaggio.get("href", "")))
@@ -590,6 +682,13 @@ class WebBrowserArticleView(QObject):
                 int(messaggio.get("x", 0)), int(messaggio.get("y", 0)),
                 int(messaggio.get("verso", 0) or 0),
                 str(messaggio.get("ancora", "")), str(messaggio.get("testo", "")))
+
+        elif modo == 7:
+            # Una casella «La tua risposta» e' cambiata: si salva subito.
+            from Utility.UserData.RisposteDocumento import salva
+            document_id = self.document.documentId if self.document else 0
+            salva(self.pub, document_id, str(messaggio.get("tag", "")),
+                  str(messaggio.get("valore", "")))
 
         elif modo == 3:
             # L'utente ha selezionato del testo e ha mollato il mouse: e' il

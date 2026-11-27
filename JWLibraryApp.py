@@ -1050,6 +1050,14 @@ def main() -> int:
             applicazione.quit()
             return
         stato["aperta"] = True
+        # IL CATALOGO NUOVO ARRIVATO DURANTE LA SCHERMATA DI AVVIO
+        # La finestra si costruisce mentre la schermata scarica i cataloghi:
+        # la Home era fatta con quelli di prima, e restava vecchia finche' non
+        # si premeva il tasto di aggiornamento.  Si rifa' qui, prima di mostrarla.
+        if getattr(splash, "cataloghi_nuovi", False):
+            rifai = getattr(finestra, "cataloghi_arrivati_all_avvio", None)
+            if callable(rifai):
+                rifai()
         splash.hide()
         splash.deleteLater()
         # Mostra finestra principale con fade-in

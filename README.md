@@ -8,7 +8,7 @@ l'app originale e in più alcune cose che l'originale non ha.
 > da jw.org. I contenuti (Bibbia, pubblicazioni, video, audio) vengono
 > scaricati dai server pubblici di jw.org e wol.jw.org, e restano loro.
 
-Versione **1.1.1** (l'ultima: si scarica dalla pagina delle
+Versione **1.1.2** (l'ultima: si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases/latest)).
 
 ## Com'è
@@ -38,6 +38,50 @@ Tutto quello che ti aspetti da JW Library:
 - **Scaricati**: cosa c'è sul disco, con il menu per eliminarlo.
 - **Player** video e audio, mini player, e uscita su uno o più monitor esterni.
 - Tema chiaro e scuro, molte lingue, modalità offline.
+
+## Novità della 1.1.2: bugfix e piccole aggiunte
+
+Una versione di **bugfix**, con qualche piccola aggiunta di rifinitura: cose che l'app
+ufficiale JW Library ha e che in JW-LibriX ancora mancavano. Insieme esce il timer **1.0.6**
+(solo bugfix, vedi [JW-LibriX-timer](https://github.com/zimu96/JW-LibriX-timer)).
+
+### Bugfix
+
+- **Sottolineature e segnalibri anche online**: leggendo una pubblicazione dal sito (non
+  scaricata, anche aperta da *Cerca*) prima non si potevano mettere; ora si sottolinea e si
+  mettono i segnalibri come offline. Sono gli stessi: quello che segni online lo ritrovi nella
+  pubblicazione scaricata, e viceversa. Un segnalibro di una pubblicazione non scaricata si apre
+  dal sito, sul paragrafo giusto.
+- **Niente più riquadri bianchi**: dove c'era la foto della pagina del libro stampato («Edizione
+  stampata») ora c'è solo il testo digitale, come nell'app ufficiale: si ingrandisce e si
+  sottolinea. Nel tema scuro anche le caselle («Vai più a fondo» e simili) sono scure con il
+  testo chiaro.
+- **Il tasto dei segnalibri** nella barra viola si colora davvero (prima il segnalibro colorato
+  veniva disegnato spostato, fuori dalla barra).
+- **Ricerche**: un segnalibro nuovo compare subito, senza riavviare l'app.
+- **Le caselle «La tua risposta»**: quello che scrivi ora si salva da solo e lo ritrovi sia
+  online sia offline (ed entra nel backup `.jwlibrary`). Anche il titolo e la scritta sopra il
+  titolo si possono segnare online come offline.
+- **Catalogo all'avvio**: se la schermata iniziale scaricava un catalogo nuovo, la Home restava
+  quella vecchia finché non si premeva il tasto di aggiornamento. Ora si apre già aggiornata; e
+  se all'accensione del PC la rete non è ancora pronta, il controllo riprova.
+
+### Piccole aggiunte (come nell'app ufficiale)
+
+- **Il segnalibro si vede nel testo**: accanto al paragrafo segnato compare un segnalibro del suo
+  colore.
+- **Colore dei segnalibri**: prima di mettere un segnalibro si sceglie il colore (gli stessi sei
+  delle sottolineature), e si può cambiare dopo: dal tasto dei segnalibri nella barra viola
+  («Cambia colore») o in *Ricerche* con il tasto destro.
+- **Figure con più immagini**: si sfogliano una per volta, con due frecce semitrasparenti ai lati
+  e dei puntini sopra l'immagine che dicono quante sono e a quale sei; dopo l'ultima si torna alla
+  prima. Uguale online e offline.
+- **Riviste in corso** nella Home, in fondo alla fila del Kit dell'insegnante: la rivista per il
+  pubblico uscita per ultima (ora «Svegliatevi! n. 1 2026»). Le riviste escono una alla volta,
+  prima la Torre di Guardia e poi Svegliatevi!: quando esce la successiva prende il posto della
+  precedente da sola.
+- **Preferiti**: «Metti nei Preferiti» anche nei tre puntini di audio e video della Biblioteca
+  Digitale e per gli articoli trovati con *Cerca*.
 
 ## Novità della 1.1.1
 
@@ -115,7 +159,7 @@ Linux a 64 bit. Si scarica dalla pagina delle
 [versioni](https://github.com/zimu96/JW-LibriX/releases).
 
 Il nome del file contiene il numero della versione (oggi
-`JW-LibriX-V1.1.1-x86_64.AppImage`); nei comandi qui sotto l'asterisco va bene
+`JW-LibriX-V1.1.2-x86_64.AppImage`); nei comandi qui sotto l'asterisco va bene
 per qualunque versione.
 
 **1. Mettila in una cartella fissa.** Consigliata, valida su ogni distro:

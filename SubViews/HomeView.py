@@ -1369,6 +1369,7 @@ class _SezioneMedia(QWidget):
         riga_titolo.addWidget(_TitoloSezione(titolo, self))
         lingua = QLabel("", self)
         lingua.setObjectName("linguaSezione")
+        self._lingua = lingua
         # Il nome della lingua che si sta guardando, non il suo codice: e' la
         # stessa riga e la stessa forma delle altre sezioni, e «I» in un
         # angolo non dice niente a nessuno.
@@ -1451,6 +1452,103 @@ class _SezioneMedia(QWidget):
 
         self._immagini(voci)
 
+    def aggiungi_gruppo(self, titolo: str, voci: list) -> list:
+        """In fondo alla fila, staccato, un gruppo con il suo nome sopra.
+
+        Serve alle «Riviste in corso»: nell'app ufficiale stanno in fondo al
+        Kit dell'insegnante, nella stessa fila.  Il gruppo prende tutto lo
+        spazio che avanza a destra e la card sta **al centro** di quello
+        spazio, alla stessa altezza delle altre card.  Il nome del gruppo sta
+        piu' in alto, sulla riga del titolo della sezione, sopra la card: se
+        stesse nella fila spingerebbe la card piu' in basso delle altre.
+        """
+        if not voci:
+            return []
+        # Lo spazio vuoto in fondo alla fila lo prende il gruppo: cosi' la
+        # card si puo' mettere al centro di tutto quello che avanza.
+        ultimo = self._colonna.itemAt(self._colonna.count() - 1)
+        if ultimo is not None and ultimo.spacerItem() is not None:
+            self._colonna.takeAt(self._colonna.count() - 1)
+        gruppo = QWidget(self._pagina)
+        fila = QHBoxLayout(gruppo)
+        # Un po' di aria a sinistra anche quando la finestra e' stretta e il
+        # Kit occupa tutto: la rivista resta staccata dal resto.
+        fila.setContentsMargins(40, 0, 40, 0)
+        fila.setSpacing(3)
+        fila.addStretch(1)
+        nuove = []
+        for voce in voci:
+            card = _CardMedia(voce, gruppo)
+            # Da sola, la card ha il titolo centrato sotto il quadrato, come il
+            # nome del gruppo sopra: allineato a sinistra partirebbe 8 px prima
+            # del quadrato (la card e' larga 140, il quadrato 124).
+            card.titolo.setAlignment(Qt.AlignmentFlag.AlignHCenter
+                                     | Qt.AlignmentFlag.AlignTop)
+            fila.addWidget(card, 0, Qt.AlignmentFlag.AlignTop)
+            self._cards[(voce.get("sigla", ""), voce.get("chiave", ""))] = card
+            nuove.append(card)
+        fila.addStretch(1)
+        self._colonna.addWidget(gruppo, 1)
+
+        # IL NOME, SOPRA: un'etichetta della sezione (fuori dalla fila), messa
+        # sopra la card e spostata quando la fila scorre o cambia misura.
+        self._nome_gruppo = QLabel(titolo.upper(), self)
+        self._nome_gruppo.setObjectName("nota")
+        self._nome_gruppo.setStyleSheet(
+            "font-size: 13px; font-weight: 600; letter-spacing: 1px;")
+        self._nome_gruppo.adjustSize()
+        self._card_gruppo = nuove
+        gruppo.installEventFilter(self)
+        self.contenitore.horizontalScrollBar().valueChanged.connect(
+            lambda _v: self._metti_nome_gruppo())
+        QTimer.singleShot(0, self._metti_nome_gruppo)
+        self._immagini(voci)
+        return nuove
+
+    def eventFilter(self, oggetto, evento) -> bool:  # noqa: N802 - nome di Qt
+        from PyQt6.QtCore import QEvent
+        if evento.type() in (QEvent.Type.Resize, QEvent.Type.Move, QEvent.Type.Show):
+            QTimer.singleShot(0, self._metti_nome_gruppo)
+        return super().eventFilter(oggetto, evento)
+
+    def resizeEvent(self, evento) -> None:  # noqa: N802 - nome di Qt
+        super().resizeEvent(evento)
+        if getattr(self, "_nome_gruppo", None) is not None:
+            QTimer.singleShot(0, self._metti_nome_gruppo)
+
+    def _metti_nome_gruppo(self) -> None:
+        """Il nome del gruppo centrato sopra le sue card, sulla riga del titolo."""
+        from PyQt6 import sip
+        nome = getattr(self, "_nome_gruppo", None)
+        card = getattr(self, "_card_gruppo", None)
+        if nome is None or not card or sip.isdeleted(nome) or sip.isdeleted(card[0]):
+            return
+        # Il centro dei QUADRATI (le miniature), non delle card.
+        prima, ultima = card[0]._miniatura, card[-1]._miniatura
+        sinistra = prima.mapTo(self, QPoint(0, 0)).x()
+        destra = ultima.mapTo(self, QPoint(ultima.width(), 0)).x()
+        centro = (sinistra + destra) // 2
+        vista = self.contenitore.viewport()
+        inizio = vista.mapTo(self, QPoint(0, 0)).x()
+        fine = inizio + vista.width()
+        # Si vede solo se la card si vede: con la fila scorsa via, il nome
+        # resterebbe sospeso sopra un'altra card.
+        if centro < inizio or centro > fine:
+            nome.hide()
+            return
+        nome.adjustSize()
+        nome.setFixedWidth(nome.sizeHint().width())
+        limite = fine
+        lingua = getattr(self, "_lingua", None)
+        if lingua is not None and lingua.text():
+            # Non sopra la scritta della lingua, che sta sulla stessa riga.
+            limite = min(limite, lingua.x() - 16)
+        x = max(inizio, min(centro - nome.width() // 2, limite - nome.width()))
+        y = self.contenitore.y() - nome.height() - 4
+        nome.move(x, max(0, y))
+        nome.show()
+        nome.raise_()
+
     def _immagini(self, voci: list) -> None:
         """Le immagini delle card, in un thread.
 
@@ -1485,10 +1583,14 @@ class _SezioneMedia(QWidget):
             for voce in con_indirizzo:
                 risultati.append((voce, Copertine.scarica(voce["miniatura"])))
             for voce in solo_pubblicazioni:
+                # Una rivista ha la copertina del SUO numero: senza il
+                # numero si avrebbe quella di un numero qualunque.
+                numero = str(voce.get("numero_catalogo") or "")
                 pub = Publication(
                     ID=0, keySymbol=voce["sigla"], year=0,
                     mepsLanguageId=Lingua.da_simbolo(voce.get("lingua", "I")),
-                    publicationTypeId=0, issueTagNumber=0,
+                    publicationTypeId=0,
+                    issueTagNumber=int(numero) if numero.isdigit() else 0,
                     title=voce["sigla"])
                 risultati.append((voce, Copertine.dati_copertina(pub, "md")))
 
@@ -2058,6 +2160,10 @@ class HomeView(QWidget):
     #: pagina.  La finestra la riceve e ci mette dentro il motore che c'e'
     #: gia' - vedi `SubViews/NotiziaView.py`.
     notiziaAperta = Signal(str)
+    #: Una card delle «Riviste in corso» e' stata premuta:
+    #: (sigla, lingua, numero).  Il numero e' quello che distingue
+    #: «Svegliatevi! n. 1 2026» dagli altri numeri della stessa rivista.
+    rivistaAperta = Signal(str, str, str)
     #: La nuvoletta di una card e' stata premuta: (voce, dove premere)
     #:
     #: **IL SEGNALE ESCE DA QUI E NON SI SCARICA QUI**
@@ -2323,6 +2429,28 @@ class HomeView(QWidget):
         disposizione.addWidget(self._kit_insegnante)
         disposizione.addSpacing(18)
 
+        # LE RIVISTE IN CORSO
+        # -------------------
+        # Subito dopo il Kit, come nell'app ufficiale: l'ultimo numero della
+        # Torre di Guardia per il pubblico e di Svegliatevi!, quelli che si
+        # offrono adesso.  Li dice il catalogo, quindi quando esce il numero
+        # nuovo la sezione cambia da sola (vedi `Aggiornamenti.riviste_in_corso`).
+        voci_riviste = []
+        for rivista in Aggiornamenti.riviste_in_corso(lingua_corrente):
+            voce = pubblicazione(rivista["sigla"], rivista["titolo"])
+            voce["numero"] = rivista["numero"]
+            voce["numero_catalogo"] = rivista["numero_catalogo"]
+            # La cartella di un numero e' `g_I_202611`, non `g_I`.
+            voce["cartella"] = (f"{rivista['sigla']}_{lingua_corrente}_"
+                                f"{rivista['numero']}")
+            voci_riviste.append(voce)
+        # Non e' una sezione sotto: sta IN FONDO ALLA FILA DEL KIT, staccata,
+        # come nell'app ufficiale.  Le sue card stanno dentro il Kit, quindi
+        # la barra di scaricamento e il resto le trovano li'.
+        self._riviste = None
+        self._card_riviste = self._kit_insegnante.aggiungi_gruppo(
+            "Riviste in corso", voci_riviste)
+
         self._ultime = _SezioneMedia(
             "Le ultime novità",
             CatalogoMedia.ultime(lingua_corrente), self)
@@ -2344,8 +2472,15 @@ class HomeView(QWidget):
         # dipenda da dove sta.
         for sezione in (self._kit_insegnante, self._ultime):
             for card in sezione.findChildren(_CardMedia):
-                card.aperta.connect(
-                    lambda s, l, t: self.mediaAperta.emit(s, l, t))
+                if card.voce.get("numero"):
+                    # Una rivista (in fondo al Kit) apre il SUO numero, non
+                    # la rivista in generale.
+                    card.aperta.connect(
+                        lambda s, l, _t, n=card.voce.get("numero", ""):
+                        self.rivistaAperta.emit(s, l, n))
+                else:
+                    card.aperta.connect(
+                        lambda s, l, t: self.mediaAperta.emit(s, l, t))
                 card.menuChiesto.connect(self._menu_novita)
                 card.scaricaChiesto.connect(self.scaricoChiesto.emit)
                 card.aggiornaChiesto.connect(self.aggiorna.emit)
@@ -2392,6 +2527,7 @@ class HomeView(QWidget):
         chiave = voce.get("chiave", "")
 
         for sezione in (getattr(self, "_kit_insegnante", None),
+                        getattr(self, "_riviste", None),
                         getattr(self, "_ultime", None)):
             if sezione is None:
                 continue
@@ -2421,6 +2557,7 @@ class HomeView(QWidget):
         nella posizione di prima, mentre l'utente sta guardando quella pagina.
         """
         for sezione in (getattr(self, "_kit_insegnante", None),
+                        getattr(self, "_riviste", None),
                         getattr(self, "_ultime", None)):
             if sezione is None:
                 continue
@@ -2949,7 +3086,8 @@ class HomeView(QWidget):
         traccia = voce.get("traccia")
         formato = voce.get("formato", "")
         titolo = voce.get("titolo", "")
-        cartella = self._cartella_se_scaricata(sigla, lingua)
+        # Un numero di rivista sta nella sua cartella (`g_I_202611`).
+        cartella = self._cartella_se_scaricata(sigla, lingua, voce.get("cartella"))
         menu_operazione(
             self, cartella, sigla, lingua,
             preferito=Preferiti.c_e_(sigla, lingua, traccia),

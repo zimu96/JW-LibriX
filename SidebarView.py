@@ -518,6 +518,37 @@ class _Scaricamento(QWidget):
         self.nome.setText("")
 
 
+def _icona_piena(simbolo: str, colore: str, lato: int):
+    """L'icona di Tabler con l'interno pieno del colore dato e il contorno bianco.
+
+    Serve al tasto dei segnalibri: quando nel documento c'e' un segnalibro, il
+    segnalibro della fascia prende il suo colore, come nell'app originale.
+    """
+    from PyQt6.QtCore import QByteArray, Qt as _Qt
+    from PyQt6.QtGui import QPainter, QPixmap
+    from PyQt6.QtSvg import QSvgRenderer
+    from Utility.Stuff import SF_SYMBOLS, _trova_icona
+    nome = SF_SYMBOLS.get(simbolo)
+    percorso = _trova_icona(nome) if nome else None
+    if percorso is None:
+        return None
+    try:
+        grezzo = percorso.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    grezzo = grezzo.replace('fill="none"', f'fill="{colore}"').replace("currentColor", "#ffffff")
+    from PyQt6.QtWidgets import QApplication
+    schermo = QApplication.primaryScreen()
+    rapporto = max(2.0, float(schermo.devicePixelRatio()) if schermo else 1.0)
+    pixmap = QPixmap(int(lato * rapporto), int(lato * rapporto))
+    pixmap.fill(_Qt.GlobalColor.transparent)
+    pittore = QPainter(pixmap)
+    QSvgRenderer(QByteArray(grezzo.encode("utf-8"))).render(pittore)
+    pittore.end()
+    pixmap.setDevicePixelRatio(rapporto)
+    return pixmap
+
+
 class _PulsanteIcona(QWidget):
     """Un pulsante di sola icona, delle misure della specifica.
 
@@ -566,9 +597,21 @@ class _PulsanteIcona(QWidget):
         vedono.
         """
         chiaro = "#ffffff" if self._attivo else "#d2c6e0"
+        riempimento = getattr(self, "_riempimento", "")
+        if riempimento:
+            self._pixmap = _icona_piena(self._simbolo, riempimento, self._dimensione_icona)
+            if self._pixmap is not None:
+                self.update()
+                return
         icona = icon(self._simbolo, chiaro, self._dimensione_icona)
         self._pixmap = icona.pixmap(self._dimensione_icona, self._dimensione_icona)
         self.update()
+
+    def riempi(self, colore: str) -> None:
+        """Colora l'interno dell'icona (il segnalibro presente), o "" per toglierlo."""
+        if colore != getattr(self, "_riempimento", ""):
+            self._riempimento = colore
+            self._aggiorna_icona()
 
     def cambia_simbolo(self, simbolo: str) -> None:
         """Scambia il glifo.
@@ -611,8 +654,13 @@ class _PulsanteIcona(QWidget):
                                 tema.RAGGIO, tema.RAGGIO)
 
         if self._pixmap is not None:
-            x = (self.width() - self._pixmap.width()) // 2
-            y = (self.height() - self._pixmap.height()) // 2
+            # Le misure "vere" (logiche) della figura, non i pixel dello
+            # schermo: con un'icona disegnata ad alta definizione i pixel sono
+            # il doppio, e centrare con quelli la spostava in alto a sinistra,
+            # mezza fuori dalla barra (il segnalibro colorato non si vedeva).
+            misura = self._pixmap.deviceIndependentSize()
+            x = int((self.width() - misura.width()) / 2)
+            y = int((self.height() - misura.height()) / 2)
             pittore.drawPixmap(x, y, self._pixmap)
         pittore.end()
 
@@ -2259,11 +2307,14 @@ class SidebarView(QMainWindow):
         # mostra manda qui il segno, e qui si apre l'articolo con l'ancora.
         if hasattr(schermata, "posizioneScelta"):
             schermata.posizioneScelta.connect(self._apri_posizione)
+        if hasattr(schermata, "segnalibroScelto"):
+            schermata.segnalibroScelto.connect(self._apri_posizione)
         # Un segno aggiunto o tolto cambia l'elenco delle Ricerche.  Si
         # rilegge subito, anche se in quel momento la sezione non si vede:
         # quando l'utente ci torna, la trova gia' aggiornata.
         if hasattr(schermata, "segniCambiati"):
             schermata.segniCambiati.connect(self._aggiorna_ricerche)
+            schermata.segniCambiati.connect(lambda: self._colora_tasto_segnalibri())
         if hasattr(schermata, "avviso"):
             schermata.avviso.connect(self._avviso_schermata)
         if hasattr(schermata, "pacchettoScaricato"):
@@ -2771,6 +2822,8 @@ class SidebarView(QMainWindow):
             # traccia: se e' gia' sul disco si suona subito, altrimenti si
             # apre la scheda dei media.  Vedi `HomeView.mediaAperta`.
             schermata.mediaAperta.connect(self._apre_una_card_media)
+            # Una card delle «Riviste in corso»: si apre QUEL numero.
+            schermata.rivistaAperta.connect(self._apre_rivista_in_corso)
             # Dentro la Home c'e' la sezione Novita': e' lei che chiede al
             # server e che ha il pulsante "Scarica" (o "Aggiorna" per
             # pubblicazioni gia' scaricate con versione nuova).  La finestra
@@ -3547,12 +3600,17 @@ class SidebarView(QMainWindow):
 
         if isinstance(corrente, NotiziaView):
             ha_audio = bool(getattr(corrente, "audio_url", ""))
+            # Una pubblicazione letta dal sito ha anche i segnalibri.
+            ha_segni = bool(getattr(corrente, "_segni_attivi", lambda: False)())
             for chiave, pulsanti in self.strumenti.items():
-                visibile = (chiave == "audio") and ha_audio
+                visibile = ((chiave == "audio") and ha_audio) or \
+                           ((chiave == "segnalibri") and ha_segni)
                 for pulsante in pulsanti:
                     pulsante.setVisible(visibile)
                     if chiave == "audio":
                         pulsante.setToolTip("Ascolta questo articolo")
+            if ha_segni:
+                self._colora_tasto_segnalibri(corrente)
             return
 
         for pulsante in self.strumenti.get("audio", []):
@@ -3586,6 +3644,7 @@ class SidebarView(QMainWindow):
             for pulsante in self.strumenti.get("segnalibri", []):
                 pulsante.setVisible(True)
                 pulsante.setToolTip("Segnalibri di questa pubblicazione")
+            self._colora_tasto_segnalibri(corrente)
             voci = (self._voci_cuffie_della_schermata(corrente)
                     if getattr(corrente, "pub", None) is not None else [])
             for pulsante in self.strumenti.get("audio", []):
@@ -3909,6 +3968,24 @@ class SidebarView(QMainWindow):
         if self._catalogo_chiesto:
             self.mostra_toast("Catalogo aggiornato", "success", 3000)
         self._aggiorna_schermata()
+
+    def cataloghi_arrivati_all_avvio(self) -> None:
+        """La schermata di avvio ha preso un catalogo nuovo: si rifanno le sezioni.
+
+        La finestra viene costruita mentre la schermata di avvio scarica: la
+        Home (Kit, Riviste in corso, Ultime novita') e il catalogo delle
+        pubblicazioni erano gia' fatti con i dati vecchi.  E' lo stesso lavoro
+        che fa il tasto di aggiornamento dopo un catalogo nuovo.
+        """
+        for titolo in ("Home", "Pubblicazioni"):
+            if titolo not in self.sezioni:
+                continue
+            try:
+                self._ricrea_sezione(titolo)
+            except Exception:  # noqa: BLE001 - meglio la sezione di prima che niente
+                import traceback
+                print(f"Avvio: non riesco a rifare «{titolo}» col catalogo nuovo ⚠️")
+                traceback.print_exc()
 
     def _aggiorna_preferiti(self) -> None:
         """I Preferiti sono cambiati: si rilegge la griglia della Home.
@@ -4497,6 +4574,27 @@ class SidebarView(QMainWindow):
             print(f"Media: non riesco a far partire {sigla} ⚠️")
             traceback.print_exc()
 
+    def _apre_rivista_in_corso(self, sigla: str, lingua: str, numero: str) -> None:
+        """Una card delle «Riviste in corso» della Home: si apre quel numero.
+
+        Si cerca nel catalogo la riga con la sigla **e** il numero, e la si
+        apre come fa la Biblioteca: dal disco se e' scaricata, dal sito se no.
+        Senza il numero si aprirebbe un numero qualunque della rivista.
+        """
+        from Utility import Lingua
+
+        pub = self._cerca_pubblicazione(sigla, Lingua.da_simbolo(lingua), numero)
+        sezione = self._catalogo()
+        if pub is None or sezione is None or not hasattr(sezione, "apri_pubblicazione"):
+            self._aperta_da_preferito(sigla, lingua)
+            return
+        try:
+            sezione.apri_pubblicazione(pub)
+        except Exception:  # noqa: BLE001
+            import traceback
+            print(f"Riviste in corso: non riesco ad aprire {sigla} {numero} ⚠️")
+            traceback.print_exc()
+
     def _aperta_da_preferito(self, sigla: str, lingua: str) -> None:
         """Una card dei Preferiti e' stata premuta.
 
@@ -4585,6 +4683,10 @@ class SidebarView(QMainWindow):
                                      if pub is not None else "") \
                 or self._titolo_notizia(indirizzo)
             schermata = NotiziaView(indirizzo, titolo)
+            # Sottolineature e segnalibri anche leggendo dal sito: la pagina
+            # dice la sigla, e qui si trova la pubblicazione nel catalogo.
+            schermata.trova_pub = (lambda sigla, numero="":
+                                   self._cerca_pubblicazione(sigla, Lingua.corrente_id(), numero))
             if pub is not None:
                 # Pubblicazione letta dal sito: avviso in alto + tasto Scarica.
                 schermata.segna_pubblicazione_web(pub)
@@ -4594,6 +4696,7 @@ class SidebarView(QMainWindow):
             # caricarsi mentre la finestra sta ancora sistemando la schermata,
             # e un segnale emesso in quel momento non troverebbe nessuno.
             schermata.linkPremuto.connect(self._link_notizia_premuto)
+            schermata.messaggio.connect(self._mostra_messaggio)
             # La notizia non manda piu' un comando «suona»: dice solo se
             # l'audio c'e'.  Il tasto e' nella barra viola, e lo mostra
             # `_aggiorna_strumenti_per_schermata`.
@@ -5700,6 +5803,14 @@ class SidebarView(QMainWindow):
             return m.group(1), int(m.group(2)), m.group(3)
         if r.get("sottotipo") in ("publication", "periodical") and r.get("sigla"):
             return r["sigla"], None, ""
+        # Un articolo o un capitolo trovato con la ricerca: il Preferito e' la
+        # pubblicazione da cui viene (prima nessuna voce: i Preferiti mancavano).
+        if r.get("sottotipo") not in ("verse", "video", "audio"):
+            if r.get("sigla"):
+                return r["sigla"], None, ""
+            pub = self._pub_da_contesto(r.get("contesto") or "")
+            if pub is not None and getattr(pub, "keySymbol", ""):
+                return pub.keySymbol, None, ""
         return None
 
     def _risultato_e_scaricato(self, r: dict) -> bool:
@@ -6166,6 +6277,25 @@ class SidebarView(QMainWindow):
                                                  Lingua.PREDEFINITA))
                 return (sigla, lingua)
         return None
+
+    def _colora_tasto_segnalibri(self, corrente=None) -> None:
+        """Il tasto dei segnalibri prende il colore del segnalibro del documento."""
+        if corrente is None:
+            try:
+                corrente = self.pila.currentWidget()
+            except (AttributeError, RuntimeError):
+                corrente = None
+        colore = ""
+        chiedi = getattr(corrente, "colore_segnalibro", None)
+        if callable(chiedi):
+            try:
+                colore = chiedi() or ""
+            except Exception:  # noqa: BLE001
+                colore = ""
+        for pulsante in self.strumenti.get("segnalibri", []):
+            pulsante.riempi(colore)
+            pulsante.setToolTip("Segnalibri di questa pubblicazione"
+                                + (" (c'è un segnalibro in questa pagina)" if colore else ""))
 
     def _apri_menu_segnalibri(self, pulsante=None) -> None:
         """Il tasto dei segnalibri della fascia.
@@ -6924,6 +7054,8 @@ class SidebarView(QMainWindow):
         self._avanti = [nuovo if w is vecchia else w for w in self._avanti]
         if era_corrente:
             self.pila.setCurrentWidget(nuovo)
+        if getattr(self, "_schermo_corrente", None) is vecchia:
+            self._schermo_corrente = nuovo
         self.pila.removeWidget(vecchia)
         vecchia.deleteLater()
 
@@ -7169,6 +7301,22 @@ class SidebarView(QMainWindow):
         percorso = (get_documents_directory()
                     / f"Documents_{lingua_doc}" / f"{documento_id}.html")
         if not percorso.is_file():
+            # Non scaricata: con internet si apre dal sito, con i suoi segni
+            # (sono gli stessi), e si arriva al paragrafo.  Senza, si chiede.
+            from Utility import PubWeb, Rete
+            if Rete.noto():
+                numero = int(pub.issueTagNumber or 0)
+                catalogo = self._cerca_pubblicazione(
+                    sigla, pub.mepsLanguageId,
+                    str(numero // 100) if numero > 999999 else (str(numero) if numero else ""))
+                self._aperta_notizia(PubWeb.url_documento(documento_id, lingua_doc),
+                                     catalogo, titolo)
+                corrente = self.pila.currentWidget()
+                if isinstance(corrente, NotiziaView):
+                    corrente.pid_iniziale = int(getattr(segno, "identifier", 0) or 0)
+                    if catalogo is None:
+                        corrente.pub_segni = pub
+                return
             self._chiedi_download_segno(segno, pub)
             return
 

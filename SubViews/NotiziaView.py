@@ -76,6 +76,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, QWidget)
 
 import Utility.tema as _tema
+from Utility.Stuff import HIGHLIGHT_HEX
 from SubViews.VeloImmagine import VeloImmagine
 
 
@@ -295,9 +296,11 @@ EXTRACT_SCRIPT = """
     // la foto di apertura e la didascalia.  Toglierlo portava via proprio
     // l'immagine che deve restare al suo posto.  Il whitelist qui sotto non
     // conosce HEADER e FOOTER, quindi li "scioglie" e tengono i figli.
+    // L'EDIZIONE STAMPATA (.alternatePresentation) si toglie qui sotto con
+    // il resto: si legge solo la versione digitale, come nell'app ufficiale.
     var daTogliere = copia.querySelectorAll(
       'script, style, noscript, iframe, video, audio, form, button, input,' +
-      ' select, textarea, svg, canvas, nav, aside,' +
+      ' select, svg, canvas, nav, aside,' +
       ' .documentActions, .articleMeta, .share, .social, .related,' +
       ' .breadcrumb, .toolbar, .languageSelector, .publicationInfo, .nav, .meta,' +
       ' .jsAudioPlayer, #streamingAudio, .jsPinnedAudioPlayer,' +
@@ -315,6 +318,17 @@ EXTRACT_SCRIPT = """
 
     // Il titolo lo mostra gia' l'app: nell'articolo sarebbe il secondo.
     var h1Copia = copia.querySelector('h1');
+    // Il numero del paragrafo del titolo (e dell'occhiello) si tiene: e'
+    // quello che usa la pubblicazione scaricata, e serve per mettere il
+    // segnalibro o la sottolineatura sul titolo come offline.
+    var numeroDi = function (nodo) {
+      var n = nodo ? String(nodo.getAttribute('data-pid') || '') : '';
+      return /^\\d+$/.test(n) ? n : '';
+    };
+    if (h1Copia) {
+      risultato.titolo_pid = numeroDi(h1Copia);
+      risultato.titolo_testo = (h1Copia.textContent || '').replace(/\\s+/g, ' ').trim();
+    }
     if (h1Copia && h1Copia.parentNode) h1Copia.parentNode.removeChild(h1Copia);
 
     // L'OCHIELLO
@@ -328,8 +342,28 @@ EXTRACT_SCRIPT = """
     if (occhielloCopia) {
       var testoOcchello = (occhielloCopia.textContent || '').replace(/\\s+/g, ' ').trim();
       if (testoOcchello) risultato.occhiello = testoOcchello;
+      risultato.occhiello_pid = numeroDi(occhielloCopia);
       if (occhielloCopia.parentNode) {
         occhielloCopia.parentNode.removeChild(occhielloCopia);
+      }
+    }
+
+    // LE FIGURE DA SFOGLIARE (piu' immagini, una per volta con le frecce):
+    // la classe del sito si perde qui sotto, quindi si segna prima.
+    var sfogliare = copia.querySelectorAll('figure');
+    for (var q = 0; q < sfogliare.length; q++) {
+      if (sfogliare[q].classList.contains('gen-flipbook') ||
+          sfogliare[q].querySelectorAll('img').length > 1) {
+        sfogliare[q].setAttribute('data-jwl-sfoglia', '1');
+        // Le frecce e i puntini del sito (vuoti, senza il loro stile) qui
+        // sarebbero dei pallini sotto la figura: li fa l'app.
+        var comandi = sfogliare[q].querySelectorAll('ul, ol, i, button, nav');
+        for (var r = comandi.length - 1; r >= 0; r--) {
+          if (!comandi[r].querySelector('img') && !(comandi[r].textContent || '').trim() &&
+              comandi[r].parentNode) {
+            comandi[r].parentNode.removeChild(comandi[r]);
+          }
+        }
       }
     }
 
@@ -338,7 +372,8 @@ EXTRACT_SCRIPT = """
     // figli, cosi' il testo non sparisce.  Gli altri si buttano via.
     var consentiti = { P: 1, H2: 1, H3: 1, H4: 1, IMG: 1, A: 1, UL: 1, OL: 1,
                        LI: 1, BLOCKQUOTE: 1, STRONG: 1, EM: 1, B: 1, I: 1,
-                       SUP: 1, SUB: 1, BR: 1, FIGURE: 1, FIGCAPTION: 1 };
+                       SUP: 1, SUB: 1, BR: 1, FIGURE: 1, FIGCAPTION: 1,
+                       TEXTAREA: 1 };
     var nodi = copia.querySelectorAll('*');
     for (var i = nodi.length - 1; i >= 0; i--) {
       var nodo = nodi[i];
@@ -359,6 +394,15 @@ EXTRACT_SCRIPT = """
       for (var j = 0; j < nomi.length; j++) {
         var nome = nomi[j];
         if (tag === 'A' && nome === 'href') continue;
+        // Il numero del paragrafo serve alle sottolineature e ai segnalibri:
+        // e' lo stesso del pacchetto scaricato, quindi i segni valgono in
+        // tutte e due le letture.
+        if (nome === 'data-pid') continue;
+        if (tag === 'FIGURE' && nome === 'data-jwl-sfoglia') continue;
+        // La casella «La tua risposta»: il suo id e' il codice con cui la
+        // risposta si salva, lo stesso del pacchetto scaricato.
+        if (tag === 'TEXTAREA' && nome === 'id') continue;
+        if (nome === 'id' && /^p\\d+$/.test(nodo.getAttribute('id') || '')) continue;
         if (tag === 'IMG' && (nome === 'src' || nome === 'data-src' ||
                               nome === 'alt')) continue;
         nodo.removeAttribute(nome);
@@ -404,6 +448,20 @@ EXTRACT_SCRIPT = """
     }
 
     risultato.articolo_html = copia.innerHTML;
+
+    // QUALE DOCUMENTO E'
+    // ------------------
+    // Sigla e numero del documento (MepsDocumentId) servono a salvare
+    // sottolineature e segnalibri sullo stesso documento del pacchetto.
+    var classi = ((document.querySelector('#article') || {}).className || '') + ' ' +
+                 (document.body ? document.body.className : '');
+    var trovato = classi.match(/docId-(\\d+)/);
+    if (!trovato) trovato = location.pathname.match(/\\/wol\\/d\\/[^\\/]+\\/[^\\/]+\\/(\\d+)/);
+    if (trovato) risultato.docid = Number(trovato[1]);
+    trovato = classi.match(/(?:^|\\s)pub-([A-Za-z0-9-]+)(?=\\s|$)/);
+    if (trovato) risultato.sigla = trovato[1];
+    trovato = classi.match(/(?:^|\\s)iss-(\\d+)/);
+    if (trovato) risultato.numero = trovato[1];
 
     // Se `og:image` non c'era, la copertina e' la prima foto rimasta
     // nell'articolo pulito.  Le immagini sono gia' state rese assolute.
@@ -539,6 +597,10 @@ class NotiziaView(QWidget):
     scaricaCitataRichiesta = Signal(str, str)
     #: La barra del riquadro e' stata premuta: la ``Voce`` da aprire intera.
     riferimentoDaAprire = Signal(object)
+    #: Sottolineature o segnalibri cambiati: la sezione Ricerche si rilegge
+    segniCambiati = Signal()
+    #: Un segnalibro di un altro documento: lo apre la finestra
+    segnalibroScelto = Signal(object)
 
     def __init__(self, url: str, titolo: str = "", parent=None) -> None:
         super().__init__(parent)
@@ -568,6 +630,18 @@ class NotiziaView(QWidget):
 
         #: La pubblicazione aperta dal sito senza essere scaricata (o None).
         self.pub_web = None
+        #: Sottolineature e segnalibri anche leggendo dal sito: la
+        #: pubblicazione e il documento (MepsDocumentId) a cui si appoggiano.
+        #: Sono gli stessi del pacchetto scaricato, quindi i segni fatti qui
+        #: si vedono anche offline e viceversa.  None/0 se la pagina non e' un
+        #: documento di una pubblicazione (una notizia, per esempio).
+        self.pub_segni = None
+        self.docid_segni = 0
+        #: Chi sa trovare la pubblicazione dalla sigla: lo mette la finestra.
+        self.trova_pub = None
+        #: Il paragrafo a cui arrivare appena la pagina e' pronta (segnalibro).
+        self.pid_iniziale = 0
+        self._selezione = {"testo": "", "paragrafo": 0, "ancora": ""}
         self._avviso = None
         disposizione = QVBoxLayout(self)
         self._disposizione = disposizione
@@ -848,6 +922,14 @@ class NotiziaView(QWidget):
             # visto un lampo di browser dentro l'app.
             self._stato.setVisible(False)
             self.web.setVisible(True)
+            # Le figure con piu' immagini si sfogliano con le frecce, come
+            # offline (vedi Utility/Sfogliatore.py).
+            from Utility.Sfogliatore import JS_SFOGLIATORE
+            self.web.run(JS_SFOGLIATORE)
+            if self._segni_attivi():
+                self.web.run(
+                    "if (typeof generateSelectable === 'function') { generateSelectable(); }",
+                    lambda _r=None: self.ripristina_segni())
             # E' anche il momento giusto per chiedere l'mp3 del lettore del
             # sito: prima `.articolo` non esiste ancora (vedi
             # `_mostra_articolo`).
@@ -895,6 +977,7 @@ class NotiziaView(QWidget):
         except (json.JSONDecodeError, TypeError):
             dati = {}
 
+        self._riconosci_documento(dati)
         titolo = dati.get("titolo", "") or self.titolo or ""
         articolo_html = dati.get("articolo_html", "") or ""
         paragrafi = dati.get("paragrafi", []) or []
@@ -926,9 +1009,18 @@ class NotiziaView(QWidget):
         if principale:
             parti.append(f'<img class="principale" src="{_escape(principale)}" '
                          f'alt="">')
+        # Con il numero di paragrafo del sito (lo stesso dell'offline) il
+        # titolo e l'occhiello si sottolineano e prendono il segnalibro.
+        pid_occhiello = str(dati.get("occhiello_pid", "") or "")
+        pid_titolo = str(dati.get("titolo_pid", "") or "")
         if occhiello:
-            parti.append(f'<p class="occhiello">{_escape(occhiello)}</p>')
-        if titolo:
+            attributo = f' data-pid="{pid_occhiello}"' if pid_occhiello.isdigit() else ""
+            parti.append(f'<p class="occhiello"{attributo}>{_escape(occhiello)}</p>')
+        if pid_titolo.isdigit() and dati.get("titolo_testo"):
+            # Il testo del titolo e' quello della pagina: le parole devono
+            # essere le stesse dell'offline, o la sottolineatura si sposta.
+            parti.append(f'<h1 data-pid="{pid_titolo}">{_escape(dati["titolo_testo"])}</h1>')
+        elif titolo:
             parti.append(f"<h1>{_escape(titolo)}</h1>")
 
         if articolo_html:
@@ -1102,6 +1194,12 @@ class NotiziaView(QWidget):
         a.link-articolo:hover {{
           color: {colori['link_hover']};
         }}
+        textarea {{
+          display: block; width: 100%; min-height: 4.5em; margin: 6px 0 14px 0;
+          box-sizing: border-box; font: inherit; color: inherit;
+          background: {colori['img']}; border: 1px solid {colori['bordo']};
+          border-radius: 6px; padding: 6px 8px;
+        }}
         ::-webkit-scrollbar {{
           width: 6px;
           background: transparent;
@@ -1158,7 +1256,23 @@ class NotiziaView(QWidget):
           }
         });
         """
-        html = f"<html><head><meta charset='UTF-8'><style>{css}</style><script>{js}</script></head><body>{'\n'.join(parti)}</body></html>"
+        if self._segni_attivi():
+            # Gli script delle sottolineature (gli stessi della lettura
+            # offline) vanno DENTRO il corpo e per primi: `generateSelectable`
+            # prende il primo <script> della pagina e lo toglie dal corpo.
+            from Utility.Stuff import carica_script
+            from WebBrowserView import SELEZIONE_JS
+            colori_segni = "".join(
+                f".highlightingcolor{i + 1} {{ background-color: #{c:06x}80; }}\n"
+                for i, c in enumerate(HIGHLIGHT_HEX))
+            css += colori_segni + "selectable { cursor: text; }\n"
+            html = (f"<html><head><meta charset='UTF-8'><style>{css}</style></head><body>"
+                    + '\n'.join(parti)
+                    + f"<script type=\"text/javascript\">{carica_script()}</script>"
+                    + f"<script type=\"text/javascript\">{SELEZIONE_JS}</script>"
+                    + f"<script type=\"text/javascript\">{js}</script></body></html>")
+        else:
+            html = f"<html><head><meta charset='UTF-8'><style>{css}</style><script>{js}</script></head><body>{'\n'.join(parti)}</body></html>"
 
         self._stato.setVisible(True)
         self._stato.setText("Preparo l'articolo...")
@@ -1179,6 +1293,234 @@ class NotiziaView(QWidget):
             self._annuncia_audio(audio[0])
         elif not self._audio_json_pendente:
             self._annuncia_audio("")
+
+    # ------------------------------------------------------------------
+    # SOTTOLINEATURE E SEGNALIBRI ANCHE LEGGENDO DAL SITO
+    # ------------------------------------------------------------------
+
+    def _riconosci_documento(self, dati: dict) -> None:
+        """Da sigla e numero del documento trova la pubblicazione su cui segnare."""
+        try:
+            docid = int(dati.get("docid") or 0)
+        except (TypeError, ValueError):
+            docid = 0
+        sigla = str(dati.get("sigla") or "")
+        numero = str(dati.get("numero") or "")
+        pub = None
+        web = self.pub_web if not isinstance(self.pub_web, dict) else None
+        if web is not None and (not sigla or getattr(web, "keySymbol", "") == sigla):
+            pub = web
+        if pub is None and self.pub_segni is not None:
+            pub = self.pub_segni
+        if pub is None and sigla and callable(self.trova_pub):
+            try:
+                pub = self.trova_pub(sigla, numero)
+            except Exception:  # noqa: BLE001
+                pub = None
+        if pub is not None and getattr(pub, "isBible", False):
+            pub = None          # la Bibbia online ha i suoi versetti, non i paragrafi
+        self.pub_segni = pub
+        self.docid_segni = docid if pub is not None else 0
+
+    def _segni_attivi(self) -> bool:
+        return self.pub_segni is not None and self.docid_segni > 0
+
+    def _titolo_documento(self) -> str:
+        return (self.titolo or getattr(self.pub_segni, "displayTitle", "")
+                or getattr(self.pub_segni, "title", "") or "Pubblicazione")
+
+    def ripristina_segni(self) -> None:
+        """Ridisegna sottolineature e segnalibri di questo documento."""
+        if not self._segni_attivi():
+            return
+        from Utility.UserData.HighlightManager import HighlightManager
+        from Utility.UserData.SegniDocumento import js_segna
+        pub, docid = self.pub_segni, self.docid_segni
+
+        def ridisegna(_r=None) -> None:
+            try:
+                segni = HighlightManager.get_highlight(pub=pub, document_id=docid)
+            except Exception:  # noqa: BLE001
+                segni = []
+            for ev in segni:
+                b = ev.blockRange
+                if b.identifier == -1 or b.startToken == -1 or b.endToken == -1:
+                    continue
+                self.web.run(
+                    "if (typeof restoreHighlight === 'function') {"
+                    f" restoreHighlight({b.identifier}, {b.startToken}, {b.endToken},"
+                    f" {ev.userMark.color}, false); }}")
+            self.web.run(js_segna(pub, docid))
+            from Utility.UserData.RisposteDocumento import js_ripristina
+            codice = js_ripristina(pub, docid)
+            if codice:
+                self.web.run(codice)
+            from Utility.Sfogliatore import JS_SFOGLIATORE
+            self.web.run(JS_SFOGLIATORE)
+            if self.pid_iniziale:
+                self.web.run(
+                    "(function(){var n=document.querySelector('[data-pid=\"%d\"]');"
+                    "if(n){n.scrollIntoView({block:'start'});}})();" % int(self.pid_iniziale))
+                self.pid_iniziale = 0
+            # La fascia viola ora sa che qui ci sono i segnalibri.
+            aggiorna = getattr(self.window(), "_aggiorna_strumenti_per_schermata", None)
+            if callable(aggiorna):
+                try:
+                    aggiorna()
+                except Exception:  # noqa: BLE001
+                    pass
+
+        self.web.run(
+            "if (typeof cleanBodyHighlight === 'function'"
+            " && typeof makeSelectable === 'function') {"
+            " cleanBodyHighlight(); makeSelectable(); }", ridisegna)
+
+    def _mostra_menu_selezione(self, messaggio: dict) -> None:
+        from PyQt6.QtCore import QPoint
+        from SubViews.ArticleView import BarraColori
+        self._selezione = {
+            "testo": str(messaggio.get("testo", "")),
+            "paragrafo": int(messaggio.get("paragrafo", 0) or 0),
+            "ancora": str(messaggio.get("ancora", "")),
+        }
+        punto = self.web.mapToGlobal(QPoint(int(messaggio.get("x", 0)),
+                                            int(messaggio.get("y", 0))))
+        barra = BarraColori(self, con_cestino=bool(messaggio.get("evidenziata", False)),
+                            con_gemma=False)
+        barra.colorePremuto.connect(
+            lambda c: self.web.run(f"addHighlight({int(c)}, false);"))
+        barra.togliPremuto.connect(lambda: self.web.run("addHighlight(-1, false);"))
+        barra.segnalibroRichiesto.connect(self._segnalibro_da_selezione)
+        barra.mostra_sotto(punto)
+
+    def _salva_sottolineatura(self, paragrafo: int, inizio: int, fine: int,
+                              colore: int) -> None:
+        from Utility.Structures.Generals import BlockRange
+        from Utility.UserData.HighlightManager import HighlightManager
+        if paragrafo <= 0 or inizio < 0 or fine < 0:
+            return
+        HighlightManager.add_highlight(
+            color=colore,
+            new_block_range=BlockRange(identifier=paragrafo, startToken=inizio,
+                                       endToken=fine),
+            pub=self.pub_segni,
+            document_id=self.docid_segni,
+            snippet=str(self._selezione.get("testo", "")),
+            title=self._titolo_documento(),
+        )
+        self.ripristina_segni()
+        self._segni_cambiati()
+
+    def _segni_cambiati(self) -> None:
+        self.segniCambiati.emit()
+
+    def _aggiungi_segnalibro(self, paragrafo: int, testo: str, colore: int) -> None:
+        from Utility.UserData.BookmarkManager import BookmarkManager
+        if paragrafo <= 0:
+            self.messaggio.emit("Segnalibro non aggiunto: non riesco a capire il punto.")
+            return
+        if not BookmarkManager.add_bookmark(
+                pub=self.pub_segni, document_id=self.docid_segni, identifier=paragrafo,
+                title=self._titolo_documento(), snippet=testo, color=colore):
+            self.messaggio.emit("Segnalibro non salvato ⚠️")
+            return
+        self.ripristina_segni()
+        self._segni_cambiati()
+        self.messaggio.emit("Segnalibro aggiunto 🔖")
+
+    def _segnalibro_da_selezione(self, colore: int) -> None:
+        self._aggiungi_segnalibro(int(self._selezione.get("paragrafo", 0) or 0),
+                                  str(self._selezione.get("testo", "")), colore)
+
+    def _segnalibro_dalla_posizione(self, colore: int) -> None:
+        def salva(dati) -> None:
+            if not isinstance(dati, dict):
+                self.messaggio.emit("Segnalibro non aggiunto: la pagina non risponde.")
+                return
+            self._aggiungi_segnalibro(int(dati.get("paragrafo", 0) or 0),
+                                      str(dati.get("testo", "")), colore)
+        self.web.run("typeof __jwlPosizioneVisibile === 'function'"
+                     " ? __jwlPosizioneVisibile(false) : null;", salva)
+
+    def colore_segnalibro(self) -> str:
+        """Il colore dell'ultimo segnalibro del documento: lo usa la fascia viola."""
+        if not self._segni_attivi():
+            return ""
+        from Utility.UserData.SegniDocumento import colore_ultimo
+        return colore_ultimo(self.pub_segni, self.docid_segni)
+
+    def menu_segnalibri(self, punto=None) -> None:
+        """Il tasto dei segnalibri della fascia: come nella lettura offline."""
+        from PyQt6.QtCore import QPoint
+        from PyQt6.QtGui import QIcon, QPixmap
+        from PyQt6.QtWidgets import QMenu
+        from Utility.Stuff import CHIARO, highlight_color, icon
+        from Utility.UserData.BookmarkManager import BookmarkManager
+        if not self._segni_attivi():
+            self.messaggio.emit("Qui non si possono mettere segnalibri.")
+            return
+
+        def quadratino(indice: int) -> QIcon:
+            pix = QPixmap(16, 16)
+            pix.fill(highlight_color(indice))
+            return QIcon(pix)
+
+        pub = self.pub_segni
+        menu = QMenu(self)
+        nome = getattr(pub, "displayTitle", "") or getattr(pub, "title", "") or pub.keySymbol
+        intestazione = menu.addAction(f"Segnalibri — {nome}")
+        intestazione.setEnabled(False)
+        segnalibri = BookmarkManager.get_bookmarks(pub)
+        for segno in segnalibri:
+            testo = segno.title
+            if segno.snippet:
+                breve = " ".join(segno.snippet.split())
+                testo = f"{testo} — {breve[:60]}{'…' if len(breve) > 60 else ''}"
+            azione = menu.addAction(quadratino(segno.color), testo)
+            azione.triggered.connect(lambda _=False, s=segno: self._vai_al_segnalibro(s))
+        if not segnalibri:
+            vuoto = menu.addAction("Nessun segnalibro in questa pubblicazione")
+            vuoto.setEnabled(False)
+        menu.addSeparator()
+        from Utility.UserData.SegniDocumento import icona_colore, riempi_menu_colori
+        aggiungi = menu.addMenu(QIcon(icon("bookmark.fill", CHIARO)), "Aggiungi segnalibro qui")
+        riempi_menu_colori(aggiungi, self._segnalibro_dalla_posizione)
+        if segnalibri:
+            # Come offline: il colore di un segnalibro gia' messo si cambia.
+            cambia = menu.addMenu(QIcon(icon("bookmark.fill", CHIARO)), "Cambia colore")
+            for segno in segnalibri:
+                sotto = cambia.addMenu(icona_colore(segno.color), segno.title)
+                riempi_menu_colori(sotto, lambda c, s=segno: self._ricolora_segnalibro(s, c),
+                                   attuale=segno.color)
+            rimuovi = menu.addMenu(QIcon(icon("trash", CHIARO)), "Rimuovi un segnalibro")
+            for segno in segnalibri:
+                azione = rimuovi.addAction(quadratino(segno.color), segno.title)
+                azione.triggered.connect(lambda _=False, s=segno: self._rimuovi_segnalibro(s))
+        menu.exec(punto if punto is not None else self.mapToGlobal(QPoint(0, 0)))
+
+    def _ricolora_segnalibro(self, segno, colore: int) -> None:
+        from Utility.UserData.BookmarkManager import BookmarkManager
+        if not BookmarkManager.set_color(segno.ID, colore):
+            return
+        self.ripristina_segni()
+        self._segni_cambiati()
+        self.messaggio.emit("Colore del segnalibro cambiato")
+
+    def _rimuovi_segnalibro(self, segno) -> None:
+        from Utility.UserData.BookmarkManager import BookmarkManager
+        BookmarkManager.remove_bookmark(segno.ID)
+        self.ripristina_segni()
+        self._segni_cambiati()
+        self.messaggio.emit("Segnalibro rimosso")
+
+    def _vai_al_segnalibro(self, segno) -> None:
+        """Un segnalibro di questo documento si raggiunge scorrendo; gli altri li apre la finestra."""
+        if segno.documentId == self.docid_segni:
+            self.web.run(
+                f"(function(){{var n=document.querySelector('[data-pid=\"{int(segno.identifier)}\"]');"
+                "if(n){n.scrollIntoView({block:'start'});}})();")
+            return
+        self.segnalibroScelto.emit(segno)
 
     def _annuncia_audio(self, url: str) -> None:
         """Dice alla finestra se questo articolo ha un audio, una volta sola."""
@@ -1295,6 +1637,20 @@ class NotiziaView(QWidget):
         if not isinstance(messaggio, dict):
             return
         mode = messaggio.get("mode")
+        if mode == 0 and self._segni_attivi():
+            self._salva_sottolineatura(int(messaggio.get("paragraph", 0) or 0),
+                                       int(messaggio.get("startIndex", -1)),
+                                       int(messaggio.get("endIndex", -1)),
+                                       int(messaggio.get("color", 0) or 0))
+            return
+        if mode == 7 and self._segni_attivi():
+            from Utility.UserData.RisposteDocumento import salva
+            salva(self.pub_segni, self.docid_segni, str(messaggio.get("tag", "")),
+                  str(messaggio.get("valore", "")))
+            return
+        if mode == 3 and self._segni_attivi():
+            self._mostra_menu_selezione(messaggio)
+            return
         if mode == 99:
             href = messaggio.get("href", "")
             if href:

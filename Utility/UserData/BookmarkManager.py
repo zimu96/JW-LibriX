@@ -173,6 +173,24 @@ class BookmarkManager:
         return elementi
 
     @staticmethod
+    def set_color(bookmark_id: int, color: int) -> bool:
+        """Cambia il colore di un segnalibro (1..6, gli stessi delle sottolineature)."""
+        connessione = _connetti()
+        if connessione is None:
+            return False
+        try:
+            connessione.execute(
+                "UPDATE Bookmark SET ColorIndex = ? WHERE BookmarkId = ?;",
+                (max(1, min(6, int(color or 1))), int(bookmark_id)))
+            connessione.commit()
+            return True
+        except sqlite3.Error as errore:
+            print(f"Errore colore segnalibro ⚠️  {errore}")
+            return False
+        finally:
+            connessione.close()
+
+    @staticmethod
     def remove_bookmark(bookmark_id: int) -> None:
         """Toglie un segnalibro."""
         connessione = _connetti()

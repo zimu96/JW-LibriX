@@ -55,6 +55,7 @@ from Utility import tema
 from Utility.Structures.Generals import BlockRange, Document, Publication
 from Utility.Stuff import HIGHLIGHT_HEX, highlight_color, icon, icona_tabler, CHIARO
 from Utility.UserData.BookmarkManager import BookmarkManager
+from Utility.UserData.SegniDocumento import chiedi_colore, icona_colore, riempi_menu_colori
 from Utility.UserData.HighlightManager import HighlightManager
 
 # La larghezza del pannello di lato, come nel progetto originale.
@@ -194,8 +195,10 @@ class BarraColori(_BarraPopup):
             self._tasto(icona_tabler("trash", c["icona"], int(LATO_ICONA * 0.8)),
                         "Togli la sottolineatura",
                         self._chiudi_ed_emetti(self.togliPremuto))
+        # Il segnalibro chiede prima il colore (gli stessi sei delle
+        # sottolineature): prima si metteva sempre il primo, il giallo.
         self._tasto(_icona_menu("segnalibro", LATO_ICONA, tema.tema_attivo()), "Aggiungi un segnalibro",
-                    self._chiudi_ed_emetti(self.segnalibroRichiesto, 1))
+                    self._chiedi_colore_segnalibro)
         if con_gemma:
             self._tasto(_icona_menu("gemma", LATO_ICONA, tema.tema_attivo()), "Guida alle ricerche",
                         self._chiudi_ed_emetti(self.gemmaPremuta))
@@ -203,6 +206,18 @@ class BarraColori(_BarraPopup):
         self._timer.setSingleShot(True)
         self._timer.timeout.connect(self._scaduto)
         self._attivo = 0
+
+    def _chiedi_colore_segnalibro(self, _=False) -> None:
+        """Il tasto del segnalibro: prima il colore, poi il segnalibro."""
+        from Utility.UserData.SegniDocumento import chiedi_colore
+        punto = QCursor.pos()
+        scelto: list = []
+        # La barra si nasconde: resta solo il menu' dei colori.
+        self.hide()
+        chiedi_colore(self.parentWidget() or self, punto, scelto.append)
+        self.close()
+        if scelto:
+            self.segnalibroRichiesto.emit(int(scelto[0]))
 
     def _premuto(self, indice: int) -> None:
         self._attivo = indice
@@ -1014,8 +1029,8 @@ class ArticleView(QWidget):
         barra = BarraVersetto(self)
         barra.gemmaPremuta.connect(self._apri_gemma)
         barra.notaPremuta.connect(self._nota_versetto)
-        barra.segnalibroPremuto.connect(
-            lambda: self._aggiungi_segnalibro(1))
+        # Il segnalibro del versetto chiede prima il colore.
+        barra.segnalibroPremuto.connect(self._segnalibro_chiedendo_colore)
         barra.traduzioniPremute.connect(self._mostra_traduzioni)
         barra.condividiPremuto.connect(self._condividi_versetto)
         barra.copiaPremuta.connect(self._copia_versetto)
@@ -1228,6 +1243,16 @@ class ArticleView(QWidget):
         puntatore che si muove sulla pagina non arriva a nessuna parte,
         e le frecce ai lati non si accendono mai.
         """
+        # La fascia viola colora il tasto dei segnalibri se questo documento
+        # ne ha uno (il documento cambia anche con le frecce di pagina).
+        finestra = self.window()
+        colora = getattr(finestra, "_colora_tasto_segnalibri", None)
+        if callable(colora):
+            try:
+                colora()
+            except Exception:  # noqa: BLE001
+                pass
+
         self._velo.scopri()
         self._installa_i_filtri()
         self._metti_le_frecce_ai_posti()
@@ -1483,6 +1508,14 @@ class ArticleView(QWidget):
     def _document_id(self) -> int:
         return self.document.documentId if self.document is not None else 0
 
+    def colore_segnalibro(self) -> str:
+        """Il colore dell'ultimo segnalibro di questo documento ("" se non ce n'e').
+
+        Lo chiede la fascia viola per colorare il tasto dei segnalibri.
+        """
+        from Utility.UserData.SegniDocumento import colore_ultimo
+        return colore_ultimo(self.pub, self._document_id())
+
     def _aggiungi_segnalibro(self, colore: int) -> None:
         """Salva il segnalibro sulla selezione appena fatta."""
         paragrafo = int(self._selezione.get("paragrafo", 0) or 0)
@@ -1501,6 +1534,7 @@ class ArticleView(QWidget):
         if not salvato:
             self.avviso.emit("Segnalibro non salvato ⚠️")
             return
+        self.article.mostra_segnalibri()
         self.segniCambiati.emit()
         self.avviso.emit("Segnalibro aggiunto 🔖")
 
@@ -1538,6 +1572,7 @@ class ArticleView(QWidget):
         if not salvato:
             self.avviso.emit("Segnalibro non salvato ⚠️")
             return
+        self.article.mostra_segnalibri()
         self.segniCambiati.emit()
         self.avviso.emit("Segnalibro aggiunto 🔖")
 
@@ -1590,13 +1625,17 @@ class ArticleView(QWidget):
         menu.addSeparator()
         aggiungi = menu.addMenu(QIcon(icon("bookmark.fill", CHIARO)),
                                 "Aggiungi segnalibro qui")
-        for indice in range(1, len(HIGHLIGHT_HEX) + 1):
-            azione = aggiungi.addAction(self._icona_colore(indice),
-                                        f"Colore {indice}")
-            azione.triggered.connect(
-                lambda _=False, c=indice: self._segnalibro_dalla_posizione(c))
+        riempi_menu_colori(aggiungi, self._segnalibro_dalla_posizione)
 
         if segnalibri:
+            # Il colore di un segnalibro gia' messo si puo' cambiare.
+            cambia = menu.addMenu(QIcon(icon("bookmark.fill", CHIARO)),
+                                  "Cambia colore")
+            for segno in segnalibri:
+                sotto = cambia.addMenu(icona_colore(segno.color), segno.title)
+                riempi_menu_colori(
+                    sotto, lambda c, s=segno: self._ricolora_segnalibro(s, c),
+                    attuale=segno.color)
             rimuovi = menu.addMenu(QIcon(icon("trash", CHIARO)),
                                    "Rimuovi un segnalibro")
             for segno in segnalibri:
@@ -1613,8 +1652,21 @@ class ArticleView(QWidget):
                 punto = self.mapToGlobal(QPoint(0, 0))
         menu.exec(punto)
 
+    def _segnalibro_chiedendo_colore(self) -> None:
+        """Il segnalibro dal menu' del versetto: prima si sceglie il colore."""
+        chiedi_colore(self, QCursor.pos(), self._aggiungi_segnalibro)
+
+    def _ricolora_segnalibro(self, segno, colore: int) -> None:
+        """Un segnalibro gia' messo cambia colore: nella pagina e nella fascia."""
+        if not BookmarkManager.set_color(segno.ID, colore):
+            return
+        self.article.mostra_segnalibri()
+        self.segniCambiati.emit()
+        self.avviso.emit("Colore del segnalibro cambiato")
+
     def _rimuovi_segnalibro(self, segno) -> None:
         BookmarkManager.remove_bookmark(segno.ID)
+        self.article.mostra_segnalibri()
         self.segniCambiati.emit()
         self.avviso.emit("Segnalibro rimosso")
 
